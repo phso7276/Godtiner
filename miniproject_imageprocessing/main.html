@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>영상처리 프로젝트</title>
+    <script src="imgProcessingfinal2.js" defer></script>
+    <!-- <script src="imgProcessing2.js" defer></script> -->
+    <script
+      src="https://kit.fontawesome.com/0d499b4d3d.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="canvas">
+    <header class="header">
+      <a class="header-title" href="main.html">COLORS</a>
+    </header>
+
+    <section>
+      <ul class="selectlist">
+        <li class="select__Row">
+          <div class="select">
+            <span class="select-brightness">
+              <button>
+                <i class="fa-solid fa-sun"></i>
+              </button>
+              <input
+                type="range"
+                class="brightness"
+                name="brightness"
+                min="-100"
+                max="100"
+                step="1"
+              />
+            </span>
+          </div>
+        </li>
+        <li class="select__Row">
+          <div class="select">
+            <span class="select-blur">
+              <button class="blur">
+                <i class="fa-solid fa-droplet"></i>
+              </button>
+            </span>
+          </div>
+        </li>
+        <li class="select__Row">
+          <div class="select">
+            <input type="button" class="grayscale" value="grayscale" />
+          </div>
+        </li>
+        <li class="select__Row">
+          <div class="select">
+            <input type="button" class="reverse" value="reverse" />
+          </div>
+        </li>
+        <li class="select__Row">
+          <div class="select">
+            <input type="button" class="black_white" value="black_white" />
+          </div>
+        </li>
+        <li class="select__Row">
+          <div class="select">
+            <input type="button" class="histoSt" value="histogram stretching" />
+          </div>
+        </li>
+        <li class="select__Row">
+          <div class="select">
+            <input type="button" class="embos" value="embossing" />
+          </div>
+        </li>
+        <li class="select__Row">
+          <div class="select">
+            <input type="button" class="endIn" value="endIn" />
+          </div>
+        </li>
+      </ul>
+
+      <div class="display">
+        <ul class="selectlist2">
+          <li class="select__Row">
+            <span class="select__name">
+              <label for="hidden-but" id="fileImage">
+                <i class="fa-solid fa-file-image"></i>
+              </label>
+              <input type="file" class="openFile" id="hidden-but" />
+            </span>
+          </li>
+
+          <li class="select__Row">
+            <div class="select">
+              <span class="select__name">
+                <button class="mirror_lr" value="적용">
+                  <i class="fa-solid fa-right-left"></i>
+                </button>
+              </span>
+            </div>
+          </li>
+          <li class="select__Row">
+            <div class="select">
+              <span class="select__name">
+                <button class="mirror_tb">
+                  <i class="fa-solid fa-retweet"></i>
+                </button>
+              </span>
+            </div>
+          </li>
+          <li class="select__Row">
+            <div class="select">
+              <span class="select__name">
+                <button class="rotate90">
+                  <i class="fa-solid fa-rotate-right"></i>
+                </button>
+              </span>
+            </div>
+          </li>
+          <li class="select__Row">
+            <div class="select">
+              <span class="select__name">
+                <input type="button" class="equal" value="원본" />
+              </span>
+            </div>
+          </li>
+        </ul>
+
+        <div class="display-canvas">
+          <span class="display-button">
+            <label for="hidden-but" class="button-range">
+              <i class="fa-solid fa-file-image" id="fileImage2"></i>
+              <p>이미지 선택</p>
+            </label>
+            <input type="file" class="openFile" id="hidden-but" />
+          </span>
+        </div>
+        <ol class="colorlist" id="color-bar">
+          <li class="colorbox"></li>
+          <li class="colorbox"></li>
+          <li class="colorbox"></li>
+          <li class="colorbox"></li>
+          <li class="colorbox"></li>
+        </ol>
+        <span class="colorNames"></span>
+      </div>
+      <div class="color-pickar">
+        <ul class="colors">
+          <li class="select__Row" id="hovered-color"></li>
+          <span id="colorSelect">selected - color</span>
+          <li class="select__Row" id="selected-color"></li>
+        </ul>
+      </div>
+    </section>
+  </body>
+</html>
