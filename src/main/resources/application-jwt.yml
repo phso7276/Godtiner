@@ -1,0 +1,10 @@
+jwt:
+  secret: secretkeysecretkeysecretkey00000
+
+  access:
+    expiration: 864000000
+    header: Authorization
+
+  refresh:
+    expiration: 80
+    header: Authorization-refresh

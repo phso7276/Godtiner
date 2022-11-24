@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: webmaster
+    url: jdbc:mariadb://localhost:3306/godtiner_db
+    password: '1234'
+  jpa:
+    properties:
+      hibernate:
+        show-sql: 'true'
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: update
+  profiles:
+    include: jwt
+
+
+logging:
+  level:
+    org:
+      apache:
+        coyote:
+          http11: debug
+
+
+
