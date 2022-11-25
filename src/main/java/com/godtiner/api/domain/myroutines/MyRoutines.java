@@ -3,17 +3,18 @@ package com.godtiner.api.domain.myroutines;
 import com.godtiner.api.domain.BaseEntity;
 
 import com.godtiner.api.domain.member.Member;
-import com.godtiner.api.domain.myroutines.dto.MyContentsCreate;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsCreate;
+import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesUpdateRequest;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static java.util.stream.Collectors.toList;
 
 @Entity
 @Data
@@ -31,7 +32,7 @@ public class MyRoutines extends BaseEntity {
     private String title;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "myRoutines",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<MyContents> myContentsList = new ArrayList<>();
+    private List<MyContents> myContentsList ;
 
     //== 내용 수정 ==//
     public void updateTitle(String title) {
@@ -55,21 +56,30 @@ public class MyRoutines extends BaseEntity {
     public MyRoutines(String title,Member writer,List<MyContents> myContentsList){
         this.title =title;
         this.writer= writer;
+        this.myContentsList = new ArrayList<>();
+        addMyContents(myContentsList);
 
     }
 
+    public void updateMyContents(MyContents myContents){
+        myContentsList.add(myContents);
+    }
 
-
-   public void addMyContents(MyContents myContents){
+    public void addMyContents(MyContents myContents){
         //comment의 Post 설정은 comment에서 함
         myContentsList.add(myContents);
     }
-   /* public void addMyContents(List<MyContents> myContents){
+    public void addMyContents(List<MyContents> myContents){
         myContents.stream().forEach(i -> {
             myContentsList.add(i);
             i.initMyRoutines(this);
         });
-    }*/
+    }
+
+    //업데이트
+
+
+
     }
 
 

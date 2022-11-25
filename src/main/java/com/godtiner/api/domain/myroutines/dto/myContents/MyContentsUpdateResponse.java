@@ -1,4 +1,4 @@
-package com.godtiner.api.domain.myroutines.dto;
+package com.godtiner.api.domain.myroutines.dto.myContents;
 
 
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MyContentsCreateResponse {
+public class MyContentsUpdateResponse {
 
     private Long MyRoutineId;
 

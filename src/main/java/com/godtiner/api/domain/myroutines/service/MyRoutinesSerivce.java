@@ -1,28 +1,20 @@
 package com.godtiner.api.domain.myroutines.service;
 
 import com.godtiner.api.domain.member.Member;
-import com.godtiner.api.domain.member.ProfileImage;
 import com.godtiner.api.domain.member.exception.MemberException;
 import com.godtiner.api.domain.member.exception.MemberExceptionType;
 import com.godtiner.api.domain.member.repository.MemberRepository;
-import com.godtiner.api.domain.myroutines.MyContents;
 import com.godtiner.api.domain.myroutines.MyRoutines;
-import com.godtiner.api.domain.myroutines.dto.MyContentsCreate;
-import com.godtiner.api.domain.myroutines.dto.MyRoutinesCreateRequest;
-import com.godtiner.api.domain.myroutines.dto.MyRoutinesCreateResponse;
+import com.godtiner.api.domain.myroutines.dto.myRoutines.*;
 import com.godtiner.api.domain.myroutines.repository.MyContentsRepository;
 import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
-import com.godtiner.api.global.exception.MemberNotFoundException;
+import com.godtiner.api.global.exception.MyRoutinesException;
+import com.godtiner.api.global.exception.MyRoutinesExceptionType;
 import com.godtiner.api.global.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.IntStream;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
@@ -34,40 +26,73 @@ public class MyRoutinesSerivce {
     private final MyContentsRepository myContentsRepository;
     private final MemberRepository memberRepository;
 
+    private final MyContentsService myContentsService;
 
-    public MyRoutinesCreateResponse save(MyRoutinesCreateRequest myRoutinesCreateRequest) throws NullPointerException {
+
+    /*public MyRoutinesCreateResponse save(MyRoutinesCreateRequest myRoutinesCreateRequest,MyContentsCreate myContentsCreate) throws MyContentsException {
         MyRoutines myRoutines = myRoutinesCreateRequest.toEntity();
+
+        log.info("루틴 아이디:"+myRoutines.getId());
 
         myRoutines.confirmWriter(memberRepository.findByEmail(SecurityUtil.getLoginEmail())
                 .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER)));
 
-       /* myRoutinesCreateRequest.getMyContentsList().ifPresent(
+
+
+       *//* myRoutinesCreateRequest.getMyContentsList().ifPresent(
                 file -> myRoutines.updateFilePath(fileService.save(file))
-        );*/
-     /*   if(myRoutinesCreateRequest.getMyContentsList().isPresent()){
-            log.info("콘텐츠 있음");
+        );*//*
+
+        myRoutinesRepository.save(myRoutines);
+        MyContents myContents = myContentsCreate.toEntity();
+        log.info("루틴 아이디:"+myRoutines.getId());
+       if(myRoutinesCreateRequest.getMyContentsList() !=null){
+            log.info("콘텐츠 있음:"+ myRoutinesRepository.getWithWriter(myRoutines.getId()));
+            myContents.confirmMyRoutines(myRoutines);
         }
-*/
+
         myRoutinesRepository.save(myRoutines);
 
         return new MyRoutinesCreateResponse(myRoutines.getId());
+    }*/
+
+    public MyRoutinesDto read(Long id){
+       /* Member findMember = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
+                .orElseThrow(() ->  new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
+*/
+        return new MyRoutinesDto(myRoutinesRepository.findById(id)
+                .orElseThrow(() -> new MyRoutinesException(MyRoutinesExceptionType.MY_ROUTINES_NOT_FOUND)));
     }
 
+/*
+   public  MyRoutinesDto getInfoWithMember(Long mid){
 
-
-  /*  @Transactional
-    public MyRoutinesCreateResponse create(MyRoutinesCreateRequest req) {
-        Member member = memberRepository.findById(req.getMemberId()).orElseThrow(MemberNotFoundException::new);
-        List<MyContents> myContentsList = req.getMyContentsList().stream().map(i -> new MyContents(i.getIdx(),i.getContent(),i.getStartTime(),i.getEndTime())).collect(toList());
-        MyRoutines myRoutines = myRoutinesRepository.save(
-               new MyRoutines(req.getTitle(),member,myContentsList)
-        );
-
-      *//*  uploadContents(myRoutines.getMyContentsList(), req.getMyContentsList());*//*
-        return new MyRoutinesCreateResponse(myRoutines.getId());
+        return new MyRoutinesDto(myRoutinesRepository.getWithWriter(mid)
+                .orElseThrow(() -> new MyRoutinesException(MyRoutinesExceptionType.MY_ROUTINES_NOT_FOUND)));
     }
 */
- /*   private void uploadContents(List<MyContents> contents, List<MyContentsCreate> contentsList) {
-        IntStream.range(0, contents.size()).forEach(i -> fileService.upload(fileImages.get(i), images.get(i).getUniqueName()));
-    }*/
-}
+
+    public MyRoutinesDto getInfoMine(){
+        Member findMember = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
+                .orElseThrow(() ->  new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
+
+        log.info("멤버 아이디:"+findMember.getId());
+
+        return new MyRoutinesDto(myRoutinesRepository.getWithWriter(findMember.getId())
+                .orElseThrow(() -> new MyRoutinesException(MyRoutinesExceptionType.MY_ROUTINES_NOT_FOUND)));
+    }
+
+
+    public MyRoutinesCreateResponse create(MyRoutinesCreateRequest req) {
+        MyRoutines myRoutines = myRoutinesRepository.save(
+                MyRoutinesCreateRequest.toEntity(
+                        req,
+                        memberRepository
+                )
+        );
+        return new MyRoutinesCreateResponse(myRoutines.getId());
+    }
+
+
+
+    }

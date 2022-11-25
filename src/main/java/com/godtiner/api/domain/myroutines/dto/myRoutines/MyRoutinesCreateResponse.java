@@ -1,4 +1,4 @@
-package com.godtiner.api.domain.myroutines.dto;
+package com.godtiner.api.domain.myroutines.dto.myRoutines;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

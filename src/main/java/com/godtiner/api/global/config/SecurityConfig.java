@@ -42,7 +42,7 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login", "/signUp","/myRoutine/posts","/").permitAll()
+                .antMatchers("/login", "/signUp","/myRoutine/**","/").permitAll()
                 .anyRequest().authenticated();
 
 

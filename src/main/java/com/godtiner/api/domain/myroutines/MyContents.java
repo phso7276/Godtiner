@@ -43,11 +43,23 @@ public class MyContents {
     private MyRoutines myRoutines;
     private boolean isRemoved=false;
 
+/*
     public MyContents( String content,MyRoutines myRoutines) {
         this.myRoutines = myRoutines;
         this.content = content;
-       /* this.startTime = startTime;
-        this.endTime =endTime;*/
+       */
+/* this.startTime = startTime;
+        this.endTime =endTime;*//*
+
+    }
+*/
+
+
+   public MyContents(String content, LocalTime startTime,LocalTime endTime) {
+        /*this.myRoutines = myRoutines;*/
+        this.content = content;
+        this.startTime = startTime;
+        this.endTime =endTime;
     }
 
 
@@ -56,7 +68,7 @@ public class MyContents {
             this.myRoutines = myRoutines;
         }
     }
-   public void confirmMyRoutines(MyRoutines myRoutines){
+  public void confirmMyRoutines(MyRoutines myRoutines){
         this.myRoutines = myRoutines;
         myRoutines.addMyContents(this);
     }
@@ -67,8 +79,16 @@ public class MyContents {
     public void updateContent(String content) {
         this.content = content;
     }
+    public void updateStartTime(LocalTime startTime){
+        this.startTime = startTime;
+    }
+
+    public void updateEndTime(LocalTime endTime){
+        this.endTime = endTime;
+    }
     //== 삭제 ==//
     public void remove() {
         this.isRemoved = true;
     }
+
 }

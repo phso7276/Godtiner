@@ -1,6 +1,7 @@
-package com.godtiner.api.domain.myroutines.dto;
+package com.godtiner.api.domain.myroutines.dto.myContents;
 
 import com.godtiner.api.domain.myroutines.MyContents;
+import com.godtiner.api.domain.myroutines.MyRoutines;
 import com.godtiner.api.domain.myroutines.repository.MyContentsRepository;
 import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
 import com.godtiner.api.global.exception.MyRoutinesException;
@@ -10,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.bytebuddy.asm.Advice;
 
 import javax.validation.constraints.Null;
 import java.time.LocalTime;
@@ -25,15 +27,22 @@ public class MyContentsCreate {
     private Long routineId;
     private String content;
 
-    //루틴 순번
+    private LocalTime startTime;
+    private LocalTime endTime;
+
+ /*   public MyContentsCreate(String s) {
+        this.content=s;
+    }
+*/
+/*    //루틴 순번
     private int idx;
 
     //시작 시간
     private LocalTime startTime;
     //종료시간
-    private LocalTime endTime;
+    private LocalTime endTime;*/
 
-    public MyContents toEntity(
+   /* public MyContents toEntity(
             MyContentsCreate req, MyRoutinesRepository myRoutinesRepository
             ){
         return new MyContents(
@@ -42,5 +51,13 @@ public class MyContentsCreate {
 
 
         );
+    }*/
+
+    public MyContents toEntity() {
+        return MyContents.builder().
+                content(content).
+                startTime(startTime).
+                endTime(endTime).
+                build();
     }
 }
