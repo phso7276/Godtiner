@@ -1,20 +1,22 @@
 package com.godtiner.api.domain.myroutines.dto.myContents;
 
 import com.godtiner.api.domain.myroutines.MyContents;
-import com.godtiner.api.domain.myroutines.MyRoutines;
-import com.godtiner.api.domain.myroutines.repository.MyContentsRepository;
+import com.godtiner.api.domain.myroutines.MyRoutineRules;
 import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
-import com.godtiner.api.global.exception.MyRoutinesException;
-import com.godtiner.api.global.exception.MyRoutinesExceptionType;
+import com.godtiner.api.global.exception.MyContentsException;
+import com.godtiner.api.global.exception.MyContentsExceptionType;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.bytebuddy.asm.Advice;
 
 import javax.validation.constraints.Null;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Data
 @Builder
@@ -29,6 +31,9 @@ public class MyContentsCreate {
 
     private LocalTime startTime;
     private LocalTime endTime;
+
+    @ApiModelProperty(value = "규칙", notes = "규칙 내용을 추가해주세요.")
+    private List<MyRoutineRules> myRules = new ArrayList<>();
 
  /*   public MyContentsCreate(String s) {
         this.content=s;
@@ -53,11 +58,20 @@ public class MyContentsCreate {
         );
     }*/
 
-    public MyContents toEntity() {
-        return MyContents.builder().
+    public static MyContents toEntity(MyContentsCreate req,
+                                      Long id, MyRoutinesRepository myRoutinesRepository) {
+        /*return MyContents.builder().
                 content(content).
                 startTime(startTime).
                 endTime(endTime).
-                build();
+                build();*/
+
+        return new MyContents(
+                req.content,req.startTime,req.endTime,
+                myRoutinesRepository.findById(id)
+                        .orElseThrow(() -> new MyContentsException(MyContentsExceptionType.CONTENTS_NOT_FOUND)),
+                req.myRules.stream().map(i -> new MyRoutineRules(i.getMyContentsId(),i.isMon(),i.isTue(),
+                        i.isWed(),i.isThu(),i.isFri(),i.isSat(),i.isSun())).collect(toList())
+        );
     }
 }

@@ -4,10 +4,14 @@ import com.godtiner.api.domain.member.Member;
 import com.godtiner.api.domain.member.exception.MemberException;
 import com.godtiner.api.domain.member.exception.MemberExceptionType;
 import com.godtiner.api.domain.member.repository.MemberRepository;
+import com.godtiner.api.domain.myroutines.MyContents;
 import com.godtiner.api.domain.myroutines.MyRoutines;
+import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsUpdateResponse;
 import com.godtiner.api.domain.myroutines.dto.myRoutines.*;
 import com.godtiner.api.domain.myroutines.repository.MyContentsRepository;
 import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
+import com.godtiner.api.global.exception.MyContentsException;
+import com.godtiner.api.global.exception.MyContentsExceptionType;
 import com.godtiner.api.global.exception.MyRoutinesException;
 import com.godtiner.api.global.exception.MyRoutinesExceptionType;
 import com.godtiner.api.global.util.security.SecurityUtil;
@@ -91,6 +95,22 @@ public class MyRoutinesSerivce {
                 )
         );
         return new MyRoutinesCreateResponse(myRoutines.getId());
+    }
+
+    public MyRoutinesUpdateResponse update(MyRoutinesUpdateRequest req){
+        Member findMember = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
+                .orElseThrow(() ->  new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
+
+        log.info("멤버 아이디:"+findMember.getId());
+       MyRoutines myRoutines = myRoutinesRepository.getWithWriter(findMember.getId())
+                .orElseThrow(() -> new MyRoutinesException(MyRoutinesExceptionType.MY_ROUTINES_NOT_FOUND));
+      /*  if(!myContents.getMyRoutines().getId().equals(SecurityUtil.getLoginUsername())){
+            throw new CommentException(CommentExceptionType.NOT_AUTHORITY_UPDATE_COMMENT);
+        }*/
+
+        req.getTitle().ifPresent(myRoutines::updateTitle);
+
+        return new MyRoutinesUpdateResponse(findMember.getId());
     }
 
 

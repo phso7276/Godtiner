@@ -5,6 +5,7 @@ import com.godtiner.api.domain.myroutines.MyContents;
 import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsCreate;
 import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsUpdateRequest;
 import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsUpdateResponse;
+import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesCreateRequest;
 import com.godtiner.api.domain.myroutines.repository.MyContentsRepository;
 import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
 import com.godtiner.api.global.exception.MyContentsException;
@@ -25,11 +26,16 @@ public class MyContentsService {
     private final MyRoutinesRepository myRoutinesRepository;
 
     public void save(Long id, MyContentsCreate req){
-        MyContents myContents = req.toEntity();
+       /* MyContents myContents = req.toEntity();
         myContents.confirmMyRoutines(myRoutinesRepository.findById(id)
                 .orElseThrow(() -> new MyContentsException(MyContentsExceptionType.CONTENTS_NOT_FOUND)));
+*/
+        //myContentsRepository.save(myContents);
 
-        myContentsRepository.save(myContents);
+        myContentsRepository.save( MyContentsCreate.toEntity(
+                req,id,
+               myRoutinesRepository
+        ));
     }
 
     public MyContentsUpdateResponse update(Long id, MyContentsUpdateRequest req) {

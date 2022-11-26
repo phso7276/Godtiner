@@ -12,8 +12,12 @@ spring:
     hibernate:
       ddl-auto: update
   profiles:
-    include: jwt
+    include:
+      - jwt
+      - local
 
+  servlet.multipart.max-file-size: 5MB
+  servlet.multipart.max-request-size: 5MB
 
 logging:
   level:

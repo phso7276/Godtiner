@@ -52,7 +52,8 @@ public class MyRoutinesCreateRequest {
         return new MyRoutines(
                 req.title,
                 memberRepository.findByEmail(SecurityUtil.getLoginEmail()).orElseThrow(MemberNotFoundException::new),
-                req.myContentsList.stream().map(i -> new MyContents( i.getContent(),i.getStartTime(),i.getEndTime())).collect(toList())
+                req.myContentsList.stream().map(i -> new MyContents(i.getContent(),i.getStartTime(),
+                        i.getEndTime(),i.getMyRoutines(),i.getMyRoutineRulesList())).collect(toList())
         );
     }
 }

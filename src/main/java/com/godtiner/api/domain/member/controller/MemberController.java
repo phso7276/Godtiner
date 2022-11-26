@@ -10,8 +10,10 @@ import com.godtiner.api.global.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -47,10 +49,10 @@ public class MemberController {
     /**
      * 회원정보수정
      */
-    @PutMapping("/member")
+    @PutMapping(value = "/member",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public void updateBasicInfo(@Valid @RequestBody MemberUpdateDto userUpdateDto) throws Exception {
-        memberService.update(userUpdateDto);
+    public void updateBasicInfo(@Valid MemberUpdateDto userUpdateDto,@RequestParam(value="image") MultipartFile image) throws Exception {
+        memberService.update(userUpdateDto,image);
     }
 
     /**

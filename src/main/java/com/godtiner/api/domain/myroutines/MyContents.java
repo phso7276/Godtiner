@@ -11,6 +11,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -55,11 +56,19 @@ public class MyContents {
 */
 
 
-   public MyContents(String content, LocalTime startTime,LocalTime endTime) {
+   public MyContents(String content, LocalTime startTime,LocalTime endTime,MyRoutines myRoutines,
+                     List<MyRoutineRules> myRules) {
         /*this.myRoutines = myRoutines;*/
         this.content = content;
         this.startTime = startTime;
         this.endTime =endTime;
+        this.myRoutines = myRoutines;
+       this.myRoutineRulesList = new ArrayList<>();
+       addMyRules(myRules);
+    }
+
+
+    public MyContents(String content, LocalTime startTime, LocalTime endTime, List<MyRoutineRules> myRoutineRulesList) {
     }
 
 
@@ -74,6 +83,13 @@ public class MyContents {
     }
     public void addMyRules(MyRoutineRules myRoutineRules){
         myRoutineRulesList.add(myRoutineRules);
+    }
+
+    public void addMyRules(List<MyRoutineRules> myRules){
+        myRules.stream().forEach(i -> {
+            myRoutineRulesList.add(i);
+            i.initMyContents(this);
+        });
     }
 
     public void updateContent(String content) {

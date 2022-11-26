@@ -5,8 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -27,8 +30,10 @@ public class MyRoutineRules extends BaseEntity {
     private boolean sat;
     private boolean sun;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="myContentsId")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private MyContents myContentsId;
 
    /* public void confirmMyContents(MyContents myContents){
@@ -49,7 +54,7 @@ public class MyRoutineRules extends BaseEntity {
         this.sun = sun;
     }
 
-    @Builder
+
     public MyRoutineRules(MyContents contents, boolean mon, boolean tue, boolean wed,
                           boolean thu, boolean fri, boolean sat, boolean sun ) {
         this.myContentsId = contents;
@@ -61,6 +66,16 @@ public class MyRoutineRules extends BaseEntity {
         this.sat =sat;
         this.sun = sun;
         this.isRemoved = false;
+    }
+
+    public void initMyContents(MyContents myContents) { // 4
+        if(this.myContentsId == null) {
+            this.myContentsId = myContents;
+        }
+    }
+    public void confirmMyContents(MyContents myContents){
+        this.myContentsId = myContents;
+        myContents.addMyRules(this);
     }
 
 }

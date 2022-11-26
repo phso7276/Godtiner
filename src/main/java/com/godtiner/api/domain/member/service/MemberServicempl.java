@@ -7,26 +7,27 @@ import com.godtiner.api.domain.member.dto.*;
 import com.godtiner.api.domain.member.exception.MemberException;
 import com.godtiner.api.domain.member.exception.MemberExceptionType;
 import com.godtiner.api.domain.member.repository.MemberRepository;
+import com.godtiner.api.global.exception.FileUploadFailureException;
 import com.godtiner.api.global.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.io.File;
-import java.io.IOException;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @Service
 @Transactional
+@Log4j2
 public class MemberServicempl implements MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     public Member searchUser(Long id) {
         return memberRepository.findById(id).orElse(null);
     }
-
+    private final FileService fileService;
 
 
 
@@ -44,14 +45,35 @@ public class MemberServicempl implements MemberService {
     }
 
     @Override
-    public void update(MemberUpdateDto userUpdateDto) throws Exception {
+    public void update(MemberUpdateDto req,MultipartFile image) throws Exception {
         Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
                 .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
 
-        userUpdateDto.getName().ifPresent(member::updateName);
-        userUpdateDto.getNickname().ifPresent(member::updateNickname);
+       /* req.getUploadImage().ifPresent(
+                file -> member.updateFilePath(fileService.save(file))
+        );*/
+        if(member.getStored_filename() !=null){
+            fileService.delete(member.getStored_filename());//기존에 올린 파일 지우기
+            member.updateOriginalFilenmae(null);
+        }
+
+
+        if(!image.isEmpty()){
+            if(!image.getContentType().startsWith("image")){
+                throw new FileUploadFailureException(new Exception());
+            }
+            member.updateStoredFilename(fileService.save(image));
+            member.updateOriginalFilenmae(image.getOriginalFilename());
+        }
+
+
+        req.getName().ifPresent(member::updateName);
+        req.getNickname().ifPresent(member::updateNickname);
+
 
     }
+
+
 
     @Override
     public void updatePassword(String checkPassword, String toBePassword) throws Exception {
@@ -73,6 +95,10 @@ public class MemberServicempl implements MemberService {
         if(!member.matchPassword(passwordEncoder, checkPassword) ) {
             throw new Exception("비밀번호가 일치하지 않습니다.");
         }
+        if(member.getStored_filename() !=null){
+            fileService.delete(member.getStored_filename());//기존에 올린 파일 지우기
+        }
+
 
         memberRepository.delete(member);
 
