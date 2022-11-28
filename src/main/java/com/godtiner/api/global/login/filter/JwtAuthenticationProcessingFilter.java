@@ -28,7 +28,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     private final GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();//5
 
-    private final String NO_CHECK_URL = "/login";//1
+    private final String NO_CHECK_URL = "/signIn";//1
 
     /**
      * 1. 리프레시 토큰이 오는 경우 -> 유효하면 AccessToken 재발급후, 필터 진행 X, 바로 튕기기

@@ -35,7 +35,7 @@ public class MyContents {
     //종료시간
     private LocalTime endTime;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy ="myContentsId",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY,mappedBy ="myContentsId", orphanRemoval = true)
     private List<MyRoutineRules> myRoutineRulesList;
 
     @ManyToOne(fetch = FetchType.LAZY)

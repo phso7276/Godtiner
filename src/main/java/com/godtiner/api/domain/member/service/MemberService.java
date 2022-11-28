@@ -1,13 +1,12 @@
 package com.godtiner.api.domain.member.service;
 
 
-import com.godtiner.api.domain.member.dto.MemberInfoDto;
-import com.godtiner.api.domain.member.dto.MemberSignUpDto;
-import com.godtiner.api.domain.member.dto.MemberUpdateDto;
+import com.godtiner.api.domain.member.dto.*;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
 
+    //MemberSignInResponseDto signIn(MemberSignInDto memberSignInDto) throws Exception;
     void signUp(MemberSignUpDto UserSignUpDto) throws Exception;
 
     void update(MemberUpdateDto UserUpdateDto, MultipartFile image) throws Exception;

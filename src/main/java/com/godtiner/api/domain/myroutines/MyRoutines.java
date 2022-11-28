@@ -4,6 +4,8 @@ import com.godtiner.api.domain.BaseEntity;
 
 import com.godtiner.api.domain.member.Member;
 import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsCreate;
+import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsDto;
+import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesDto;
 import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesUpdateRequest;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -13,11 +15,13 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
 @Entity
 @Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -78,7 +82,14 @@ public class MyRoutines extends BaseEntity {
 
     //업데이트
 
+    public MyRoutinesDto entityToDto(MyRoutines myRoutines){
+        MyRoutinesDto myRoutinesDto = MyRoutinesDto.builder()
+                .myContentsList(myRoutines.getMyContentsList().stream()
+                        .map(MyContentsDto::new).collect(Collectors.toList()))
+                .build();
 
+        return myRoutinesDto;
+    }
 
     }
 

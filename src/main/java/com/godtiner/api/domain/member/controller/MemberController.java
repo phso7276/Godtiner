@@ -24,6 +24,7 @@ import static com.godtiner.api.domain.response.Response.success;
 @Log4j2
 @RequestMapping
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class MemberController {
 
     private final MemberService memberService;
@@ -40,12 +41,20 @@ public class MemberController {
         return success();
     }
 
-  /* @PostMapping("/login")
+/*   @PostMapping("/signIn")
     @ResponseStatus(HttpStatus.OK)
-    public HttpServletResponse signIn(@Valid @RequestBody MemberSignInDto memberSignInDto,
-                                      MemberSignInResponseDto memberSignInResponseDto) throws Exception {
-        return
+    public Response signIn(@Valid @RequestBody MemberSignInDto memberSignInDto
+                                      ) throws Exception {
+
+        return success();
     }*/
+
+    @PostMapping("/signIn")
+    @ResponseStatus(HttpStatus.OK)
+    public Response signIn() throws Exception {
+        log.info("%%%%%%%%%%%%%%%%%로그인%%%%%%%%%%%%%%%%");
+        return success();
+    }
     /**
      * 회원정보수정
      */

@@ -8,10 +8,14 @@ import com.godtiner.api.domain.member.exception.MemberException;
 import com.godtiner.api.domain.member.exception.MemberExceptionType;
 import com.godtiner.api.domain.member.repository.MemberRepository;
 import com.godtiner.api.global.exception.FileUploadFailureException;
+import com.godtiner.api.global.exception.MemberNotFoundException;
+import com.godtiner.api.global.jwt.service.JwtService;
 import com.godtiner.api.global.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,9 +32,27 @@ public class MemberServicempl implements MemberService {
         return memberRepository.findById(id).orElse(null);
     }
     private final FileService fileService;
+    private final LoginService loginService;
+    private final JwtService jwtService;
+
+  /*  @Override
+    public MemberSignInResponseDto signIn(MemberSignInDto req) throws Exception {
+
+        loginService.loadUserByUsername(req.getEmail());
+        Member member = memberRepository.findByEmail(req.getEmail()).orElseThrow(MemberNotFoundException::new);
+
+        *//*String username = extractUsername(authentication);
+        String accessToken = jwtService.createAccessToken(username);
+        String refreshToken = jwtService.createRefreshToken();
+        return new MemberSignInResponseDto(accessToken, refreshToken);*//*
 
 
-
+    }
+    private String extractUsername(Authentication authentication){
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return userDetails.getUsername();
+    }
+*/
     @Override
     public void signUp(MemberSignUpDto UserSignUpDto) throws Exception {
         Member user = UserSignUpDto.toEntity();

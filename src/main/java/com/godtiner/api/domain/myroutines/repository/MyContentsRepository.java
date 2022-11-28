@@ -3,10 +3,12 @@ package com.godtiner.api.domain.myroutines.repository;
 import com.godtiner.api.domain.myroutines.MyContents;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface MyContentsRepository extends JpaRepository<MyContents, Long> {
     /*@Query("select c from MyContents c left join fetch c.myRoutines where c.id = :id")
     Optional<MyContents> findWithParentById(Long id);*/
