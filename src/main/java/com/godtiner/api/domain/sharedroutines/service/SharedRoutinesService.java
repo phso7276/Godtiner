@@ -129,6 +129,20 @@ public class SharedRoutinesService {
         target.deleteLikedCnt();
     }
 
+    public void delete(Long id) throws Exception {
+        Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
+
+        SharedRoutines sharedRoutines =  Optional.of(sharedRoutinesRepository.findById(id).get())
+                .orElseThrow(() -> new SharedRoutinesException(SharedRoutinesExceptionType.SHARED_ROUTINES_NOT_FOUND));
+
+
+
+
+        sharedRoutinesRepository.delete(sharedRoutines);
+
+    }
+
 
 
 }

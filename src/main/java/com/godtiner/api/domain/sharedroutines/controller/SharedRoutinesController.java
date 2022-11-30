@@ -41,10 +41,18 @@ public class SharedRoutinesController {
     }
 
     //공유 루틴 삭제
+    @ApiOperation(value = "공유 루틴 삭제", notes = "공유 루틴을 삭제한다.")
+    @DeleteMapping(value = "/sharedRoutine/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Response delete(@PathVariable long id) throws Exception {
+        sharedRoutinesService.delete(id);
+        return Response.success();
+    }
 
 
     //찜하기
 
+    @ApiOperation(value = "공유 루틴 찜하기", notes = "공유 루틴을 찜한다.")
     @PostMapping("/sharedRoutine/{id}/liked")
     public Response addGoodPoint(@PathVariable long id){
         /*if (httpSession.getAttribute("USER") == null) {
