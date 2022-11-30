@@ -22,6 +22,7 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin(origins = "http://localhost:3000")
 public class MyContentsController {
 
     private final MyContentsService myContentsService;

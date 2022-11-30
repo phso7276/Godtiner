@@ -60,6 +60,7 @@ public class SharedRoutines extends BaseEntity {
     //태그
 
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "sharedRoutine",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<RoutineTag> routineTags;
 

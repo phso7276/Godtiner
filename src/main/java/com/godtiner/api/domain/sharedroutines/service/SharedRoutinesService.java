@@ -14,6 +14,7 @@ import com.godtiner.api.domain.sharedroutines.RoutineTag;
 import com.godtiner.api.domain.sharedroutines.SharedRoutines;
 import com.godtiner.api.domain.sharedroutines.Tag;
 import com.godtiner.api.domain.sharedroutines.dto.TagDto;
+import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SharedRoutineDetail;
 import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SharedRoutinesCreate;
 import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SharedRoutinesCreateResponse;
 import com.godtiner.api.domain.sharedroutines.repository.RoutineTagRepository;
@@ -32,6 +33,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,13 +52,9 @@ public class SharedRoutinesService {
     private final RoutineTagRepository routineTagRepository;
 
     public SharedRoutinesCreateResponse create(SharedRoutinesCreate req, MultipartFile image,
-                                               TagDto req2) {
+                                               Long[] tagIdList) {
 
         SharedRoutines sharedRoutines = req.toEntity(req,memberRepository);
-        Tag tag = req2.toEntity(req2);
-        tagRepository.save(tag);
-
-
 
         if(!image.isEmpty()){
             if(!image.getContentType().startsWith("image")){
@@ -65,8 +64,16 @@ public class SharedRoutinesService {
             sharedRoutines.updateOriginalFilenmae(image.getOriginalFilename());
         }
         sharedRoutinesRepository.save(sharedRoutines);
-        RoutineTag routineTag = new RoutineTag(tag,sharedRoutines);
-        routineTagRepository.save(routineTag);
+
+        for (Long tagId : tagIdList) {
+            Tag tag= tagRepository.findById(tagId).orElseThrow();
+
+            RoutineTag routineTag = new RoutineTag(tag,sharedRoutines);
+            routineTagRepository.save(routineTag);
+        }
+        //Tag tag = tagRepository.findById(req2.get)
+        //Optional<Tag> tag = tagRepository.findByTagName(req2.getTagName().stream().collect(i->i));
+
 
         /*req.getImage().ifPresent(
                 file ->  sharedRoutines.updateStoredFilename(fileService.save(file))
@@ -79,6 +86,16 @@ public class SharedRoutinesService {
     @Transactional(readOnly = true)
     public Page<SharedRoutines> findAll(Pageable pageable) {
         return sharedRoutinesRepository.findAll(pageable);
+    }
+
+    //상세페이지
+    public SharedRoutineDetail getDetail(Long id) {
+
+        Optional<SharedRoutines> result = sharedRoutinesRepository.findByIdWithMember(id);
+        if(result.isPresent()){
+            return SharedRoutineDetail.toDto(result.get());
+        }
+        return null;
     }
 
 

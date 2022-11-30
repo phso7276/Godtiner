@@ -45,11 +45,11 @@ public class SharedRoutinesCreate {
     @ApiModelProperty(value = "내용", notes = "루틴 내용을 추가해주세요.")
     private List<SharedContents> sharedContentsList = new ArrayList<>();
 
-    @ApiModelProperty(value = "내용", notes = "루틴 내용을 추가해주세요.")
+    /*@ApiModelProperty(value = "내용", notes = "루틴 내용을 추가해주세요.")
     private List<Tag> tagList = new ArrayList<>();
 
     @ApiModelProperty(value = "태그", notes = "루틴 태그를 추가해주세요.")
-    private List<RoutineTag> routineTagList = new ArrayList<>();
+    private List<RoutineTag> routineTagList = new ArrayList<>();*/
 
     //private Optional<MultipartFile> image;
 

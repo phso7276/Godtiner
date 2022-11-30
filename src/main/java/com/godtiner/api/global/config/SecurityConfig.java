@@ -47,9 +47,11 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/member/**","/login","/signIn", "/signUp","/myRoutine/**","sharedRoutine/**","/tags","/").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers("/member/**","/feed/**",
+                        "/signIn", "/signUp","/myRoutine/**","sharedRoutine/**","/tags","/").permitAll()
+                .anyRequest().permitAll();
 
+            //.anyRequest().authenticated();
 
         http.addFilterAfter(jsonUsernamePasswordLoginFilter(), LogoutFilter.class);
         http.addFilterBefore(jwtAuthenticationProcessingFilter(), JsonUsernamePasswordAuthenticationFilter.class);

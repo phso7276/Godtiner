@@ -1,6 +1,7 @@
 package com.godtiner.api.domain.sharedroutines;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,10 +21,12 @@ public class RoutineTag {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "sharedRoutineId")
     private SharedRoutines sharedRoutine;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "tagId")
     private Tag tag;
 

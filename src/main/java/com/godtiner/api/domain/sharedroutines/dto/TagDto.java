@@ -19,7 +19,7 @@ import static java.util.stream.Collectors.toList;
 @AllArgsConstructor
 public class TagDto {
 
-    private long id;
+    private Long tagId;
 
     private String tagName;
 

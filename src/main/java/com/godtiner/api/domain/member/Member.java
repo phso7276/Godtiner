@@ -4,6 +4,7 @@ import com.godtiner.api.domain.BaseEntity;
 import com.godtiner.api.domain.member.dto.MemberUpdateDto;
 import com.godtiner.api.domain.myroutines.MyContents;
 import com.godtiner.api.domain.myroutines.MyRoutines;
+import com.godtiner.api.domain.sharedroutines.SharedRoutines;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
+import static javax.persistence.CascadeType.ALL;
 
 @Table(name = "MEMBER")
 @Getter
@@ -68,9 +70,15 @@ public class Member extends BaseEntity implements Serializable {
         @Column(name = "ORIGINAL_FILE_NAME")
         private String originalFileName;
 
+        @Builder.Default
         @JsonIgnore
-        @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
+        @OneToMany(mappedBy = "writer", cascade = ALL, orphanRemoval = true)
         private List<MyRoutines> myRoutinesList = new ArrayList<>();
+
+        @Builder.Default
+        @JsonIgnore
+        @OneToMany(mappedBy = "writer", cascade = ALL, orphanRemoval = true)
+        private List<SharedRoutines> sharedRoutinesList = new ArrayList<>();
 
       /*  public Member(String email,String name,String nickname,List<ProfileImage> profileImage){
                 this.email=email;
@@ -137,68 +145,6 @@ public class Member extends BaseEntity implements Serializable {
                 this.role = Role.USER;
         }
 
-        //프로필 이미지
-       /* private void addProfileImage(List<ProfileImage> added) { // 5
-                added.stream().forEach(i -> {
-                        profileImage.add(i);
-                        i.initMember(this);
-                });
-        }
 
-        public void addProfileImage(ProfileImage image){
-                //comment의 Post 설정은 comment에서 함
-                profileImage.add(image);
-        }
-
-        public ImageUpdatedResult update(MemberUpdateDto req) { // 1
-                this.name = String.valueOf(req.getName());
-                this.nickname = String.valueOf(req.getNickname());
-                ImageUpdatedResult result = findImageUpdatedResult(req.getAddedImage(), req.getDeletedImage());
-                addImage(result.getAddedImage());
-                deleteImages(result.getDeletedImage());
-                return result;
-        }
-
-        private void addImage(List<ProfileImage> added) {
-                added.stream().forEach(i -> {
-                        profileImage.add(i);
-                        i.initMember(this);
-                });
-        }
-
-        private void deleteImages(List<ProfileImage> deleted) { // 2
-                deleted.stream().forEach(di -> this.profileImage.remove(di));
-        }
-
-        // 3
-        private ImageUpdatedResult findImageUpdatedResult(List<MultipartFile> addedImageFiles, List<Long> deletedImageIds) {
-                List<ProfileImage> addedImages = convertImageFilesToImages(addedImageFiles);
-                List<ProfileImage> deletedImages = convertImageIdsToImages(deletedImageIds);
-                return new ImageUpdatedResult(addedImageFiles, addedImages, deletedImages);
-        }
-
-        private List<ProfileImage> convertImageIdsToImages(List<Long> imageIds) {
-                return imageIds.stream()
-                        .map(id -> convertImageIdToImage(id))
-                        .filter(i -> i.isPresent())
-                        .map(i -> i.get())
-                        .collect(toList());
-        }
-
-        private Optional<ProfileImage> convertImageIdToImage(Long id) {
-                return this.profileImage.stream().filter(i -> i.getId().equals(id)).findAny();
-        }
-
-        private List<ProfileImage> convertImageFilesToImages(List<MultipartFile> imageFiles) {
-                return imageFiles.stream().map(imageFile -> new ProfileImage(imageFile.getOriginalFilename())).collect(toList());
-        }
-
-        @Getter
-        @AllArgsConstructor
-        public static class ImageUpdatedResult { // 4
-                private List<MultipartFile> addedImageFile;
-                private List<ProfileImage> addedImage;
-                private List<ProfileImage> deletedImage;
-        }*/
 
 }

@@ -1,6 +1,7 @@
 package com.godtiner.api.domain.myroutines.dto.myRules;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.godtiner.api.domain.myroutines.MyRoutineRules;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class MyRoutineRulesDto {
     private boolean fri;
     private boolean sat;
     private boolean sun;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime regDate;
 
     public MyRoutineRulesDto(MyRoutineRules myRoutineRules) {

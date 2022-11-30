@@ -1,5 +1,6 @@
 package com.godtiner.api.domain.myroutines.dto.myContents;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.godtiner.api.domain.myroutines.MyContents;
 import com.godtiner.api.domain.myroutines.MyRoutineRules;
 import com.godtiner.api.domain.myroutines.dto.myRules.MyRoutineRulesDto;
@@ -19,8 +20,10 @@ public class MyContentsDto {
     private int idx;
 
     //시작 시간
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm:ss", timezone = "Asia/Seoul")
     private LocalTime startTime;
     //종료시간
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm:ss", timezone = "Asia/Seoul")
     private LocalTime endTime;
     private List<MyRoutineRulesDto> myRules;
 
