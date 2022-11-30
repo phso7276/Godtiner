@@ -64,6 +64,10 @@ public class SharedRoutines extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "sharedRoutine",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<RoutineTag> routineTags;
 
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "sharedRoutine",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Liked> likedList;
+
     //이미지
     @Column(name="stored_filename", nullable=true)
     private String stored_filename;
@@ -124,6 +128,12 @@ public class SharedRoutines extends BaseEntity {
         this.originalFileName = filePath;
     }
 
+    public void addLikedCnt(){this.likecnt+=1;}
+    public void addPickCnt(){this.pickcnt+=1;}
+
+    public void deleteLikedCnt(){this.likecnt -=1;}
+
+    public void deletePickCnt(){this.pickcnt -=1;}
 
 /*
     public List<String> getThemaList(){

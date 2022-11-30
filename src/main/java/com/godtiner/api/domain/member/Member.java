@@ -4,6 +4,7 @@ import com.godtiner.api.domain.BaseEntity;
 import com.godtiner.api.domain.member.dto.MemberUpdateDto;
 import com.godtiner.api.domain.myroutines.MyContents;
 import com.godtiner.api.domain.myroutines.MyRoutines;
+import com.godtiner.api.domain.sharedroutines.Liked;
 import com.godtiner.api.domain.sharedroutines.SharedRoutines;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
@@ -79,6 +80,8 @@ public class Member extends BaseEntity implements Serializable {
         @JsonIgnore
         @OneToMany(mappedBy = "writer", cascade = ALL, orphanRemoval = true)
         private List<SharedRoutines> sharedRoutinesList = new ArrayList<>();
+
+
 
       /*  public Member(String email,String name,String nickname,List<ProfileImage> profileImage){
                 this.email=email;

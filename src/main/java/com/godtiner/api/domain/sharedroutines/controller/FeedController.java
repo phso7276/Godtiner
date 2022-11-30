@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(value = "Feed Controller", tags = "Feed Page")
 @RestController
+@Api(value = "Feed Controller", tags = "Feed Page")
 @RequiredArgsConstructor
 @Log4j2
 @CrossOrigin(origins = "http://localhost:3000")

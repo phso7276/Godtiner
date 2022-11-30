@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
+
 public interface SharedRoutinesRepository extends JpaRepository<SharedRoutines, Long> {
 
     //작성자 정보도 함께

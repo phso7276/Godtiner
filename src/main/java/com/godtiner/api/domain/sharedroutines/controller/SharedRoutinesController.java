@@ -40,6 +40,29 @@ public class SharedRoutinesController {
         return Response.success(sharedRoutinesService.create(req,file,tagIdList));
     }
 
+    //공유 루틴 삭제
+
+
+    //찜하기
+
+    @PostMapping("/sharedRoutine/{id}/liked")
+    public Response addGoodPoint(@PathVariable long id){
+        /*if (httpSession.getAttribute("USER") == null) {
+            throw new FreeBoardException(UserExceptionType.LOGIN_INFORMATION_NOT_FOUND);
+        }*/
+        sharedRoutinesService.addLiked(id);
+
+        return Response.success();
+    }
+
+   @DeleteMapping("/sharedRoutine/{boardId}/liked/{likedId}")
+    public Response deleteGoodPoint(@PathVariable long boardId, @PathVariable long likedId){
+
+        sharedRoutinesService.deleteLiked(likedId, boardId);
+
+       return Response.success();
+    }
+
 
 
 }
