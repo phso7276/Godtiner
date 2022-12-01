@@ -20,4 +20,6 @@ public interface MyRoutinesRepository extends JpaRepository<MyRoutines, Long>{
     @EntityGraph(attributePaths = "writer", type= EntityGraph.EntityGraphType.LOAD)
     @Query("select n from MyRoutines n where n.writer.id=:id")
     Optional<MyRoutines> getWithWriter(Long id);
+
+    Optional<MyRoutines> findByWriter(Member writer);
 }

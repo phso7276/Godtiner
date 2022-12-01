@@ -29,6 +29,8 @@ public class MyContentsCreate {
     private Long routineId;
     private String content;
 
+    //private int idx;
+
     private LocalTime startTime;
     private LocalTime endTime;
 

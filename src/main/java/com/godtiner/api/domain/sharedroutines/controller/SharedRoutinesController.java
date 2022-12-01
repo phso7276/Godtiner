@@ -71,6 +71,16 @@ public class SharedRoutinesController {
        return Response.success();
     }
 
+    //공유 루틴 스크랩
+    @PostMapping("/sharedRoutine/pick")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Response pickSharedContents(@RequestPart(value = "contentIds") Long[] contentIdList){
+
+        sharedRoutinesService.pick(contentIdList);
+
+        return Response.success();
+    }
+
 
 
 }

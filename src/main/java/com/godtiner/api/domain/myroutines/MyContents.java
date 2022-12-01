@@ -1,6 +1,7 @@
 package com.godtiner.api.domain.myroutines;
 
 
+import com.godtiner.api.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -70,6 +71,17 @@ public class MyContents {
 
     public MyContents(String content, LocalTime startTime, LocalTime endTime, List<MyRoutineRules> myRoutineRulesList) {
     }
+
+    public MyContents(String content, MyRoutines myRoutines) {
+       this.content=content;
+       this.myRoutines=myRoutines;
+    }
+
+
+   /* public MyContents(String content, Member member) {
+        this.content=content;
+        this.
+    }*/
 
 
     public void initMyRoutines(MyRoutines myRoutines) { // 4
