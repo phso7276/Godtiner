@@ -96,9 +96,11 @@ public class SharedRoutinesService {
     //상세페이지
     public SharedRoutineDetail getDetail(Long id) {
 
-        Optional<SharedRoutines> result = sharedRoutinesRepository.findByIdWithMember(id);
-        if (result.isPresent()) {
-            return SharedRoutineDetail.toDto(result.get());
+        SharedRoutines result = sharedRoutinesRepository.findByIdWithMember(id)
+                .orElseThrow(() -> new SharedRoutinesException(SharedRoutinesExceptionType.SHARED_ROUTINES_NOT_FOUND));;
+        if (result !=null) {
+            result.addHits();
+            return SharedRoutineDetail.toDto(result);
         }
         return null;
     }
@@ -145,7 +147,7 @@ public class SharedRoutinesService {
     }
 
     //공유 루틴 스크랩
-    public void pick(Long[] contentsId) {
+    public void pick(Long[] contentsId,Long routineId) {
         //멤버로 내 루틴 아이디 찾아서 주입
         Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
                 .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
@@ -161,6 +163,9 @@ public class SharedRoutinesService {
             myContentsRepository.save(myContents);
 
         }
+        SharedRoutines sharedRoutines = sharedRoutinesRepository.findById(routineId)
+                .orElseThrow(() -> new MyRoutinesException(MyRoutinesExceptionType.MY_ROUTINES_NOT_FOUND));
+        sharedRoutines.addPickCnt();
 
     }
 }

@@ -130,6 +130,7 @@ public class SharedRoutines extends BaseEntity {
 
     public void addLikedCnt(){this.likecnt+=1;}
     public void addPickCnt(){this.pickcnt+=1;}
+    public void addHits(){this.hits+=1;}
 
     public void deleteLikedCnt(){this.likecnt -=1;}
 

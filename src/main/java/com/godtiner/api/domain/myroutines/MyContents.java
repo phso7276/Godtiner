@@ -43,7 +43,7 @@ public class MyContents {
     @JoinColumn(name ="myroutinesId")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private MyRoutines myRoutines;
-    private boolean isRemoved=false;
+    private boolean isClear=false;
 
 /*
     public MyContents( String content,MyRoutines myRoutines) {
@@ -115,8 +115,8 @@ public class MyContents {
         this.endTime = endTime;
     }
     //== 삭제 ==//
-    public void remove() {
-        this.isRemoved = true;
+    public void clear() {
+        this.isClear = true;
     }
 
 }
