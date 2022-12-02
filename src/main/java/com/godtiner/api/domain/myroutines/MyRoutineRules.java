@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 public class MyRoutineRules extends BaseEntity {
-    private boolean isRemoved =false;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -65,7 +65,6 @@ public class MyRoutineRules extends BaseEntity {
         this.fri = fri;
         this.sat =sat;
         this.sun = sun;
-        this.isRemoved = false;
     }
 
     public void initMyContents(MyContents myContents) { // 4
@@ -76,6 +75,28 @@ public class MyRoutineRules extends BaseEntity {
     public void confirmMyContents(MyContents myContents){
         this.myContentsId = myContents;
         myContents.addMyRules(this);
+    }
+
+    public void updateMon(boolean mon){
+        this.mon=mon;
+    }
+    public void updateTue(boolean tue){
+        this.tue=tue;
+    }
+    public void updateWed(boolean wed){
+        this.wed=wed;
+    }
+    public void updateThu(boolean thu){
+        this.thu=thu;
+    }
+    public void updateFri(boolean fri){
+        this.fri=fri;
+    }
+    public void updateSat(boolean sat){
+        this.sat=sat;
+    }
+    public void updateSun(boolean sun){
+        this.sun=sun;
     }
 
 }

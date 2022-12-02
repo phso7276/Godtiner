@@ -38,6 +38,12 @@ public class MyRoutines extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "myRoutines",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<MyContents> myContentsList ;
 
+
+    public MyRoutines(String title, Member member) {
+        this.title=title;
+        this.writer =member;
+    }
+
     //== 내용 수정 ==//
     public void updateTitle(String title) {
         this.title = title;

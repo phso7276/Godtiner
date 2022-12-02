@@ -35,7 +35,7 @@ public class MyContentsCreate {
     private LocalTime endTime;
 
     @ApiModelProperty(value = "규칙", notes = "규칙 내용을 추가해주세요.")
-    private List<MyRoutineRules> myRules = new ArrayList<>();
+    private List<MyRoutineRules> myRulesList = new ArrayList<>();
 
  /*   public MyContentsCreate(String s) {
         this.content=s;
@@ -72,7 +72,7 @@ public class MyContentsCreate {
                 req.content,req.startTime,req.endTime,
                 myRoutinesRepository.findById(id)
                         .orElseThrow(() -> new MyContentsException(MyContentsExceptionType.CONTENTS_NOT_FOUND)),
-                req.myRules.stream().map(i -> new MyRoutineRules(i.getMyContentsId(),i.isMon(),i.isTue(),
+                req.myRulesList.stream().map(i -> new MyRoutineRules(i.getMyContentsId(),i.isMon(),i.isTue(),
                         i.isWed(),i.isThu(),i.isFri(),i.isSat(),i.isSun())).collect(toList())
         );
     }

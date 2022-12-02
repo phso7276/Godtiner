@@ -28,13 +28,22 @@ public class MyContentsController {
     private final MyContentsService myContentsService;
     private final MyRoutinesSerivce myRoutinesSerivce;
 
-    @ApiOperation(value = "마이 루틴 항목 생성", notes = "마이루틴 항목을 생성한다.")
+   /* @ApiOperation(value = "마이 루틴 항목 생성", notes = "마이루틴 항목을 생성한다.")
     @PostMapping("/myRoutine/detail/{rid}")
     @ResponseStatus(HttpStatus.CREATED)
     public Response create(@ApiParam(value = "루틴 id", required = true) @PathVariable Long rid,
                            @Valid @RequestBody MyContentsCreate req) throws MyContentsException {
 
        myContentsService.save(rid,req);
+        return Response.success();
+    }*/
+
+    @ApiOperation(value = "마이 루틴 항목 생성", notes = "마이루틴 항목을 생성한다.")
+    @PostMapping("/myRoutine/save")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Response routineCreate(@Valid @RequestBody MyContentsCreate req) throws MyContentsException {
+
+        myContentsService.save(req);
         return Response.success();
     }
 
@@ -52,6 +61,14 @@ public class MyContentsController {
     @ResponseStatus(HttpStatus.OK)
     public Response remove(@ApiParam(value = "항목 id", required = true) @PathVariable Long id) throws MyContentsException {
         myContentsService.delete(id);
+        return Response.success();
+    }
+
+    @ApiOperation(value = "루틴 클리어 변경 ", notes = "클리어 상태 변경 한다.")
+    @PutMapping(value = "/myRoutine/clear/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response updateClear(@PathVariable Long id) {
+        myContentsService.clear(id);
         return Response.success();
     }
 

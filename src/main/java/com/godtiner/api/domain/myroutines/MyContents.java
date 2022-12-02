@@ -9,21 +9,28 @@ import lombok.NoArgsConstructor;
 import net.bytebuddy.asm.Advice;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
+
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Audited
 public class MyContents {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
 
     @Column(length=80)
     private String content;
@@ -31,14 +38,19 @@ public class MyContents {
     //루틴 순번
     private int idx;
 
+
     //시작 시간
+
     private LocalTime startTime;
     //종료시간
+
     private LocalTime endTime;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy ="myContentsId", orphanRemoval = true)
+    @NotAudited
+    @OneToMany(fetch = FetchType.LAZY,mappedBy ="myContentsId",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MyRoutineRules> myRoutineRulesList;
 
+    @Audited(targetAuditMode = NOT_AUDITED)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="myroutinesId")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -118,5 +130,7 @@ public class MyContents {
     public void clear() {
         this.isClear = true;
     }
+    @Scheduled(cron="0 0 0 * * ?")
+    public void cancelClear(){this.isClear=false;}
 
 }

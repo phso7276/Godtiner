@@ -1,11 +1,8 @@
 package com.godtiner.api.domain.myroutines.controller;
 
 
-import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsCreate;
 import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesCreateRequest;
-import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesDto;
 import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesUpdateRequest;
-import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesUpdateResponse;
 import com.godtiner.api.domain.myroutines.service.MyRoutinesSerivce;
 import com.godtiner.api.domain.response.Response;
 import io.swagger.annotations.Api;
@@ -14,7 +11,6 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,13 +24,13 @@ public class MyRoutinesController {
 
     private final MyRoutinesSerivce myRoutinesSerivce;
 
-    @ApiOperation(value = "마이루틴 생성", notes = "마이루틴을 생성한다.")
+   /* @ApiOperation(value = "마이루틴 생성", notes = "마이루틴을 생성한다.")
     @PostMapping("/myRoutine/post")
     @ResponseStatus(HttpStatus.CREATED)
     public Response create(@Valid @RequestBody MyRoutinesCreateRequest req) throws Exception {
         return Response.success(myRoutinesSerivce.create(req));
     }
-
+*/
     @ApiOperation(value = "마이루틴 루틴 아이디로 조회 ", notes = "마이루틴을 조회한다.")
     @GetMapping("/myRoutine/post/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -64,6 +60,8 @@ public class MyRoutinesController {
     public Response update(@Valid @RequestBody MyRoutinesUpdateRequest req) {
         return Response.success(myRoutinesSerivce.update(req));
     }
+
+
 
 
 }

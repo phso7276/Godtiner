@@ -87,7 +87,7 @@ public class MyRoutinesSerivce {
     }
 
 
-    public MyRoutinesCreateResponse create(MyRoutinesCreateRequest req) {
+   /* public MyRoutinesCreateResponse create(MyRoutinesCreateRequest req) {
         MyRoutines myRoutines = myRoutinesRepository.save(
                 MyRoutinesCreateRequest.toEntity(
                         req,
@@ -96,7 +96,7 @@ public class MyRoutinesSerivce {
         );
         return new MyRoutinesCreateResponse(myRoutines.getId());
     }
-
+*/
     public MyRoutinesUpdateResponse update(MyRoutinesUpdateRequest req){
         Member findMember = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
                 .orElseThrow(() ->  new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
