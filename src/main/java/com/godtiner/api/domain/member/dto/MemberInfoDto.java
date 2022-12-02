@@ -29,6 +29,7 @@ public class MemberInfoDto {
 
     @Builder
     public MemberInfoDto(Member user) {
+        this.id=user.getId();
         this.name = user.getName();
         this.nickname = user.getNickname();
         this.email = user.getEmail();

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 
-public interface SharedRoutinesRepository extends JpaRepository<SharedRoutines, Long> {
+public interface SharedRoutinesRepository extends JpaRepository<SharedRoutines, Long>, CustomPostRepository {
 
     //작성자 정보도 함께
     @Query("select p from SharedRoutines p join fetch p.writer where p.id = :id")

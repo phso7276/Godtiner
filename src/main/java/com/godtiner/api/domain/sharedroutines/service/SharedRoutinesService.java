@@ -17,9 +17,7 @@ import com.godtiner.api.domain.myroutines.repository.MyContentsRepository;
 import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
 import com.godtiner.api.domain.sharedroutines.*;
 import com.godtiner.api.domain.sharedroutines.dto.TagDto;
-import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SharedRoutineDetail;
-import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SharedRoutinesCreate;
-import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SharedRoutinesCreateResponse;
+import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.*;
 import com.godtiner.api.domain.sharedroutines.repository.*;
 import com.godtiner.api.global.exception.*;
 import com.godtiner.api.global.util.security.SecurityUtil;
@@ -88,10 +86,12 @@ public class SharedRoutinesService {
     }
 
 
+/*
     @Transactional(readOnly = true)
     public Page<SharedRoutines> findAll(Pageable pageable) {
         return sharedRoutinesRepository.findAll(pageable);
     }
+*/
 
     //상세페이지
     public SharedRoutineDetail getDetail(Long id) {
@@ -168,4 +168,12 @@ public class SharedRoutinesService {
         sharedRoutines.addPickCnt();
 
     }
+
+
+    //페이징, 검색
+   public SharedPagingDto getPostList(Pageable pageable, SearchCondition searchCondition) {
+
+       return new SharedPagingDto(sharedRoutinesRepository.search(searchCondition, pageable));
+   }
+
 }

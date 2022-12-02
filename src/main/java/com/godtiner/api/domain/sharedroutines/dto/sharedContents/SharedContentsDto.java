@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 public class SharedContentsDto {
     private long id;
 
+    private Long SharedRoutineId;
+
     private String content;
 
     //루틴 순번
@@ -37,6 +39,8 @@ public class SharedContentsDto {
     private List<SharedRoutineRulesDto> sharedRoutineRules;
 
     public SharedContentsDto(SharedContents sharedContents) {
+        this.id=sharedContents.getId();
+        this.SharedRoutineId =sharedContents.getSharedRoutine().getId();
         this.content =sharedContents.getContent();
         this.idx =sharedContents.getIdx();
         this.startTime=sharedContents.getStartTime();

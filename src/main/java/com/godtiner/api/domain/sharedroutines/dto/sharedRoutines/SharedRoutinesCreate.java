@@ -40,7 +40,7 @@ public class SharedRoutinesCreate {
     private Long memberId;
 
     @ApiModelProperty(value = "공유 루틴 소개글",notes = "소개글을 입력해주세요")
-    private String routine_content;
+    private String routineContent;
 
     @ApiModelProperty(value = "내용", notes = "루틴 내용을 추가해주세요.")
     private List<SharedContents> sharedContentsList = new ArrayList<>();
@@ -58,7 +58,7 @@ public class SharedRoutinesCreate {
                                           ) {
         return new SharedRoutines(
                 req.title,
-                req.routine_content,
+                req.routineContent,
                 memberRepository.findByEmail(SecurityUtil.getLoginEmail()).orElseThrow(MemberNotFoundException::new),
                 req.sharedContentsList.stream().map(i -> new SharedContents(i.getContent(),i.getStartTime(),
                        i.getEndTime(),i.getSharedRoutine(),i.getSharedRoutineRules())).collect(toList())

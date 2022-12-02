@@ -30,7 +30,7 @@ public class Member extends BaseEntity implements Serializable {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "user_id")
+        @Column
         private Long id; //primary Key
 
         @Column(nullable = false, length = 30, unique = true)

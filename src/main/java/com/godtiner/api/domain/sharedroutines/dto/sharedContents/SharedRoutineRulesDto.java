@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SharedRoutineRulesDto {
+
+    private Long id;
+    private Long sharedContentId;
     private boolean mon;
     private boolean tue;
     private boolean wed;
@@ -18,6 +21,8 @@ public class SharedRoutineRulesDto {
     private boolean sun;
 
     public SharedRoutineRulesDto(SharedRoutineRules sharedRoutineRules) {
+        this.id=sharedRoutineRules.getId();
+        this.sharedContentId = sharedRoutineRules.getSharedContents().getId();
         this.mon= sharedRoutineRules.isMon();
         this.tue= sharedRoutineRules.isTue();
         this.wed= sharedRoutineRules.isWed();

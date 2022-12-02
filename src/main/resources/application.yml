@@ -15,6 +15,10 @@ spring:
     include:
       - jwt
       - local
+  data:
+    web:
+      pageable:
+        default-page-size: 6  #??? ? ? ???, 6?? ??
 
   servlet.multipart.max-file-size: 5MB
   servlet.multipart.max-request-size: 5MB
