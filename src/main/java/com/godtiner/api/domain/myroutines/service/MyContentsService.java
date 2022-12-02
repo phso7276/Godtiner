@@ -11,6 +11,7 @@ import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsCreate;
 import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsUpdateRequest;
 import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsUpdateResponse;
 import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesCreateRequest;
+import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesCreateResponse;
 import com.godtiner.api.domain.myroutines.repository.MyContentsRepository;
 import com.godtiner.api.domain.myroutines.repository.MyRoutineRulesRepository;
 import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
@@ -37,7 +38,7 @@ public class MyContentsService {
 
     private final MyRoutineRulesRepository myRoutineRulesRepository;
 
-    public void save(MyContentsCreate req){
+    public MyRoutinesCreateResponse save(MyContentsCreate req){
         Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
                 .orElseThrow(() ->  new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
 
@@ -51,6 +52,8 @@ public class MyContentsService {
                     req,routine.getId(),
                     myRoutinesRepository
             ));
+
+            return new MyRoutinesCreateResponse(routine.getId());
         }
         else{
 
@@ -58,9 +61,10 @@ public class MyContentsService {
                     req,myRoutines.get().getId(),
                     myRoutinesRepository
             ));
+
         }
 
-
+        return new MyRoutinesCreateResponse(myRoutines.get().getId());
 
 
 

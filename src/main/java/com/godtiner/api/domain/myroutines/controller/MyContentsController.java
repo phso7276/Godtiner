@@ -42,9 +42,8 @@ public class MyContentsController {
     @PostMapping("/myRoutine/save")
     @ResponseStatus(HttpStatus.CREATED)
     public Response routineCreate(@Valid @RequestBody MyContentsCreate req) throws MyContentsException {
-
-        myContentsService.save(req);
-        return Response.success();
+        
+        return Response.success(myContentsService.save(req));
     }
 
     @ApiOperation(value = "마이 루틴 항목 수정", notes = "마이루틴 항목을 수정한다.")
