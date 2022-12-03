@@ -27,7 +27,8 @@ public class SharedRoutinesSimple {
     //스크랩
     private int pickcnt;
     //이미지
-    private String thumbnailUrl;
+    private String feed_thumbnail;
+    private String detail_thumbnail;
     //private String stored_filename;
     //private Long filesize;
 
@@ -46,7 +47,7 @@ public class SharedRoutinesSimple {
         this.hits =sharedRoutines.getHits();
         this.likecnt =sharedRoutines.getLikecnt();
         this.pickcnt =sharedRoutines.getPickcnt();
-        this.thumbnailUrl = sharedRoutines.getThumbnailUrl();
+        this.feed_thumbnail = sharedRoutines.getFeed_thumbnail_filename();
         this.routineTagList = sharedRoutines.getRoutineTags().stream().map(RoutineTagDto::new).collect(Collectors.toList());
         this.regDate=sharedRoutines.getRegDate();
 

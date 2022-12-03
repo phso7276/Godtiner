@@ -84,7 +84,7 @@ public class MemberServicempl implements MemberService {
             if(!image.getContentType().startsWith("image")){
                 throw new FileUploadFailureException(new Exception());
             }
-            member.updateStoredFilename(fileService.save(image));
+            member.updateStoredFilename(fileService.profileSave(image));
             member.updateOriginalFilenmae(image.getOriginalFilename());
         }
 

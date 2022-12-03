@@ -20,7 +20,7 @@ public class FeedPageDto {
     private String title;
 
     //이미지
-    private String thumbnailUrl;
+    private String feedThumbnail;
     private String stored_filename;
     private Long filesize;
 
@@ -41,7 +41,7 @@ public class FeedPageDto {
         this.id =sharedRoutines.getId();
         this.title = sharedRoutines.getTitle();
         this.routineTagList = sharedRoutines.getRoutineTags().stream().map(RoutineTagDto::new).collect(Collectors.toList());
-        this.thumbnailUrl = sharedRoutines.getThumbnailUrl();
+        this.feedThumbnail = sharedRoutines.getFeed_thumbnail_filename();
         this.filesize = sharedRoutines.getFilesize();
         this.hits =sharedRoutines.getHits();
         this.likecnt =sharedRoutines.getLikecnt();

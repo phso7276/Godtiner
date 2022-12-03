@@ -63,7 +63,11 @@ public class SharedRoutinesService {
             if (!image.getContentType().startsWith("image")) {
                 throw new FileUploadFailureException(new Exception());
             }
-            sharedRoutines.updateStoredFilename(fileService.save(image));
+           // List<String> fileNames =fileService.save(image);
+            String imageFileName =fileService.save(image);
+            sharedRoutines.updateStoredFilename(imageFileName);
+            sharedRoutines.updateFeedThumbnailFilename("s_"+imageFileName);
+            sharedRoutines.updateDetailThumbnailFilename("d_"+imageFileName);
             sharedRoutines.updateOriginalFilenmae(image.getOriginalFilename());
         }
         sharedRoutinesRepository.save(sharedRoutines);

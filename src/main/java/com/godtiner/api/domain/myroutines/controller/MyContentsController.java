@@ -42,7 +42,7 @@ public class MyContentsController {
     @PostMapping("/myRoutine/save")
     @ResponseStatus(HttpStatus.CREATED)
     public Response routineCreate(@Valid @RequestBody MyContentsCreate req) throws MyContentsException {
-        
+
         return Response.success(myContentsService.save(req));
     }
 

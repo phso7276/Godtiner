@@ -76,7 +76,10 @@ public class SharedRoutines extends BaseEntity {
     private long filesize =0;
 
     @Column(length = 2000)
-    private String thumbnailUrl;
+    private String feed_thumbnail_filename;
+
+    @Column(length = 2000)
+    private String detail_thumbnail_filename;
 
     @Column(name = "original_file_name")
     private String originalFileName;
@@ -127,6 +130,10 @@ public class SharedRoutines extends BaseEntity {
     public void updateOriginalFilenmae(String filePath) {
         this.originalFileName = filePath;
     }
+
+    public void updateFeedThumbnailFilename(String filePath) {this.feed_thumbnail_filename=filePath;}
+
+    public void updateDetailThumbnailFilename(String filepath){this.detail_thumbnail_filename =filepath;}
 
     public void addLikedCnt(){this.likecnt+=1;}
     public void addPickCnt(){this.pickcnt+=1;}

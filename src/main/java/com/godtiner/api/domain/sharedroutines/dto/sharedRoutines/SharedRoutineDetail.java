@@ -23,7 +23,9 @@ public class SharedRoutineDetail {
     private Long id;
     private String title;
     private String routine_content;
+    private String detailThumbnail;
     private MemberInfoDto member;
+
     private List<SharedContentsDto> sharedContentsList;
 
 
@@ -32,6 +34,7 @@ public class SharedRoutineDetail {
                 sharedRoutines.getId(),
                 sharedRoutines.getTitle(),
                 sharedRoutines.getRoutineContent(),
+                sharedRoutines.getDetail_thumbnail_filename(),
                 MemberInfoDto.toDto(sharedRoutines.getWriter()),
                 sharedRoutines.getSharedContentsList().stream()
                         .map(SharedContentsDto::new).collect(Collectors.toList())
