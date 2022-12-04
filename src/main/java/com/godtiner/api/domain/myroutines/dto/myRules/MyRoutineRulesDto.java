@@ -16,6 +16,7 @@ import java.time.LocalTime;
 public class MyRoutineRulesDto {
 
    // private Long contentsId;
+    private Long id;
     private boolean mon;
     private boolean tue;
     private boolean wed;
@@ -28,6 +29,7 @@ public class MyRoutineRulesDto {
 
     public MyRoutineRulesDto(MyRoutineRules myRoutineRules) {
         //this.contentsId = myRoutineRules.getMyContentsId().getId();
+        this.id= myRoutineRules.getId();
         this.mon=myRoutineRules.isMon();
         this.tue=myRoutineRules.isTue();
         this.wed=myRoutineRules.isWed();

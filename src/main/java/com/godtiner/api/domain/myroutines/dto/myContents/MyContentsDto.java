@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class MyContentsDto {
     //private Long routineId;
     private String content;
+    private Long id;
     //루틴 순번
     private int idx;
 
@@ -29,6 +30,7 @@ public class MyContentsDto {
 
     public MyContentsDto(MyContents myContents){
        // this.routineId = myContents.getMyRoutines().getId();
+        this.id=myContents.getId();
         this.content =myContents.getContent();
         this.idx=myContents.getIdx();
         this.startTime = myContents.getStartTime();

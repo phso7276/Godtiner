@@ -43,6 +43,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
     public Page<SharedRoutines> search(SearchCondition searchCondition, Pageable pageable) {
         List<OrderSpecifier> ORDERS = getAllOrderSpecifiers(pageable);
 
+
         List<SharedRoutines> content = query.selectFrom(sharedRoutines)
 
                 .where(
@@ -50,8 +51,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
                         titleHasStr(searchCondition.getTitle())
                 )
                 .leftJoin(sharedRoutines.writer, member)
-                //.leftJoin(sharedRoutines.routineTags, routineTag)
-                //.on
+                .leftJoin(sharedRoutines.routineTags,routineTag)
                 .fetchJoin()
                 //.orderBy(sharedRoutines.regDate.desc())//최신 날짜부터
                 .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
@@ -82,6 +82,9 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
         return StringUtils.hasLength(title) ? sharedRoutines.title.contains(title) : null;
     }
 
+    /*private BooleanExpression tagHasId(Long id){
+        return LongUtils.hasLength
+    }*/
 
 
     private List<OrderSpecifier> getAllOrderSpecifiers(Pageable pageable) {
