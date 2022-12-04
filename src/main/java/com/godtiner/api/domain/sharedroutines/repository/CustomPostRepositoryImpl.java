@@ -1,9 +1,6 @@
 package com.godtiner.api.domain.sharedroutines.repository;
 
-import com.godtiner.api.domain.sharedroutines.QRoutineTag;
-import com.godtiner.api.domain.sharedroutines.QSharedRoutines;
-import com.godtiner.api.domain.sharedroutines.RoutineTag;
-import com.godtiner.api.domain.sharedroutines.SharedRoutines;
+import com.godtiner.api.domain.sharedroutines.*;
 import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SearchCondition;
 
 import com.querydsl.core.types.Order;
@@ -24,6 +21,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EntityManager;
 import static com.godtiner.api.domain.sharedroutines.QRoutineTag.routineTag;
 import static com.godtiner.api.domain.member.QMember.member;
+import static com.godtiner.api.domain.sharedroutines.QTag.tag;
 import static com.querydsl.core.types.Projections.constructor;
 import static com.godtiner.api.domain.sharedroutines.QSharedRoutines.sharedRoutines;
 import static org.springframework.util.ObjectUtils.isEmpty;
@@ -48,7 +46,8 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
 
                 .where(
                         contentHasStr(searchCondition.getRoutineContent()),
-                        titleHasStr(searchCondition.getTitle())
+                        titleHasStr(searchCondition.getTitle()),
+                       tagHasStr(searchCondition.getTagName())
                 )
                 .leftJoin(sharedRoutines.writer, member)
                 .leftJoin(sharedRoutines.routineTags,routineTag)
@@ -66,7 +65,8 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
         JPAQuery<SharedRoutines> countQuery = query.selectFrom(sharedRoutines)
                 .where(
                         contentHasStr(searchCondition.getRoutineContent()),
-                        titleHasStr(searchCondition.getTitle())
+                        titleHasStr(searchCondition.getTitle()),
+                       tagHasStr(searchCondition.getTagName())
                 );
 
 
@@ -82,9 +82,11 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
         return StringUtils.hasLength(title) ? sharedRoutines.title.contains(title) : null;
     }
 
-    /*private BooleanExpression tagHasId(Long id){
-        return LongUtils.hasLength
-    }*/
+    private BooleanExpression tagHasStr(String tagName){
+        return StringUtils.hasLength(tagName) ? routineTag.tagName.contains(tagName):null;
+    }
+
+
 
 
     private List<OrderSpecifier> getAllOrderSpecifiers(Pageable pageable) {

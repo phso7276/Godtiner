@@ -2,6 +2,7 @@ package com.godtiner.api.domain.myroutines;
 
 
 import com.godtiner.api.domain.member.Member;
+import com.godtiner.api.domain.myroutines.dto.myRules.MyRoutineRulesUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -115,6 +116,8 @@ public class MyContents {
             i.initMyContents(this);
         });
     }
+
+
 
     public void updateContent(String content) {
         this.content = content;

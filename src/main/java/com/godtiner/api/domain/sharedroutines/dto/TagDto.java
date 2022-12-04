@@ -28,7 +28,7 @@ public class TagDto {
     public Tag toEntity(TagDto req){
        return new Tag(
                req.tagName,
-               req.routineTagList.stream().map(i -> new RoutineTag(i.getTag(),i.getSharedRoutine())).collect(toList())
+               req.routineTagList.stream().map(i -> new RoutineTag(i.getTag(),i.getSharedRoutine(),i.getTagName())).collect(toList())
        );
     }
 }

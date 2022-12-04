@@ -75,7 +75,7 @@ public class SharedRoutinesService {
         for (Long tagId : tagIdList) {
             Tag tag = tagRepository.findById(tagId).orElseThrow();
 
-            RoutineTag routineTag = new RoutineTag(tag, sharedRoutines);
+            RoutineTag routineTag = new RoutineTag(tag, sharedRoutines,tag.getTagName());
             routineTagRepository.save(routineTag);
         }
         //Tag tag = tagRepository.findById(req2.get)

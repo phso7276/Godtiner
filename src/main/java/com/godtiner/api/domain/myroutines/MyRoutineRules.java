@@ -1,6 +1,7 @@
 package com.godtiner.api.domain.myroutines;
 
 import com.godtiner.api.domain.BaseEntity;
+import com.godtiner.api.domain.myroutines.dto.myRules.MyRoutineRulesUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -98,5 +100,9 @@ public class MyRoutineRules extends BaseEntity {
     public void updateSun(boolean sun){
         this.sun=sun;
     }
+
+
+
+
 
 }

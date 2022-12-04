@@ -12,6 +12,7 @@ import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsUpdateRequest
 import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsUpdateResponse;
 import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesCreateRequest;
 import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesCreateResponse;
+import com.godtiner.api.domain.myroutines.dto.myRules.MyRoutineRulesUpdate;
 import com.godtiner.api.domain.myroutines.repository.MyContentsRepository;
 import com.godtiner.api.domain.myroutines.repository.MyRoutineRulesRepository;
 import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -88,13 +90,27 @@ public class MyContentsService {
        req.getContent().ifPresent(myContents::updateContent);
        req.getStartTime().ifPresent(myContents::updateStartTime);
        req.getEndTime().ifPresent(myContents::updateEndTime);
-       req.getMon().ifPresent(myRoutineRules::updateMon);
-       req.getTue().ifPresent(myRoutineRules::updateTue);
-       req.getWed().ifPresent(myRoutineRules::updateWed);
-       req.getThu().ifPresent(myRoutineRules::updateThu);
-       req.getFri().ifPresent(myRoutineRules::updateFri);
-        req.getSun().ifPresent(myRoutineRules::updateSun);
-        req.getSat().ifPresent(myRoutineRules::updateSat);
+
+       req.getDays().stream().forEach(
+               i -> {
+                   myRoutineRules.updateMon(i.getMon());
+                   myRoutineRules.updateTue(i.getTue());
+                   myRoutineRules.updateWed(i.getWed());
+                   myRoutineRules.updateThu(i.getThu());
+                   myRoutineRules.updateFri(i.getFri());
+                   myRoutineRules.updateSat(i.getSat());
+                   myRoutineRules.updateSun(i.getSun());
+
+               }
+       );
+
+      /* req2.getMon().ifPresent(myRoutineRules::updateMon);
+       req2.getTue().ifPresent(myRoutineRules::updateTue);
+       req2.getWed().ifPresent(myRoutineRules::updateWed);
+       req2.getThu().ifPresent(myRoutineRules::updateThu);
+       req2.getFri().ifPresent(myRoutineRules::updateFri);
+        req2.getSun().ifPresent(myRoutineRules::updateSun);
+        req2.getSat().ifPresent(myRoutineRules::updateSat);*/
 
        return new MyContentsUpdateResponse(id);
     }

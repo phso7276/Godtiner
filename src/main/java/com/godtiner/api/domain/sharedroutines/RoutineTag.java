@@ -30,9 +30,12 @@ public class RoutineTag {
     @JoinColumn(name = "tagId")
     private Tag tag;
 
-    public RoutineTag(Tag tag,SharedRoutines sharedRoutines) {
+    private String tagName;
+
+    public RoutineTag(Tag tag,SharedRoutines sharedRoutines,String tagName) {
         this.tag=tag;
         this.sharedRoutine=sharedRoutines;
+        this.tagName=tagName;
 
     }
 
