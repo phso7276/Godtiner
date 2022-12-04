@@ -24,7 +24,7 @@ public class MyRoutineRulesDto {
     private boolean sat;
     private boolean sun;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime regDate;
+    private LocalDateTime regdate;
 
     public MyRoutineRulesDto(MyRoutineRules myRoutineRules) {
         this.contentsId = myRoutineRules.getMyContentsId().getId();
@@ -35,7 +35,7 @@ public class MyRoutineRulesDto {
         this.fri=myRoutineRules.isFri();
         this.sat=myRoutineRules.isSat();
         this.sun=myRoutineRules.isSun();
-        this.regDate=myRoutineRules.getRegDate();
+        this.regdate=myRoutineRules.getRegdate();
 
     }
 }

@@ -10,11 +10,15 @@ import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
 @Entity
 @Data
@@ -22,12 +26,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Audited
 public class SharedRoutines extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Audited(targetAuditMode = NOT_AUDITED)
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member writer;
@@ -54,33 +60,42 @@ public class SharedRoutines extends BaseEntity {
     @Column(name="pickcnt", nullable=true )
     private int pickcnt;
 
+    @NotAudited
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sharedRoutine",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<SharedContents> sharedContentsList;
 
     //태그
 
-
+    @NotAudited
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "sharedRoutine",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<RoutineTag> routineTags;
 
+    @NotAudited
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "sharedRoutine",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Liked> likedList;
 
+
     //이미지
+    @NotAudited
     @Column(name="stored_filename", nullable=true)
     private String stored_filename;
 
+    @NotAudited
     @Column(name="filesize", nullable=true)
     private long filesize =0;
 
+    @NotAudited
     @Column(length = 2000)
     private String feed_thumbnail_filename;
 
+
+    @NotAudited
     @Column(length = 2000)
     private String detail_thumbnail_filename;
 
+    @NotAudited
     @Column(name = "original_file_name")
     private String originalFileName;
 

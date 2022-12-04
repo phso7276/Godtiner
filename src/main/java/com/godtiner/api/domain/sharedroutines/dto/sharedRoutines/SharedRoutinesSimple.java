@@ -39,7 +39,7 @@ public class SharedRoutinesSimple {
 
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime regDate;
+    private LocalDateTime regdate;
 
     public SharedRoutinesSimple(SharedRoutines sharedRoutines) {
         this.id =sharedRoutines.getId();
@@ -49,7 +49,7 @@ public class SharedRoutinesSimple {
         this.pickcnt =sharedRoutines.getPickcnt();
         this.feed_thumbnail = sharedRoutines.getFeed_thumbnail_filename();
         this.routineTagList = sharedRoutines.getRoutineTags().stream().map(RoutineTagDto::new).collect(Collectors.toList());
-        this.regDate=sharedRoutines.getRegDate();
+        this.regdate=sharedRoutines.getRegdate();
 
     }
 
