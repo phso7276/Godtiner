@@ -44,6 +44,8 @@ public class Member extends BaseEntity implements Serializable {
         @Column( length = 30)
         private String nickname;//별명
 
+        private String introduction;//자기소개
+
         @Enumerated(EnumType.STRING)
         private Role role;//권한 -> USER, ADMIN
 
@@ -108,6 +110,8 @@ public class Member extends BaseEntity implements Serializable {
         public void updateName(String name){
             this.name = name;
         }
+
+        public void updateIntroduction(String introduction){this.introduction=introduction;}
 
         public void updateNickname(String nickName){
             this.nickname = nickName;

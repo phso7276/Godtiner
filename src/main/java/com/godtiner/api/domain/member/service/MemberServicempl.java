@@ -91,6 +91,7 @@ public class MemberServicempl implements MemberService {
 
         req.getName().ifPresent(member::updateName);
         req.getNickname().ifPresent(member::updateNickname);
+        req.getIntroduction().ifPresent(member::updateIntroduction);
 
 
     }

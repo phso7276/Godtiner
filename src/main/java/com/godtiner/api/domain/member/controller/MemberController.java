@@ -60,8 +60,10 @@ public class MemberController {
      */
     @PutMapping(value = "/member",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public void updateBasicInfo(@Valid MemberUpdateDto userUpdateDto,@RequestParam(value="image") MultipartFile image) throws Exception {
+    public Response updateBasicInfo(@Valid @RequestPart(value = "info") MemberUpdateDto userUpdateDto,@RequestPart(value="image") MultipartFile image) throws Exception {
         memberService.update(userUpdateDto,image);
+
+        return success();
     }
 
     /**

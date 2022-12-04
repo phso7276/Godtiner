@@ -17,6 +17,8 @@ public class MemberUpdateDto {
 
     private Optional<String> name;
     private Optional<String> nickname;
+
+    private Optional<String> introduction;
    /* @ApiModelProperty(value = "추가된 이미지", notes = "추가된 이미지를 첨부해주세요.")
     private List<MultipartFile> addedImage= new ArrayList<>();
     @ApiModelProperty(value = "제거된 이미지 아이디", notes = "제거된 이미지 아이디를 입력해주세요.")
