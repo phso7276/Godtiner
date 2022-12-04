@@ -60,9 +60,9 @@ public class SharedRoutinesService {
         SharedRoutines sharedRoutines = req.toEntity(req, memberRepository);
 
         if (!image.isEmpty()) {
-            if (!image.getContentType().startsWith("image")) {
+           /* if (!image.getContentType().startsWith("image")) {
                 throw new FileUploadFailureException(new Exception());
-            }
+            }*/
            // List<String> fileNames =fileService.save(image);
             String imageFileName =fileService.save(image);
             sharedRoutines.updateStoredFilename(imageFileName);

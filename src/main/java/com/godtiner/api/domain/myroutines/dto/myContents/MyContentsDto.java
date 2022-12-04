@@ -14,21 +14,21 @@ import java.util.stream.Collectors;
 @Data
 @AllArgsConstructor
 public class MyContentsDto {
-    private Long routineId;
+    //private Long routineId;
     private String content;
     //루틴 순번
     private int idx;
 
     //시작 시간
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm:ss", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm", timezone = "Asia/Seoul")
     private LocalTime startTime;
     //종료시간
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm:ss", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm", timezone = "Asia/Seoul")
     private LocalTime endTime;
     private List<MyRoutineRulesDto> myRules;
 
     public MyContentsDto(MyContents myContents){
-        this.routineId = myContents.getMyRoutines().getId();
+       // this.routineId = myContents.getMyRoutines().getId();
         this.content =myContents.getContent();
         this.idx=myContents.getIdx();
         this.startTime = myContents.getStartTime();

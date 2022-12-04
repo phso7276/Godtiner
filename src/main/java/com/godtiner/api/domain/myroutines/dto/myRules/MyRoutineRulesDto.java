@@ -15,7 +15,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class MyRoutineRulesDto {
 
-    private Long contentsId;
+   // private Long contentsId;
     private boolean mon;
     private boolean tue;
     private boolean wed;
@@ -27,7 +27,7 @@ public class MyRoutineRulesDto {
     private LocalDateTime regdate;
 
     public MyRoutineRulesDto(MyRoutineRules myRoutineRules) {
-        this.contentsId = myRoutineRules.getMyContentsId().getId();
+        //this.contentsId = myRoutineRules.getMyContentsId().getId();
         this.mon=myRoutineRules.isMon();
         this.tue=myRoutineRules.isTue();
         this.wed=myRoutineRules.isWed();

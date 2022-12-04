@@ -1,6 +1,8 @@
 package com.godtiner.api.domain.sharedroutines.repository;
 
+import com.godtiner.api.domain.sharedroutines.QRoutineTag;
 import com.godtiner.api.domain.sharedroutines.QSharedRoutines;
+import com.godtiner.api.domain.sharedroutines.RoutineTag;
 import com.godtiner.api.domain.sharedroutines.SharedRoutines;
 import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SearchCondition;
 
@@ -20,7 +22,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
-
+import static com.godtiner.api.domain.sharedroutines.QRoutineTag.routineTag;
 import static com.godtiner.api.domain.member.QMember.member;
 import static com.querydsl.core.types.Projections.constructor;
 import static com.godtiner.api.domain.sharedroutines.QSharedRoutines.sharedRoutines;
@@ -40,6 +42,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
     @Override
     public Page<SharedRoutines> search(SearchCondition searchCondition, Pageable pageable) {
         List<OrderSpecifier> ORDERS = getAllOrderSpecifiers(pageable);
+
         List<SharedRoutines> content = query.selectFrom(sharedRoutines)
 
                 .where(
@@ -47,7 +50,8 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
                         titleHasStr(searchCondition.getTitle())
                 )
                 .leftJoin(sharedRoutines.writer, member)
-
+                //.leftJoin(sharedRoutines.routineTags, routineTag)
+                //.on
                 .fetchJoin()
                 //.orderBy(sharedRoutines.regDate.desc())//최신 날짜부터
                 .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
@@ -77,6 +81,8 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
     private BooleanExpression titleHasStr(String title) {
         return StringUtils.hasLength(title) ? sharedRoutines.title.contains(title) : null;
     }
+
+
 
     private List<OrderSpecifier> getAllOrderSpecifiers(Pageable pageable) {
         List<OrderSpecifier> ORDERS = new ArrayList<>();
