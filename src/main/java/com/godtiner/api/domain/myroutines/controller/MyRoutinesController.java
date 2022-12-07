@@ -61,6 +61,14 @@ public class MyRoutinesController {
         return Response.success(myRoutinesSerivce.update(req));
     }
 
+    @ApiOperation(value = "마이루틴 공유하기 ", notes = "마이루틴을 공유한다.")
+    @GetMapping(value = "/myRoutine/share/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response ToShare(@ApiParam(value = "루틴 id", required = true) @PathVariable Long id) {
+        return Response.success(myRoutinesSerivce.ToShare(id));
+    }
+
+
 
 
 

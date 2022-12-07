@@ -1,9 +1,12 @@
 package com.godtiner.api.domain.member.dto;
 
 import com.godtiner.api.domain.member.Member;
+import com.godtiner.api.domain.sharedroutines.Tag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,6 +17,8 @@ public class MemberSignUpDto {
     private String password;
     private String name;
     private String nickname;
+
+    //private List<Tag> tagList;
 
 
 

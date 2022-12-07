@@ -91,7 +91,7 @@ public class MyContentsService {
        req.getStartTime().ifPresent(myContents::updateStartTime);
        req.getEndTime().ifPresent(myContents::updateEndTime);
 
-       req.getDays().stream().forEach(
+       req.getNewRules().stream().forEach(
                i -> {
                    myRoutineRules.updateMon(i.getMon());
                    myRoutineRules.updateTue(i.getTue());

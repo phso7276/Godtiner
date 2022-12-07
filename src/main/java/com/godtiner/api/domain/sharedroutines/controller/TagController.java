@@ -2,6 +2,7 @@ package com.godtiner.api.domain.sharedroutines.controller;
 
 import com.godtiner.api.domain.response.Response;
 import com.godtiner.api.domain.sharedroutines.Tag;
+import com.godtiner.api.domain.sharedroutines.dto.TagInfo;
 import com.godtiner.api.domain.sharedroutines.repository.TagRepository;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(value = "Tag Controller", tags = "Tag")
 @RestController
@@ -24,7 +26,7 @@ public class TagController {
 
     @GetMapping("/tags")
     @ResponseStatus(HttpStatus.OK)
-    public List<Tag> reports() {
-        return tagRepository.findAll();
+    public List<TagInfo> reports() {
+        return tagRepository.findAll().stream().map(TagInfo::new).collect(Collectors.toList());
     }
 }

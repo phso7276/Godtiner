@@ -5,9 +5,11 @@ import com.godtiner.api.domain.member.dto.MemberUpdateDto;
 import com.godtiner.api.domain.myroutines.MyContents;
 import com.godtiner.api.domain.myroutines.MyRoutines;
 import com.godtiner.api.domain.sharedroutines.Liked;
+import com.godtiner.api.domain.sharedroutines.RoutineTag;
 import com.godtiner.api.domain.sharedroutines.SharedRoutines;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
+import org.hibernate.envers.NotAudited;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -82,6 +84,11 @@ public class Member extends BaseEntity implements Serializable {
         @JsonIgnore
         @OneToMany(mappedBy = "writer", cascade = ALL, orphanRemoval = true)
         private List<SharedRoutines> sharedRoutinesList = new ArrayList<>();
+
+        @NotAudited
+        @JsonIgnore
+        @OneToMany(fetch = FetchType.LAZY,mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
+        private List<MemberTag> memberTags;
 
 
 

@@ -30,10 +30,10 @@ public class SharedContentsDto {
     private int idx;
 
     //시작 시간
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm:ss", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm", timezone = "Asia/Seoul")
     private LocalTime startTime;
     //종료시간
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm:ss", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "kk:mm", timezone = "Asia/Seoul")
     private LocalTime endTime;
 
     private List<SharedRoutineRulesDto> sharedRoutineRules;

@@ -41,6 +41,14 @@ public class MemberController {
         return success();
     }
 
+    @PostMapping("/signUp/interest")
+    @ResponseStatus(HttpStatus.OK)
+    public Response saveInterest(@Valid @RequestBody MemberInterestRequest memberInterestRequest) throws Exception {
+        memberService.saveInterest(memberInterestRequest);
+
+        return success();
+    }
+
 /*   @PostMapping("/signIn")
     @ResponseStatus(HttpStatus.OK)
     public Response signIn(@Valid @RequestBody MemberSignInDto memberSignInDto
@@ -104,6 +112,7 @@ public class MemberController {
         MemberInfoDto info =memberService.getMyInfo();
         return new ResponseEntity(info, HttpStatus.OK);
     }
+
 
    /* @GetMapping("/user/{id}")
     public ResponseEntity<UserResponseDto> searchUser(

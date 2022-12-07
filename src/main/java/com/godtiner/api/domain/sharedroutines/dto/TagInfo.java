@@ -15,6 +15,11 @@ public class TagInfo {
 
     private String tagName;
 
+    public TagInfo(Tag tag) {
+        this.id=tag.getId();
+        this.tagName=tag.getTagName();
+    }
+
     @Builder
     public static TagInfo toDto(Tag tag) {
         return new TagInfo(tag.getId(), tag.getTagName());

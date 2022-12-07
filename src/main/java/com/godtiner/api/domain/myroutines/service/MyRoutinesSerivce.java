@@ -6,10 +6,13 @@ import com.godtiner.api.domain.member.exception.MemberExceptionType;
 import com.godtiner.api.domain.member.repository.MemberRepository;
 import com.godtiner.api.domain.myroutines.MyContents;
 import com.godtiner.api.domain.myroutines.MyRoutines;
+import com.godtiner.api.domain.myroutines.dto.ShareMyRoutinesPageDto;
 import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsUpdateResponse;
 import com.godtiner.api.domain.myroutines.dto.myRoutines.*;
 import com.godtiner.api.domain.myroutines.repository.MyContentsRepository;
 import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
+import com.godtiner.api.domain.sharedroutines.SharedRoutines;
+import com.godtiner.api.domain.sharedroutines.repository.TagRepository;
 import com.godtiner.api.global.exception.MyContentsException;
 import com.godtiner.api.global.exception.MyContentsExceptionType;
 import com.godtiner.api.global.exception.MyRoutinesException;
@@ -19,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.swing.text.TabableView;
 
 @Service
 @Transactional
@@ -30,7 +35,7 @@ public class MyRoutinesSerivce {
     private final MyContentsRepository myContentsRepository;
     private final MemberRepository memberRepository;
 
-    private final MyContentsService myContentsService;
+    private final TagRepository tagRepository;
 
 
     /*public MyRoutinesCreateResponse save(MyRoutinesCreateRequest myRoutinesCreateRequest,MyContentsCreate myContentsCreate) throws MyContentsException {
@@ -111,6 +116,13 @@ public class MyRoutinesSerivce {
         req.getTitle().ifPresent(myRoutines::updateTitle);
 
         return new MyRoutinesUpdateResponse(findMember.getId());
+    }
+
+    //공유하는 페이지
+    public ShareMyRoutinesPageDto ToShare(Long id){
+        MyRoutines myRoutines = myRoutinesRepository.findById(id)
+                .orElseThrow(() -> new MyRoutinesException(MyRoutinesExceptionType.MY_ROUTINES_NOT_FOUND));
+        return new ShareMyRoutinesPageDto(myRoutines,tagRepository);
     }
 
 

@@ -18,4 +18,8 @@ public interface MemberService {
     MemberInfoDto getInfo(Long id) throws Exception;
 
     MemberInfoDto getMyInfo() throws Exception;
+
+    void saveInterest(MemberInterestRequest memberInterestRequest) throws Exception;
+
+
 }

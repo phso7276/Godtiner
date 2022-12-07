@@ -1,37 +1,32 @@
 package com.godtiner.api.domain.sharedroutines.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.godtiner.api.domain.member.Member;
-import com.godtiner.api.domain.member.dto.MemberInfoDto;
+import com.godtiner.api.domain.member.MemberTag;
 import com.godtiner.api.domain.member.exception.MemberException;
 import com.godtiner.api.domain.member.exception.MemberExceptionType;
 import com.godtiner.api.domain.member.repository.MemberRepository;
+import com.godtiner.api.domain.member.repository.MemberTagRepository;
 import com.godtiner.api.domain.member.service.FileService;
 import com.godtiner.api.domain.myroutines.MyContents;
 import com.godtiner.api.domain.myroutines.MyRoutines;
-import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesCreateRequest;
-import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesCreateResponse;
-import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesDto;
+
 import com.godtiner.api.domain.myroutines.repository.MyContentsRepository;
 import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
 import com.godtiner.api.domain.sharedroutines.*;
-import com.godtiner.api.domain.sharedroutines.dto.TagDto;
+import com.godtiner.api.domain.sharedroutines.dto.RecommendationPageDto;
 import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.*;
 import com.godtiner.api.domain.sharedroutines.repository.*;
 import com.godtiner.api.global.exception.*;
 import com.godtiner.api.global.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -51,6 +46,8 @@ public class SharedRoutinesService {
 
     private final TagRepository tagRepository;
     private final RoutineTagRepository routineTagRepository;
+
+    private final MemberTagRepository memberTagRepository;
 
     private final LikedRepository likedRepository;
 
@@ -109,10 +106,45 @@ public class SharedRoutinesService {
         return null;
     }
 
+    public RecommendationPageDto getRecommendation(){
+        Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
+
+        //멤버의 관심사 받아오기
+
+       List<MemberTag> memberTagList;
+       memberTagList=  memberTagRepository.findByMember(member);
+
+    /*   log.info("멤버태그:"+memberTagList.get(0).getTagName());
+
+
+       for(MemberTag memberTag:memberTagList) {
+           log.info(memberTag.getTagName());
+
+       }*/
+
+
+        //관심사로 루틴태그 찾기
+       /* RoutineTag routineTag1 = routineTagRepository.findByTagName(memberTagList.get(0).getTagName())
+                .orElseThrow();
+
+        RoutineTag routineTag2 = routineTagRepository.findByTagName(memberTagList.get(1).getTagName())
+                .orElseThrow();*/
+
+        //관심사에 해당하는 모든 루틴 찾기
+        //Iterator<SharedRoutines> sharedRoutines =sharedRoutinesRepository.findByRoutineTags()
+
+        return new RecommendationPageDto(memberTagList,sharedRoutinesRepository.getSharedRoutinesByTagName(memberTagList.get(0).getTagName()),
+                sharedRoutinesRepository.getSharedRoutinesByTagName(memberTagList.get(1).getTagName()));
+
+    }
+
     //찜하기
     public void addLiked(long boardId) {
-        Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail()).orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
-        SharedRoutines target = Optional.of(sharedRoutinesRepository.findById(boardId).get()).orElseThrow(() -> new SharedRoutinesException(SharedRoutinesExceptionType.SHARED_ROUTINES_NOT_FOUND));
+        Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
+        SharedRoutines target = Optional.of(sharedRoutinesRepository.findById(boardId).get())
+                .orElseThrow(() -> new SharedRoutinesException(SharedRoutinesExceptionType.SHARED_ROUTINES_NOT_FOUND));
 
         likedRepository.findByMemberAndSharedRoutine(member, target).ifPresent(none -> {
             throw new RuntimeException();
@@ -177,7 +209,9 @@ public class SharedRoutinesService {
     //페이징, 검색
    public SharedPagingDto getPostList(Pageable pageable, SearchCondition searchCondition) {
 
-       return new SharedPagingDto(sharedRoutinesRepository.search(searchCondition, pageable));
+       return new SharedPagingDto(sharedRoutinesRepository.search(searchCondition, pageable),tagRepository);
    }
+
+
 
 }

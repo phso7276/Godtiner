@@ -73,6 +73,20 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
         return  PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetch().size());
     } // 2
 
+    public List<SharedRoutines> getSharedRoutinesByTagName(String tagName){
+        List<SharedRoutines> content = query.selectFrom(sharedRoutines)
+                //.leftJoin(sharedRoutines.writer, member)
+                .leftJoin(sharedRoutines.routineTags,routineTag)
+                .where(routineTag.tagName.contains(tagName))
+                //.fetchJoin()
+                .orderBy(sharedRoutines.avgPreference.desc())
+                .limit(2)
+                .fetch();
+
+        return content;
+
+    }
+
     private BooleanExpression contentHasStr(String content) {
         return StringUtils.hasLength(content) ? sharedRoutines.routineContent.contains(content) : null;
     }

@@ -3,10 +3,14 @@ package com.godtiner.api.domain.member.service;
 
 
 import com.godtiner.api.domain.member.Member;
+import com.godtiner.api.domain.member.MemberTag;
 import com.godtiner.api.domain.member.dto.*;
 import com.godtiner.api.domain.member.exception.MemberException;
 import com.godtiner.api.domain.member.exception.MemberExceptionType;
 import com.godtiner.api.domain.member.repository.MemberRepository;
+import com.godtiner.api.domain.member.repository.MemberTagRepository;
+import com.godtiner.api.domain.sharedroutines.Tag;
+import com.godtiner.api.domain.sharedroutines.repository.TagRepository;
 import com.godtiner.api.global.exception.FileUploadFailureException;
 import com.godtiner.api.global.exception.MemberNotFoundException;
 import com.godtiner.api.global.jwt.service.JwtService;
@@ -32,8 +36,10 @@ public class MemberServicempl implements MemberService {
         return memberRepository.findById(id).orElse(null);
     }
     private final FileService fileService;
-    private final LoginService loginService;
-    private final JwtService jwtService;
+
+    private final TagRepository tagRepository;
+
+    private final MemberTagRepository memberTagRepository;
 
   /*  @Override
     public MemberSignInResponseDto signIn(MemberSignInDto req) throws Exception {
@@ -54,16 +60,25 @@ public class MemberServicempl implements MemberService {
     }
 */
     @Override
-    public void signUp(MemberSignUpDto UserSignUpDto) throws Exception {
-        Member user = UserSignUpDto.toEntity();
-        user.addUserAuthority();
-        user.encodePassword(passwordEncoder);
+    public void signUp(MemberSignUpDto memberSignUpDto) throws Exception {
+        Member member = memberSignUpDto.toEntity();
+        member.addUserAuthority();
+        member.encodePassword(passwordEncoder);
 
-        if(memberRepository.findByEmail(UserSignUpDto.getEmail()).isPresent()){
+        if(memberRepository.findByEmail(memberSignUpDto.getEmail()).isPresent()){
             throw new MemberException(MemberExceptionType.ALREADY_EXIST_USERNAME);
         }
 
-        memberRepository.save(user);
+        memberRepository.save(member);
+
+       /* memberSignUpDto.getTagList().stream().forEach(
+                i->{
+                    Tag tag = tagRepository.findById(i.getId()).orElseThrow();
+                    MemberTag memberTag = new MemberTag(tag,member,i.getTagName());
+                    memberTagRepository.save(memberTag);
+                }
+        );
+*/
     }
 
     @Override
@@ -141,4 +156,20 @@ public class MemberServicempl implements MemberService {
 
         return new MemberInfoDto(findMember);
     }
+
+    @Override
+    public void saveInterest(MemberInterestRequest memberInterestRequest) throws Exception {
+
+        Member member = memberRepository.findByEmail(memberInterestRequest.getEmail())
+                .orElseThrow(() ->  new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
+
+        for(Long tagId:memberInterestRequest.getTagIdList()){
+            Tag tag = tagRepository.findById(tagId).orElseThrow();
+            MemberTag memberTag = new MemberTag(tag,member,tag.getTagName());
+            memberTagRepository.save(memberTag);
+
+        }
+    }
+
+
 }

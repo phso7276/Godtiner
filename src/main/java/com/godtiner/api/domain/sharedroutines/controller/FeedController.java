@@ -52,4 +52,11 @@ public class FeedController {
     }
 
 
+    @ApiOperation(value = "추천페이지", notes = "추천페이지 조회한다.")
+    @GetMapping("/feed/recommendation")
+    @ResponseStatus(HttpStatus.OK)
+    public Response readRecommendation() {
+        return Response.success(sharedRoutinesService.getRecommendation());
+    }
+
 }
