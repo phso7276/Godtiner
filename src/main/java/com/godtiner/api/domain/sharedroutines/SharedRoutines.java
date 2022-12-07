@@ -30,7 +30,7 @@ import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 public class SharedRoutines extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Audited(targetAuditMode = NOT_AUDITED)
@@ -112,7 +112,7 @@ public class SharedRoutines extends BaseEntity {
 
     }
 
-    public SharedRoutines(String title,String routineContent,Member writer,List<SharedContents> sharedContentsList
+   /* public SharedRoutines(String title,String routineContent,Member writer,List<SharedContents> sharedContentsList
                          ){
         this.title =title;
         this.routineContent=routineContent;
@@ -121,8 +121,13 @@ public class SharedRoutines extends BaseEntity {
         addSharedContents(sharedContentsList);
 
 
-    }
+    }*/
 
+    public SharedRoutines(String title, String routineContent, Member writer) {
+        this.title =title;
+        this.routineContent=routineContent;
+        this.writer= writer;
+    }
 
 
     public void addSharedContents(List<SharedContents> sharedContents){

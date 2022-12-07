@@ -42,8 +42,13 @@ public class SharedRoutinesCreate {
     @ApiModelProperty(value = "공유 루틴 소개글",notes = "소개글을 입력해주세요")
     private String routineContent;
 
-    @ApiModelProperty(value = "내용", notes = "루틴 내용을 추가해주세요.")
+    /*@ApiModelProperty(value = "내용", notes = "루틴 내용을 추가해주세요.")
     private List<SharedContents> sharedContentsList = new ArrayList<>();
+    */
+
+    private Long[] myContentsIdList;
+
+    private Long[] tagIdList;
 
     /*@ApiModelProperty(value = "내용", notes = "루틴 내용을 추가해주세요.")
     private List<Tag> tagList = new ArrayList<>();
@@ -59,9 +64,9 @@ public class SharedRoutinesCreate {
         return new SharedRoutines(
                 req.title,
                 req.routineContent,
-                memberRepository.findByEmail(SecurityUtil.getLoginEmail()).orElseThrow(MemberNotFoundException::new),
-                req.sharedContentsList.stream().map(i -> new SharedContents(i.getContent(),i.getStartTime(),
-                       i.getEndTime(),i.getSharedRoutine(),i.getSharedRoutineRules())).collect(toList())
+                memberRepository.findByEmail(SecurityUtil.getLoginEmail()).orElseThrow(MemberNotFoundException::new)
+                /*req.sharedContentsList.stream().map(i -> new SharedContents(i.getContent(),i.getStartTime(),
+                       i.getEndTime(),i.getSharedRoutine(),i.getSharedRoutineRules())).collect(toList())*/
                 //req2.getMyContentsList().stream().map(i-> new SharedContents(i.getContent(),i.getStartTime(),
                         //i.getEndTime(),req.sharedContentsList.get(0).getSharedRoutine())).collect(toList()),
                 //req.routineTagList.stream().map(i -> new RoutineTag(i.getTag(),i.getSharedRoutine())).collect(toList())

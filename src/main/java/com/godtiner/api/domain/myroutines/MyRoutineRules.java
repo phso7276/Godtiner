@@ -21,7 +21,7 @@ import java.util.List;
 public class MyRoutineRules extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private boolean mon;

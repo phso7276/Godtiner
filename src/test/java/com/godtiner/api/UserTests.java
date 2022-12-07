@@ -23,7 +23,7 @@ public class UserTests {
     @Test
     public void insertDummies(){
         //1-49 user
-        IntStream.rangeClosed(11,16).forEach(i->{
+        IntStream.rangeClosed(1,16).forEach(i->{
             Member user = Member.builder()
                     .email("u"+i+"@rmail.com")
                     .name("사용자"+i)

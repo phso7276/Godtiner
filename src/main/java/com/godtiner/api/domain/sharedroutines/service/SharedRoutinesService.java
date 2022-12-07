@@ -13,6 +13,7 @@ import com.godtiner.api.domain.myroutines.MyRoutines;
 import com.godtiner.api.domain.myroutines.repository.MyContentsRepository;
 import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
 import com.godtiner.api.domain.sharedroutines.*;
+import com.godtiner.api.domain.sharedroutines.dto.PickRequestDto;
 import com.godtiner.api.domain.sharedroutines.dto.RecommendationPageDto;
 import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.*;
 import com.godtiner.api.domain.sharedroutines.repository.*;
@@ -51,10 +52,20 @@ public class SharedRoutinesService {
 
     private final LikedRepository likedRepository;
 
-    public SharedRoutinesCreateResponse create(SharedRoutinesCreate req, MultipartFile image,
-                                               Long[] tagIdList) {
+    public SharedRoutinesCreateResponse create(SharedRoutinesCreate req, MultipartFile image
+                                               /*Long[] tagIdList*/) {
 
         SharedRoutines sharedRoutines = req.toEntity(req, memberRepository);
+
+        for (Long contentId : req.getMyContentsIdList()) {//해당하는 아이디의 필드를 repository에서 찾아 주업
+            MyContents myContents = myContentsRepository.findById(contentId)
+                    .orElseThrow(() -> new MyContentsException(MyContentsExceptionType.CONTENTS_NOT_FOUND));
+            //일단 content만 복사..
+            SharedContents sharedContents =new SharedContents(myContents.getContent(),myContents.getStartTime(),
+                    myContents.getEndTime(),sharedRoutines);
+            sharedContentsRepository.save(sharedContents);
+
+        }
 
         if (!image.isEmpty()) {
            /* if (!image.getContentType().startsWith("image")) {
@@ -69,7 +80,7 @@ public class SharedRoutinesService {
         }
         sharedRoutinesRepository.save(sharedRoutines);
 
-        for (Long tagId : tagIdList) {
+        for (Long tagId : req.getTagIdList()) {
             Tag tag = tagRepository.findById(tagId).orElseThrow();
 
             RoutineTag routineTag = new RoutineTag(tag, sharedRoutines,tag.getTagName());
@@ -183,15 +194,15 @@ public class SharedRoutinesService {
     }
 
     //공유 루틴 스크랩
-    public void pick(Long[] contentsId,Long routineId) {
+    public void pick(PickRequestDto req, Long routineId) {
         //멤버로 내 루틴 아이디 찾아서 주입
         Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
                 .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
 
         MyRoutines myRoutines=myRoutinesRepository.findByWriter(member)
-                .orElseThrow(() -> new MyRoutinesException(MyRoutinesExceptionType.MY_ROUTINES_NOT_FOUND));
+                .orElse(myRoutinesRepository.save(new MyRoutines("내 루틴",member)) );
         //배열 반복문
-        for (Long contentId : contentsId) {//해당하는 아이디의 필드를 repository에서 찾아 주업
+        for (Long contentId : req.getContentIdList()) {//해당하는 아이디의 필드를 repository에서 찾아 주업
             SharedContents sharedContents = sharedContentsRepository.findById(contentId)
                     .orElseThrow(() -> new MyContentsException(MyContentsExceptionType.CONTENTS_NOT_FOUND));
             //일단 content만 복사..

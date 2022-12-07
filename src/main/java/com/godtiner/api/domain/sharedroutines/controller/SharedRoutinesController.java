@@ -2,6 +2,7 @@ package com.godtiner.api.domain.sharedroutines.controller;
 
 import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesCreateRequest;
 import com.godtiner.api.domain.response.Response;
+import com.godtiner.api.domain.sharedroutines.dto.PickRequestDto;
 import com.godtiner.api.domain.sharedroutines.dto.TagDto;
 import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.FeedPageDto;
 import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SharedRoutinesCreate;
@@ -35,9 +36,9 @@ public class SharedRoutinesController {
     @PostMapping(value = "/sharedRoutine/post",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Response create(@Valid @RequestPart(value = "contents") SharedRoutinesCreate req,
-                           @RequestPart(value = "tags") Long[] tagIdList ,
+                           /*@RequestPart(value = "tags") Long[] tagIdList ,*/
                            @RequestPart(value = "file") MultipartFile file) throws Exception {
-        return Response.success(sharedRoutinesService.create(req,file,tagIdList));
+        return Response.success(sharedRoutinesService.create(req,file/*,tagIdList*/));
     }
 
     //공유 루틴 삭제
@@ -74,10 +75,10 @@ public class SharedRoutinesController {
     //공유 루틴 스크랩
     @PostMapping("/sharedRoutine/pick/{routineId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Response pickSharedContents(@RequestPart(value = "contentIds") Long[] contentIdList,
+    public Response pickSharedContents(@RequestBody PickRequestDto req,
                                        @PathVariable Long routineId){
 
-        sharedRoutinesService.pick(contentIdList,routineId);
+        sharedRoutinesService.pick(req,routineId);
 
         return Response.success();
     }

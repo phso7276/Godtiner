@@ -21,7 +21,7 @@ import java.util.List;
 public class SharedContents {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(length=80)
@@ -51,6 +51,16 @@ public class SharedContents {
         this.sharedRoutine = sharedRoutines;
         this.sharedRoutineRules = new ArrayList<>();
         addSharedRules(sharedRules);
+    }
+
+
+
+    public SharedContents(String content, LocalTime startTime, LocalTime endTime, SharedRoutines sharedRoutines) {
+        this.content = content;
+        this.startTime=startTime;
+        this.endTime=endTime;
+        this.sharedRoutine = sharedRoutines;
+
     }
 
  /*  public SharedContents(String content, LocalTime startTime, LocalTime endTime, SharedRoutines sharedRoutines
