@@ -1,6 +1,8 @@
 package com.godtiner.api.domain.myroutines.controller;
 
 
+import com.godtiner.api.domain.mission.Mission;
+import com.godtiner.api.domain.mission.service.MissionService;
 import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsCreate;
 import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsUpdateRequest;
 import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesCreateRequest;
@@ -27,6 +29,8 @@ public class MyContentsController {
 
     private final MyContentsService myContentsService;
     private final MyRoutinesSerivce myRoutinesSerivce;
+    private final MissionService missionService;
+
 
    /* @ApiOperation(value = "마이 루틴 항목 생성", notes = "마이루틴 항목을 생성한다.")
     @PostMapping("/myRoutine/detail/{rid}")
@@ -67,7 +71,8 @@ public class MyContentsController {
     @PutMapping(value = "/myRoutine/clear/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Response updateClear(@PathVariable Long id) {
-        myContentsService.clear(id);
+
+        missionService.checkCondition(myContentsService.clear(id));
         return Response.success();
     }
 

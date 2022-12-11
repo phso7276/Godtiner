@@ -2,6 +2,7 @@ package com.godtiner.api.domain.myroutines.repository;
 
 
 import com.godtiner.api.domain.member.Member;
+import com.godtiner.api.domain.myroutines.MyContents;
 import com.godtiner.api.domain.myroutines.MyRoutines;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,6 +21,8 @@ public interface MyRoutinesRepository extends JpaRepository<MyRoutines, Long>{
     @EntityGraph(attributePaths = "writer", type= EntityGraph.EntityGraphType.LOAD)
     @Query("select n from MyRoutines n where n.writer.id=:id")
     Optional<MyRoutines> getWithWriter(Long id);
+
+    Optional<MyRoutines> findMyRoutinesByMyContentsList(MyContents myContents);
 
     Optional<MyRoutines> findByWriter(Member writer);
 }

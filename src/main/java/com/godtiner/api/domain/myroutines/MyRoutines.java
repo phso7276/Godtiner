@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 
 @Entity
-@Data
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

@@ -3,10 +3,7 @@ package com.godtiner.api.domain.myroutines;
 
 import com.godtiner.api.domain.member.Member;
 import com.godtiner.api.domain.myroutines.dto.myRules.MyRoutineRulesUpdate;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.bytebuddy.asm.Advice;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -21,30 +18,34 @@ import java.util.List;
 
 import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
+@Audited
 @Entity
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Audited
 public class MyContents {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
 
+    @NotAudited
     @Column(length=80)
     private String content;
 
+    @NotAudited
     //루틴 순번
     private int idx;
 
 
     //시작 시간
 
+    @NotAudited
     private LocalTime startTime;
     //종료시간
 
+    @NotAudited
     private LocalTime endTime;
 
     @NotAudited
@@ -56,6 +57,8 @@ public class MyContents {
     @JoinColumn(name ="myroutinesId")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private MyRoutines myRoutines;
+
+
     private boolean isClear=false;
 
 /*

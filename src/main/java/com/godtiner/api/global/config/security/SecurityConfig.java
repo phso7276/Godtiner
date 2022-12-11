@@ -45,7 +45,7 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/member/**","/feed/**",
+                .antMatchers("/member/**","/feed/**","/notifications/**",
                         "/signIn", "/signUp","/myRoutine/**","sharedRoutine/**","/tags","/").permitAll()
                 .anyRequest().permitAll();
 

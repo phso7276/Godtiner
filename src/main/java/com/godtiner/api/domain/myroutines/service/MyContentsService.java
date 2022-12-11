@@ -4,6 +4,7 @@ import com.godtiner.api.domain.member.Member;
 import com.godtiner.api.domain.member.exception.MemberException;
 import com.godtiner.api.domain.member.exception.MemberExceptionType;
 import com.godtiner.api.domain.member.repository.MemberRepository;
+import com.godtiner.api.domain.mission.service.MissionService;
 import com.godtiner.api.domain.myroutines.MyContents;
 import com.godtiner.api.domain.myroutines.MyRoutineRules;
 import com.godtiner.api.domain.myroutines.MyRoutines;
@@ -23,9 +24,20 @@ import com.godtiner.api.global.exception.MyRoutinesExceptionType;
 import com.godtiner.api.global.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
+import org.hibernate.envers.RevisionType;
+import org.hibernate.envers.query.AuditEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.history.Revision;
+import org.springframework.data.history.RevisionSort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -39,6 +51,8 @@ public class MyContentsService {
     private final MyRoutinesRepository myRoutinesRepository;
 
     private final MyRoutineRulesRepository myRoutineRulesRepository;
+
+
 
     public MyRoutinesCreateResponse save(MyContentsCreate req){
         Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
@@ -128,16 +142,22 @@ public class MyContentsService {
         if(!myContents.getMyRoutines().getId().equals(SecurityUtil.getLoginEmail()))
             throw new MyContentsException(myContentsExceptionType);
     }*/
-   public void clear(Long id){
+   public MyContents clear(Long id){
+       //AuditReader auditReader = AuditReaderFactory.get(em);
         MyContents myContents = myContentsRepository.findById(id)
                 .orElseThrow(() -> new MyContentsException(MyContentsExceptionType.CONTENTS_NOT_FOUND));
-
+        /*MyRoutines myRoutines = myRoutinesRepository.findMyRoutinesByMyContentsList(myContents)
+                .orElseThrow(()->new MyRoutinesException(MyRoutinesExceptionType.MY_ROUTINES_NOT_FOUND));
+*/
         if(!myContents.isClear()){
             myContents.clear();
+
         }
         else {
             myContents.cancelClear();
         }
+
+        return myContents;
 
     }
 }

@@ -2,10 +2,7 @@ package com.godtiner.api.domain.myroutines;
 
 import com.godtiner.api.domain.BaseEntity;
 import com.godtiner.api.domain.myroutines.dto.myRules.MyRoutineRulesUpdate;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -14,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

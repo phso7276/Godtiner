@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MyContentsRepository extends JpaRepository<MyContents, Long> {
+public interface MyContentsRepository extends JpaRepository<MyContents, Long>,RevisionRepository<MyContents, Long, Integer> {
     /*@Query("select c from MyContents c left join fetch c.myRoutines where c.id = :id")
     Optional<MyContents> findWithParentById(Long id);*/
 
