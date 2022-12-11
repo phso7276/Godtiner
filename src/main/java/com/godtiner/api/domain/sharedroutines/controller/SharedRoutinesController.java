@@ -35,7 +35,7 @@ public class SharedRoutinesController {
     @ApiOperation(value = "공유 루틴 생성", notes = "공유 루틴을 생성한다.")
     @PostMapping(value = "/sharedRoutine/post",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Response create(@Valid @RequestPart(value = "contents") SharedRoutinesCreate req,
+    public Response create(/*@Valid */@RequestPart(value = "contents") SharedRoutinesCreate req,
                            /*@RequestPart(value = "tags") Long[] tagIdList ,*/
                            @RequestPart(value = "file") MultipartFile file) throws Exception {
         return Response.success(sharedRoutinesService.create(req,file/*,tagIdList*/));

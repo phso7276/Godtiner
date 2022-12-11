@@ -5,6 +5,8 @@ import com.godtiner.api.domain.member.Member;
 import com.godtiner.api.domain.myroutines.MyContents;
 import com.godtiner.api.domain.myroutines.MyRoutineRules;
 import com.godtiner.api.domain.myroutines.MyRoutines;
+import com.godtiner.api.domain.sharedroutines.dto.TagInfo;
+import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SharedRoutinesCreate;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
@@ -12,6 +14,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
+import springfox.documentation.spring.web.json.Json;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -26,14 +29,13 @@ import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Audited
 public class SharedRoutines extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Audited(targetAuditMode = NOT_AUDITED)
+    //@Audited(targetAuditMode = NOT_AUDITED)
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member writer;
@@ -45,6 +47,9 @@ public class SharedRoutines extends BaseEntity {
     //private String tags;
     @Column(nullable=true)
     private double avgPreference;
+
+    @Convert(converter = RoutineTagConverter.class)
+    private List<TagInfo> tags;
 
 
 
@@ -78,29 +83,29 @@ public class SharedRoutines extends BaseEntity {
 
 
     //이미지
-    @NotAudited
+    //@NotAudited
     @Column(name="stored_filename", nullable=true)
     private String stored_filename;
 
-    @NotAudited
+    //@NotAudited
     @Column(name="filesize", nullable=true)
     private long filesize =0;
 
-    @NotAudited
+    //@NotAudited
     @Column(length = 2000)
     private String feed_thumbnail_filename;
 
 
-    @NotAudited
+    //@NotAudited
     @Column(length = 2000)
     private String detail_thumbnail_filename;
 
-    @NotAudited
+    //@NotAudited
     @Column(name = "original_file_name")
     private String originalFileName;
 
 
-    public SharedRoutines(String title,String routineContent,Member writer,List<SharedContents> sharedContentsList,
+ /*   public SharedRoutines(String title,String routineContent,Member writer,List<SharedContents> sharedContentsList,
                           List<RoutineTag> tagList){
         this.title =title;
         this.routineContent=routineContent;
@@ -110,7 +115,7 @@ public class SharedRoutines extends BaseEntity {
         this.routineTags = new ArrayList<>();
         addRoutineTags(tagList);
 
-    }
+    }*/
 
    /* public SharedRoutines(String title,String routineContent,Member writer,List<SharedContents> sharedContentsList
                          ){
@@ -123,11 +128,18 @@ public class SharedRoutines extends BaseEntity {
 
     }*/
 
-    public SharedRoutines(String title, String routineContent, Member writer) {
+    public SharedRoutines(String title, String routineContent, Member writer,
+                          List<TagInfo> tagInfoList) {
         this.title =title;
         this.routineContent=routineContent;
         this.writer= writer;
+        /*this.sharedContentsList = new ArrayList<>();
+        addSharedContents(sharedContentsList);*/
+        this.tags =tagInfoList;
+
     }
+
+
 
 
     public void addSharedContents(List<SharedContents> sharedContents){
@@ -162,6 +174,10 @@ public class SharedRoutines extends BaseEntity {
     public void deleteLikedCnt(){this.likecnt -=1;}
 
     public void deletePickCnt(){this.pickcnt -=1;}
+
+
+
+    //public void addTags(String json){this.tags=json;}
 
 /*
     public List<String> getThemaList(){

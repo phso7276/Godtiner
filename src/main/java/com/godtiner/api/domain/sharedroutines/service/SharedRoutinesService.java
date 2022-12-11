@@ -15,12 +15,14 @@ import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
 import com.godtiner.api.domain.sharedroutines.*;
 import com.godtiner.api.domain.sharedroutines.dto.PickRequestDto;
 import com.godtiner.api.domain.sharedroutines.dto.RecommendationPageDto;
+import com.godtiner.api.domain.sharedroutines.dto.TagInfo;
 import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.*;
 import com.godtiner.api.domain.sharedroutines.repository.*;
 import com.godtiner.api.global.exception.*;
 import com.godtiner.api.global.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,8 +54,10 @@ public class SharedRoutinesService {
 
     private final LikedRepository likedRepository;
 
-    public SharedRoutinesCreateResponse create(SharedRoutinesCreate req, MultipartFile image
-                                               /*Long[] tagIdList*/) {
+
+
+    /*public SharedRoutinesCreateResponse create(SharedRoutinesCreate req, MultipartFile image
+                                               *//*Long[] tagIdList*//*) {
 
         SharedRoutines sharedRoutines = req.toEntity(req, memberRepository);
 
@@ -68,10 +72,6 @@ public class SharedRoutinesService {
         }
 
         if (!image.isEmpty()) {
-           /* if (!image.getContentType().startsWith("image")) {
-                throw new FileUploadFailureException(new Exception());
-            }*/
-           // List<String> fileNames =fileService.save(image);
             String imageFileName =fileService.save(image);
             sharedRoutines.updateStoredFilename(imageFileName);
             sharedRoutines.updateFeedThumbnailFilename("s_"+imageFileName);
@@ -85,15 +85,54 @@ public class SharedRoutinesService {
 
             RoutineTag routineTag = new RoutineTag(tag, sharedRoutines,tag.getTagName());
             routineTagRepository.save(routineTag);
+
+            routineTagConverter.convertToDatabaseColumn(routineTag);
         }
-        //Tag tag = tagRepository.findById(req2.get)
-        //Optional<Tag> tag = tagRepository.findByTagName(req2.getTagName().stream().collect(i->i));
 
+        return new SharedRoutinesCreateResponse(sharedRoutines.getId());
+    }*/
 
-        /*req.getImage().ifPresent(
-                file ->  sharedRoutines.updateStoredFilename(fileService.save(file))
+    public SharedRoutinesCreateResponse create(SharedRoutinesCreate req, MultipartFile image) {
 
+        Member member=  memberRepository.findByEmail(SecurityUtil.getLoginEmail()).orElseThrow(MemberNotFoundException::new);
+
+        /*SharedRoutines sharedRoutines = SharedRoutinesCreate.toEntity(req, memberRepository);*/
+        SharedRoutines sharedRoutines = SharedRoutinesCreate.toEntity(req, member);
+        for (Long contentId : req.getMyContentsIdList()) {//해당하는 아이디의 필드를 repository에서 찾아 주업
+            MyContents myContents = myContentsRepository.findById(contentId)
+                    .orElseThrow(() -> new MyContentsException(MyContentsExceptionType.CONTENTS_NOT_FOUND));
+            //일단 content만 복사..
+            SharedContents sharedContents =new SharedContents(myContents.getContent(),myContents.getStartTime(),
+                    myContents.getEndTime(),sharedRoutines);
+            sharedContentsRepository.save(sharedContents);
+
+        }
+
+        if (!image.isEmpty()) {
+            String imageFileName =fileService.save(image);
+            sharedRoutines.updateStoredFilename(imageFileName);
+            sharedRoutines.updateFeedThumbnailFilename("s_"+imageFileName);
+            sharedRoutines.updateDetailThumbnailFilename("d_"+imageFileName);
+            sharedRoutines.updateOriginalFilenmae(image.getOriginalFilename());
+        }
+        sharedRoutinesRepository.save(sharedRoutines);
+
+       /* req.getTagList().stream().forEach(
+                i-> tagRepository.findById(i.getId()).ifPresent(
+                       tag-> routineTagRepository.save(new RoutineTag(tag,sharedRoutines,tag.getTagName()))
+                )
         );*/
+
+        for (TagInfo tags : req.getTagList()) {
+            Tag tag = tagRepository.findById(tags.getId()).orElseThrow();
+
+            /*RoutineTag routineTag = new RoutineTag(tag, sharedRoutines,tag.getTagName());
+            routineTagRepository.save(routineTag);*/
+
+            routineTagRepository.save(new RoutineTag(tag, sharedRoutines,tag.getTagName()));
+
+        }
+
         return new SharedRoutinesCreateResponse(sharedRoutines.getId());
     }
 
@@ -107,6 +146,7 @@ public class SharedRoutinesService {
 
     //상세페이지
     public SharedRoutineDetail getDetail(Long id) {
+
 
         SharedRoutines result = sharedRoutinesRepository.findByIdWithMember(id)
                 .orElseThrow(() -> new SharedRoutinesException(SharedRoutinesExceptionType.SHARED_ROUTINES_NOT_FOUND));;
