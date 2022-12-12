@@ -166,24 +166,7 @@ public class SharedRoutinesService {
        List<MemberTag> memberTagList;
        memberTagList=  memberTagRepository.findByMember(member);
 
-    /*   log.info("멤버태그:"+memberTagList.get(0).getTagName());
-
-
-       for(MemberTag memberTag:memberTagList) {
-           log.info(memberTag.getTagName());
-
-       }*/
-
-
-        //관심사로 루틴태그 찾기
-       /* RoutineTag routineTag1 = routineTagRepository.findByTagName(memberTagList.get(0).getTagName())
-                .orElseThrow();
-
-        RoutineTag routineTag2 = routineTagRepository.findByTagName(memberTagList.get(1).getTagName())
-                .orElseThrow();*/
-
-        //관심사에 해당하는 모든 루틴 찾기
-        //Iterator<SharedRoutines> sharedRoutines =sharedRoutinesRepository.findByRoutineTags()
+ 
 
         return new RecommendationPageDto(memberTagList,sharedRoutinesRepository.getSharedRoutinesByTagName(memberTagList.get(0).getTagName()),
                 sharedRoutinesRepository.getSharedRoutinesByTagName(memberTagList.get(1).getTagName()));

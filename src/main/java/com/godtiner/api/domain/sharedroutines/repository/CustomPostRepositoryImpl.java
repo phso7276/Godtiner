@@ -3,10 +3,12 @@ package com.godtiner.api.domain.sharedroutines.repository;
 import com.godtiner.api.domain.sharedroutines.*;
 import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SearchCondition;
 
+import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SharedRoutinesSimple;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.log4j.Log4j2;
@@ -19,6 +21,8 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import static com.godtiner.api.domain.sharedroutines.QRoutineTag.routineTag;
 import static com.godtiner.api.domain.member.QMember.member;
 import static com.godtiner.api.domain.sharedroutines.QTag.tag;
@@ -37,6 +41,8 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
     public CustomPostRepositoryImpl(EntityManager em) {
         query = new JPAQueryFactory(em);
     }
+    @PersistenceContext
+    private EntityManager em;
     @Override
     public Page<SharedRoutines> search(SearchCondition searchCondition, Pageable pageable) {
         List<OrderSpecifier> ORDERS = getAllOrderSpecifiers(pageable);
@@ -74,12 +80,16 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
     } // 2
 
     public List<SharedRoutines> getSharedRoutinesByTagName(String tagName){
-        List<SharedRoutines> content = query.selectFrom(sharedRoutines)
+
+        JPAQuery<SharedRoutines> query2 = new JPAQuery<>(em, MySQLJPATemplates.DEFAULT);
+
+        List<SharedRoutines> content = query2.from(sharedRoutines)
                 //.leftJoin(sharedRoutines.writer, member)
                 .leftJoin(sharedRoutines.routineTags,routineTag)
                 .where(routineTag.tagName.contains(tagName))
                 //.fetchJoin()
-                .orderBy(sharedRoutines.avgPreference.desc())
+                //.orderBy(sharedRoutines.avgPreference.desc())
+                .orderBy(NumberExpression.random().asc())
                 .limit(2)
                 .fetch();
 
