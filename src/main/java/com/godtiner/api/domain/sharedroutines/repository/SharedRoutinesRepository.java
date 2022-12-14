@@ -22,4 +22,6 @@ public interface SharedRoutinesRepository extends JpaRepository<SharedRoutines, 
     Optional<SharedRoutines> findBySharedContentsList(SharedContents sharedContents);
 
     List<SharedRoutines> findTop2ByRoutineTagsOrderByAvgPreferenceAsc(RoutineTag routineTag);
+
+
 }

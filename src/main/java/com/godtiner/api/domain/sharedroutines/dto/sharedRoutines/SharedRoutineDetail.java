@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,8 +29,10 @@ public class SharedRoutineDetail {
 
     private List<SharedContentsDto> sharedContentsList;
 
+    private List<SharedRoutinesSimple> contentsBasedRecommend = new ArrayList<>();
 
-    public static SharedRoutineDetail toDto(SharedRoutines sharedRoutines) {
+
+    public static SharedRoutineDetail toDto(SharedRoutines sharedRoutines,List<SharedRoutines> result) {
         return new SharedRoutineDetail(
                 sharedRoutines.getId(),
                 sharedRoutines.getTitle(),
@@ -37,7 +40,8 @@ public class SharedRoutineDetail {
                 sharedRoutines.getDetail_thumbnail_filename(),
                 MemberInfoDto.toDto(sharedRoutines.getWriter()),
                 sharedRoutines.getSharedContentsList().stream()
-                        .map(SharedContentsDto::new).collect(Collectors.toList())
+                        .map(SharedContentsDto::new).collect(Collectors.toList()),
+                result.stream().map(SharedRoutinesSimple::new).collect(Collectors.toList())
 
                 //post.getImages().stream().map(i -> ImageDto.toDto(i)).collect(toList())
         );

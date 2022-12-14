@@ -1,5 +1,8 @@
 package com.godtiner.api.domain.sharedroutines.service;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.godtiner.api.domain.member.Member;
 import com.godtiner.api.domain.member.MemberTag;
 import com.godtiner.api.domain.member.exception.MemberException;
@@ -20,17 +23,26 @@ import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.*;
 import com.godtiner.api.domain.sharedroutines.repository.*;
 import com.godtiner.api.global.exception.*;
 import com.godtiner.api.global.util.security.SecurityUtil;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.objectweb.asm.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -54,6 +66,7 @@ public class SharedRoutinesService {
 
     private final LikedRepository likedRepository;
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
 
     /*public SharedRoutinesCreateResponse create(SharedRoutinesCreate req, MultipartFile image
@@ -148,11 +161,35 @@ public class SharedRoutinesService {
     public SharedRoutineDetail getDetail(Long id) {
 
 
-        SharedRoutines result = sharedRoutinesRepository.findByIdWithMember(id)
+
+        SharedRoutines sharedRoutines = sharedRoutinesRepository.findByIdWithMember(id)
                 .orElseThrow(() -> new SharedRoutinesException(SharedRoutinesExceptionType.SHARED_ROUTINES_NOT_FOUND));;
-        if (result !=null) {
-            result.addHits();
-            return SharedRoutineDetail.toDto(result);
+        if (sharedRoutines !=null) {
+            //JSONObject data = new JSONObject();
+            JSONObject result =byPass("http://127.0.0.1:5000/cb/"+id,"GET");
+
+            //Long[] jsonList = (Long[]) result.get("id");
+            log.info("RESPONSE DATA : " + result.size());
+            log.info("RESPONSE DATA : " + result.get("data"));
+            String jsonString = (String) result.get("data");
+
+            List<SharedRoutines> routines= new ArrayList<>();
+
+            try {
+                IdList idList= objectMapper.readValue(jsonString, IdList.class );
+
+                for(Long ids: idList.getId()){
+                    log.info("idList:"+ids);
+                    routines.add(sharedRoutinesRepository.findById(ids)
+                            .orElseThrow(() -> new SharedRoutinesException(SharedRoutinesExceptionType.SHARED_ROUTINES_NOT_FOUND)));
+                }
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+
+
+            sharedRoutines.addHits();
+            return SharedRoutineDetail.toDto(sharedRoutines,routines);
         }
         return null;
     }
@@ -166,7 +203,7 @@ public class SharedRoutinesService {
        List<MemberTag> memberTagList;
        memberTagList=  memberTagRepository.findByMember(member);
 
- 
+
 
         return new RecommendationPageDto(memberTagList,sharedRoutinesRepository.getSharedRoutinesByTagName(memberTagList.get(0).getTagName()),
                 sharedRoutinesRepository.getSharedRoutinesByTagName(memberTagList.get(1).getTagName()));
@@ -246,6 +283,64 @@ public class SharedRoutinesService {
        return new SharedPagingDto(sharedRoutinesRepository.search(searchCondition, pageable),tagRepository);
    }
 
+    public JSONObject byPass(String url,/* JSONObject jsonData,*/ String option) {
+        log.info("***************** BY PASS START*****************");
+        JSONObject responseJson = new JSONObject();
+        try {
+            // 연결할 url 생성
+            URL start_object = new URL(url);
+            log.info("CONNECT URL :" + url);
+
+            // http 객체 생성
+            HttpURLConnection start_con = (HttpURLConnection) start_object.openConnection();
+            start_con.setDoOutput(true);
+            start_con.setDoInput(true);
+
+            // 설정 정보
+            start_con.setRequestProperty("Content-Type", "application/json");
+            start_con.setRequestProperty("Accept", "application/json");
+            log.info("Option:"+option);
+            start_con.setRequestMethod(option);
+
+            // data 전달
+            //log.info("REQUEST DATA : " + jsonData);
+
+            // 출력 부분
+           /* OutputStreamWriter wr = new OutputStreamWriter(start_con.getOutputStream());
+            wr.write(jsonData.toString());
+            wr.flush();*/
+
+            // 응답 받는 부분
+            //StringBuilder start_sb = new StringBuilder();
+            String sb = "";
+            int start_HttpResult = start_con.getResponseCode();
+
+            // 결과 성공일 경우 = HttpResult 200일 경우
+            if (start_HttpResult == HttpURLConnection.HTTP_OK) {
+                BufferedReader br = new BufferedReader(new InputStreamReader(start_con.getInputStream(), "utf-8"));
+                String line = null;
+                while ((line = br.readLine()) != null) {
+                    //start_sb.append(line);
+                    sb = sb + line + "\n";
+                }
+                responseJson.put("data", sb.toString());
+               responseJson.put("result", "SUCCESS");
+                br.close();
+                log.info("***************** BY PASS SUCCESS *****************");
+                return responseJson;
+            } else {
+                // 그 외의 경우(실패)
+                log.info("***************** BY PASS FAIL *****************");
+                responseJson.put("result", "FAIL");
+                return responseJson;
+            }
+        } catch (Exception e) {
+            log.info("***************** BY PASS FAIL Exception *****************");
+            log.info(e.toString());
+            responseJson.put("result", "EXCEPTION");
+            return responseJson;
+        }
+    }
 
 
 }
