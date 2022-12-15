@@ -63,10 +63,10 @@ public class SharedRoutinesController {
         return Response.success();
     }
 
-   @DeleteMapping("/sharedRoutine/{boardId}/liked/{likedId}")
-    public Response deleteGoodPoint(@PathVariable long boardId, @PathVariable long likedId){
+   @DeleteMapping("/sharedRoutine/{id}/liked")
+    public Response deleteGoodPoint(@PathVariable long id/*, @PathVariable long likedId*/){
 
-        sharedRoutinesService.deleteLiked(likedId, boardId);
+        sharedRoutinesService.deleteLiked(/*likedId, */id);
 
        return Response.success();
     }

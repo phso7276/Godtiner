@@ -159,11 +159,13 @@ public class SharedRoutinesService {
 
     //상세페이지
     public SharedRoutineDetail getDetail(Long id) {
-
+        boolean isLike = false;
+        Member isMemberLike = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
 
 
         SharedRoutines sharedRoutines = sharedRoutinesRepository.findByIdWithMember(id)
-                .orElseThrow(() -> new SharedRoutinesException(SharedRoutinesExceptionType.SHARED_ROUTINES_NOT_FOUND));;
+                .orElseThrow(() -> new SharedRoutinesException(SharedRoutinesExceptionType.SHARED_ROUTINES_NOT_FOUND));
         if (sharedRoutines !=null) {
             //JSONObject data = new JSONObject();
             JSONObject result =byPass("http://127.0.0.1:5000/cb/"+id,"GET");
@@ -186,10 +188,13 @@ public class SharedRoutinesService {
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
-
+            Optional<Liked> liked =  likedRepository.findByMemberAndSharedRoutine(isMemberLike,sharedRoutines);
+            if (liked.isPresent()){
+                isLike =true;
+            }
 
             sharedRoutines.addHits();
-            return SharedRoutineDetail.toDto(sharedRoutines,routines);
+            return SharedRoutineDetail.toDto(sharedRoutines,routines,isLike);
         }
         return null;
     }
@@ -231,13 +236,13 @@ public class SharedRoutinesService {
         target.addLikedCnt();
     }
 
-    public void deleteLiked(long likedId, long boardId) {
+    public void deleteLiked(/*long likedId,*/ long boardId) {
         Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail()).orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
         SharedRoutines target = Optional.of(sharedRoutinesRepository.findById(boardId).get()).orElseThrow(() -> new SharedRoutinesException(SharedRoutinesExceptionType.SHARED_ROUTINES_NOT_FOUND));
 
-        likedRepository.findByMemberAndSharedRoutine(member, target).orElseThrow(() -> new RuntimeException());
+        Liked liked = likedRepository.findByMemberAndSharedRoutine(member, target).orElseThrow(RuntimeException::new);
 
-        likedRepository.deleteById(likedId);
+        likedRepository.deleteById(liked.getId());
 
         target.deleteLikedCnt();
     }
