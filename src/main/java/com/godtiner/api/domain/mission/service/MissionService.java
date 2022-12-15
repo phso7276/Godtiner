@@ -15,6 +15,7 @@ import com.godtiner.api.domain.mission.repository.MissionRepository;
 import com.godtiner.api.domain.myroutines.MyContents;
 import com.godtiner.api.domain.myroutines.MyRoutines;
 import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
+import com.godtiner.api.domain.sharedroutines.dto.TagInfo;
 import com.godtiner.api.global.exception.MyRoutinesException;
 import com.godtiner.api.global.exception.MyRoutinesExceptionType;
 import com.godtiner.api.global.util.security.SecurityUtil;
@@ -92,13 +93,11 @@ public class MissionService {
 
     }
 
-    public MissionSuccessInfo getSuccess() throws Exception {
+    public List<MissionSuccessInfo> getSuccess() throws Exception {
         Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
                 .orElseThrow(() ->  new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
 
-        MemberMission memberMission = memberMissionRepository.findMemberMissionByMember(member)
-                .orElseThrow();
 
-        return new MissionSuccessInfo(memberMission);
+        return memberMissionRepository.findAllByMember(member).stream().map(MissionSuccessInfo::new).collect(Collectors.toList());
     }
 }

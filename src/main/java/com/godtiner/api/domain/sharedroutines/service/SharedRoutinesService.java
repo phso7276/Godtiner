@@ -159,7 +159,7 @@ public class SharedRoutinesService {
 
     //상세페이지
     public SharedRoutineDetail getDetail(Long id) {
-        boolean isLike = false;
+
         Member isMemberLike = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
                 .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
 
@@ -178,7 +178,7 @@ public class SharedRoutinesService {
             List<SharedRoutines> routines= new ArrayList<>();
 
             try {
-                IdList idList= objectMapper.readValue(jsonString, IdList.class );
+                IdList idList= objectMapper.readValue(jsonString, IdList.class);
 
                 for(Long ids: idList.getId()){
                     log.info("idList:"+ids);
@@ -187,14 +187,21 @@ public class SharedRoutinesService {
                 }
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
+            } catch (IllegalArgumentException e){
+                return SharedRoutineDetail.toDto(sharedRoutines,routines, true);
             }
+            sharedRoutines.addHits();
             Optional<Liked> liked =  likedRepository.findByMemberAndSharedRoutine(isMemberLike,sharedRoutines);
             if (liked.isPresent()){
-                isLike =true;
+
+                return SharedRoutineDetail.toDto(sharedRoutines,routines, true);
+            }
+            else {
+
+                return SharedRoutineDetail.toDto(sharedRoutines,routines, false);
             }
 
-            sharedRoutines.addHits();
-            return SharedRoutineDetail.toDto(sharedRoutines,routines,isLike);
+
         }
         return null;
     }
