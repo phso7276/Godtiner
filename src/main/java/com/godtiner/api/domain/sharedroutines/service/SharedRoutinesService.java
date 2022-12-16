@@ -188,18 +188,24 @@ public class SharedRoutinesService {
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             } catch (IllegalArgumentException e){
-                return SharedRoutineDetail.toDto(sharedRoutines,routines, true);
+                return SharedRoutineDetail.toDto(sharedRoutines,routines, false);
             }
             sharedRoutines.addHits();
             Optional<Liked> liked =  likedRepository.findByMemberAndSharedRoutine(isMemberLike,sharedRoutines);
             if (liked.isPresent()){
+                log.info("liked present");
 
                 return SharedRoutineDetail.toDto(sharedRoutines,routines, true);
             }
             else {
 
+                log.info("liked is not presentt");
                 return SharedRoutineDetail.toDto(sharedRoutines,routines, false);
             }
+
+
+
+
 
 
         }
@@ -226,26 +232,32 @@ public class SharedRoutinesService {
     public void addLiked(long boardId) {
         Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
                 .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
-        SharedRoutines target = Optional.of(sharedRoutinesRepository.findById(boardId).get())
+        SharedRoutines target = sharedRoutinesRepository.findById(boardId)
                 .orElseThrow(() -> new SharedRoutinesException(SharedRoutinesExceptionType.SHARED_ROUTINES_NOT_FOUND));
 
         likedRepository.findByMemberAndSharedRoutine(member, target).ifPresent(none -> {
             throw new RuntimeException();
         });
-
         likedRepository.save(
+                new Liked(target,member)
+        );
+
+
+       /* likedRepository.save(
                 Liked.builder()
                         .sharedRoutines(target)
                         .member(member)
                         .build()
-        );
+        );*/
         //좋아요 수 업데이트 추가
         target.addLikedCnt();
     }
 
     public void deleteLiked(/*long likedId,*/ long boardId) {
-        Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail()).orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
-        SharedRoutines target = Optional.of(sharedRoutinesRepository.findById(boardId).get()).orElseThrow(() -> new SharedRoutinesException(SharedRoutinesExceptionType.SHARED_ROUTINES_NOT_FOUND));
+        Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
+        SharedRoutines target = Optional.of(sharedRoutinesRepository.findById(boardId).get())
+                .orElseThrow(() -> new SharedRoutinesException(SharedRoutinesExceptionType.SHARED_ROUTINES_NOT_FOUND));
 
         Liked liked = likedRepository.findByMemberAndSharedRoutine(member, target).orElseThrow(RuntimeException::new);
 
@@ -272,7 +284,7 @@ public class SharedRoutinesService {
                 .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
 
         MyRoutines myRoutines=myRoutinesRepository.findByWriter(member)
-                .orElse(myRoutinesRepository.save(new MyRoutines("내 루틴",member)) );
+                .orElseGet(()-> myRoutinesRepository.save(new MyRoutines("내 루틴",member)) );
         //배열 반복문
         for (Long contentId : req.getContentIdList()) {//해당하는 아이디의 필드를 repository에서 찾아 주업
             SharedContents sharedContents = sharedContentsRepository.findById(contentId)
