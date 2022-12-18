@@ -171,8 +171,52 @@ public class SharedRoutinesService {
             JSONObject result =byPass("http://127.0.0.1:5000/cb/"+id,"GET");
 
             //Long[] jsonList = (Long[]) result.get("id");
-            log.info("RESPONSE DATA : " + result.size());
-            log.info("RESPONSE DATA : " + result.get("data"));
+            //log.info("RESPONSE DATA : " + result.size());
+            //log.info("RESPONSE DATA : " + result.get("data"));
+            String jsonString = (String) result.get("data");
+
+            List<SharedRoutines> routines= new ArrayList<>();
+
+            try {
+                IdList idList= objectMapper.readValue(jsonString, IdList.class);
+
+                for(Long ids: idList.getId()){
+                    //log.info("idList:"+ids);
+                    routines.add(sharedRoutinesRepository.findById(ids)
+                            .orElseThrow(() -> new SharedRoutinesException(SharedRoutinesExceptionType.SHARED_ROUTINES_NOT_FOUND)));
+                }
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            } catch (IllegalArgumentException e){
+                return SharedRoutineDetail.toDto(sharedRoutines,routines, false);
+            }
+            sharedRoutines.addHits();
+            Optional<Liked> liked =  likedRepository.findByMemberAndSharedRoutine(isMemberLike,sharedRoutines);
+            if (liked.isPresent()){
+                return SharedRoutineDetail.toDto(sharedRoutines,routines, true);
+            }
+            else {
+                return SharedRoutineDetail.toDto(sharedRoutines,routines, false);
+            }
+
+        }
+        return null;
+    }
+
+    public RecommendationPageDto getRecommendation(){
+        Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
+
+        //멤버의 관심사 받아오기
+
+       List<MemberTag> memberTagList;
+       memberTagList=  memberTagRepository.findByMember(member);
+       Long isLikedPresent =  likedRepository.countByMember(member);
+
+        if (isLikedPresent>0) {
+            //JSONObject data = new JSONObject();
+            JSONObject result =byPass("http://127.0.0.1:5000/recommend/"+member.getId(),"GET");
+
             String jsonString = (String) result.get("data");
 
             List<SharedRoutines> routines= new ArrayList<>();
@@ -188,39 +232,12 @@ public class SharedRoutinesService {
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             } catch (IllegalArgumentException e){
-                return SharedRoutineDetail.toDto(sharedRoutines,routines, false);
+                return new RecommendationPageDto(memberTagList,sharedRoutinesRepository.getSharedRoutinesByTagName(memberTagList.get(0).getTagName()),
+                        sharedRoutinesRepository.getSharedRoutinesByTagName(memberTagList.get(1).getTagName()));
             }
-            sharedRoutines.addHits();
-            Optional<Liked> liked =  likedRepository.findByMemberAndSharedRoutine(isMemberLike,sharedRoutines);
-            if (liked.isPresent()){
-                log.info("liked present");
-
-                return SharedRoutineDetail.toDto(sharedRoutines,routines, true);
-            }
-            else {
-
-                log.info("liked is not presentt");
-                return SharedRoutineDetail.toDto(sharedRoutines,routines, false);
-            }
-
-
-
-
-
-
+            return new RecommendationPageDto(memberTagList,sharedRoutinesRepository.getSharedRoutinesByTagName(memberTagList.get(0).getTagName()),
+                    sharedRoutinesRepository.getSharedRoutinesByTagName(memberTagList.get(1).getTagName()),routines);
         }
-        return null;
-    }
-
-    public RecommendationPageDto getRecommendation(){
-        Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
-                .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
-
-        //멤버의 관심사 받아오기
-
-       List<MemberTag> memberTagList;
-       memberTagList=  memberTagRepository.findByMember(member);
-
 
 
         return new RecommendationPageDto(memberTagList,sharedRoutinesRepository.getSharedRoutinesByTagName(memberTagList.get(0).getTagName()),

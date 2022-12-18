@@ -91,4 +91,6 @@ public class NotificationController {
         model.addAttribute("eventEnrollmentNotifications", eventEnrollmentNotifications);
         model.addAttribute("watchingStudyNotifications", watchingStudyNotifications);
     }
+
+
 }

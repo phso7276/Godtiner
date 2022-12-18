@@ -27,6 +27,8 @@ public class RecommendationPageDto {
 
     private List<SharedRoutinesSimple> recommendList2 = new ArrayList<>();
 
+    private List<SharedRoutinesSimple> item_matrix_recommend =new ArrayList<>();
+
     /*public RecommendationPageDto(RoutineTag routineTag1,RoutineTag routineTag2, SharedRoutinesRepository sharedRoutinesRepository) {
 
         this.recommendList1= sharedRoutinesRepository.findTop2ByRoutineTagsOrderByAvgPreferenceAsc(routineTag1)
@@ -39,5 +41,14 @@ public class RecommendationPageDto {
         this.memberInterest= memberTags;
         this.recommendList1= result1.stream().map(SharedRoutinesSimple::new).collect(Collectors.toList());
         this.recommendList2= result2.stream().map(SharedRoutinesSimple::new).collect(Collectors.toList());
+        //this.item_matrix_recommend =result2.stream().map(SharedRoutinesSimple::new).collect(Collectors.toList());
+    }
+
+    public RecommendationPageDto(List<MemberTag> memberTags,List<SharedRoutines> result1,List<SharedRoutines> result2,
+                                 List<SharedRoutines> recommendList) {
+        this.memberInterest= memberTags;
+        this.recommendList1= result1.stream().map(SharedRoutinesSimple::new).collect(Collectors.toList());
+        this.recommendList2= result2.stream().map(SharedRoutinesSimple::new).collect(Collectors.toList());
+        this.item_matrix_recommend =recommendList.stream().map(SharedRoutinesSimple::new).collect(Collectors.toList());
     }
 }

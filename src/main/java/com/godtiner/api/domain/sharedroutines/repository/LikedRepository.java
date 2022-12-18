@@ -13,4 +13,6 @@ import java.util.Optional;
 public interface LikedRepository extends JpaRepository<Liked,Long> {
     Optional<Liked> findByMemberAndSharedRoutine(Member member, SharedRoutines sharedRoutines);
     //int countBySharedRoutines(SharedRoutines sharedRoutines);
+
+    Long countByMember(Member member);
 }
