@@ -2,6 +2,8 @@ package com.godtiner.api.domain.sharedroutines.dto.sharedRoutines;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class SearchCondition {
 
@@ -10,5 +12,5 @@ public class SearchCondition {
 
     private String tagName;
 
-    private Long tagId;
+    private List<Long> tagId;
 }

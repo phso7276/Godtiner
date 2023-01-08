@@ -3,11 +3,9 @@ package com.godtiner.api.domain.sharedroutines.repository;
 import com.godtiner.api.domain.sharedroutines.*;
 import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SearchCondition;
 
-import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SharedRoutinesSimple;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -15,48 +13,59 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.convert.QueryByExamplePredicateBuilder;
+import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.stereotype.Repository;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import static com.godtiner.api.domain.sharedroutines.QRoutineTag.routineTag;
+
 import static com.godtiner.api.domain.member.QMember.member;
-import static com.godtiner.api.domain.sharedroutines.QTag.tag;
 import static com.querydsl.core.types.Projections.constructor;
 import static com.godtiner.api.domain.sharedroutines.QSharedRoutines.sharedRoutines;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 /*@Transactional(readOnly = true) // 1*/
-@Repository
+@Transactional(readOnly = true)
 @Log4j2
 public class CustomPostRepositoryImpl implements CustomPostRepository {
     private final JPAQueryFactory query;
-    public CustomPostRepositoryImpl(EntityManager em) {
+
+   public CustomPostRepositoryImpl(EntityManager em)
+    {
         query = new JPAQueryFactory(em);
     }
+   /* public CustomPostRepositoryImpl(JPAQueryFactory query) { // 4
+        super(SharedRoutines.class);
+        this.query = query;
+    }*/
     @PersistenceContext
     private EntityManager em;
+
+    private final QRoutineTag routineTag = new QRoutineTag("routineTag");
+    private final QSharedRoutines sharedRoutines = new QSharedRoutines("sharedRoutines");
     @Override
     public Page<SharedRoutines> search(SearchCondition searchCondition, Pageable pageable) {
         List<OrderSpecifier> ORDERS = getAllOrderSpecifiers(pageable);
 
-
         List<SharedRoutines> content = query.selectFrom(sharedRoutines)
-
+                .leftJoin(sharedRoutines.writer, member)
+                .leftJoin(sharedRoutines.routineTags,routineTag)
                 .where(
                         contentHasStr(searchCondition.getRoutineContent()),
                         titleHasStr(searchCondition.getTitle()),
+                       //orConditionsByEqCategoryName(searchCondition.getTagName())
                        tagHasStr(searchCondition.getTagName())
+                        //tagHasStr(routineTag.tagName.contains(searchCondition.getTagName()))
                 )
-                .leftJoin(sharedRoutines.writer, member)
-                .leftJoin(sharedRoutines.routineTags,routineTag)
                 .fetchJoin()
                 //.orderBy(sharedRoutines.regDate.desc())//최신 날짜부터
                 .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
@@ -69,9 +78,11 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
 
 
         JPAQuery<SharedRoutines> countQuery = query.selectFrom(sharedRoutines)
+                .leftJoin(sharedRoutines.routineTags,routineTag)
                 .where(
                         contentHasStr(searchCondition.getRoutineContent()),
                         titleHasStr(searchCondition.getTitle()),
+                        //routineTag.tagName.contains(searchCondition.getTagName())
                        tagHasStr(searchCondition.getTagName())
                 );
 
@@ -79,6 +90,9 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
         return  PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetch().size());
     } // 2
 
+    /*private Predicate tagHasStr(BooleanExpression contains) {
+    }
+*/
     public List<SharedRoutines> getSharedRoutinesByTagName(String tagName){
 
         JPAQuery<SharedRoutines> query2 = new JPAQuery<>(em, MySQLJPATemplates.DEFAULT);
@@ -97,6 +111,27 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
 
     }
 
+   /* private Predicate createPredicate(SearchCondition cond) { // 8
+        return new BooleanBuilder()
+                .and(orConditionsByEqTagIds(cond.getTagId()))
+                .and(orConditionsByEqMemberIds(cond.()));
+    }
+
+    private Predicate orConditionsByEqTagIds(List<Long> categoryIds) { // 9
+        return orConditions(categoryIds, post.category.id::eq);
+    }
+
+    private Predicate orConditionsByEqMemberIds(Long memberId) { // 10
+        return orConditions(memberId, sharedRoutines.member.id::eq);
+    }
+
+    private <T> Predicate orConditions(List<T> values, Function<T, BooleanExpression> term) { // 11
+        return (Predicate) values.stream()
+                .map(term)
+                .reduce(BooleanExpression::or)
+                .orElse(null);
+    }*/
+
     private BooleanExpression contentHasStr(String content) {
         return StringUtils.hasLength(content) ? sharedRoutines.routineContent.contains(content) : null;
     }
@@ -106,9 +141,32 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
         return StringUtils.hasLength(title) ? sharedRoutines.title.contains(title) : null;
     }
 
-    private BooleanExpression tagHasStr(String tagName){
-        return StringUtils.hasLength(tagName) ? routineTag.tagName.contains(tagName):null;
+   /* private Predicate orConditionsByEqCategoryName(List<String> categoryName) { // 9
+        return orConditions(categoryName, sharedRoutines.routineTags.any().tagName::eq);
     }
+    private <T> Predicate orConditions(List<T> values, Function<T, BooleanExpression> term) { // 11
+        return values.stream()
+                .map(term)
+                .reduce(BooleanExpression::or)
+                .orElse(null);
+    }*/
+
+  /*  private BooleanExpression tagHasStr(BooleanExpression routineTag){
+        if(routineTag==null){
+            return null;
+        }
+        return routineTag;
+    }
+*/
+
+
+   private BooleanExpression tagHasStr(String tagName){
+        return StringUtils.hasLength(tagName) ? sharedRoutines.routineTags.any().tagName.eq(tagName):null;
+    }
+
+    /*private BooleanExpression tagHasId(Long tagId){
+        return StringUtils.hasLength(tagName) ? routineTag.tagName.contains(tagName):null;
+    }*/
 
 
 
