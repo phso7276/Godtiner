@@ -1,0 +1,150 @@
+@import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap");
+
+body {
+  background-color: #f6f6f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /*vh : viewfalut height의 줄임말. 현재 웹스크린의 실제 크기의 100퍼센트를 최소 높이로 갖겠다.*/
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* min-width : {}안에 있는 모든 css 규칙들은 min-width이상일 때만 적용됨
+  반응형 웹을 적용할 때 사용됨
+  화면이 650px이상으로 넓을 때 적용되는 규칙들*/
+@media (min-width: 650px) {
+  .App {
+    width: 650px;
+  }
+}
+/*웹브라우저 화면이 650px 이하 일때, 화면의 90%를 차지하게 하겠다*/
+@media (max-width: 650px) {
+  .App {
+    width: 90vh;
+  }
+}
+
+#root {
+  background-color: white;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.App {
+  /*기본적으로 화면의 100퍼센트를 차지하게 됨*/
+  min-height: 100vh;
+  /* padding-left: 20px;
+  padding-right: 20px; */
+  font-family: "Gowun Dodum", sans-serif;
+}
+
+/* Home */
+.Home .input_date {
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+
+  padding-top: 15px;
+  padding-left: 10px;
+}
+
+.Home .addRoutine {
+  border: none;
+  color: black;
+  border-radius: 100px;
+  cursor: pointer;
+  background-color: #ececec;
+  font-size: 50px;
+}
+
+/* MySearchAlarm */
+
+.MySearchAlarm {
+  display: flex;
+  border-bottom: 2px solid #0f3ee4;
+}
+
+.MySearchAlarm > div {
+  display: flex;
+}
+
+.MySearchAlarm .SearchBar {
+  background-color: #ececec;
+  border-radius: 18px;
+  width: 70%;
+  margin-top: 10px;
+  /* 배치를 잘 못하겠다 */
+  margin-left: 70px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.MySearchAlarm .Notifications {
+  background-color: #ececec;
+  border-radius: 50px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+/* MyUpper */
+.MyUpper {
+  background-color: white;
+  padding: 20px;
+}
+
+.MyUpper .backButton {
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 25px;
+  margin-right: 5px;
+}
+
+.MyUpper .pageDescript {
+  font-size: 15px;
+}
+
+/* RoutineEditor */
+
+.RoutineEditor .NameBox {
+  width: 60%;
+  height: 40px;
+  text-align: center;
+  border: none;
+  background-color: #ececec;
+  border-radius: 10px;
+}
+
+.RoutineEditor .Notification {
+  justify-content: space-between;
+}
+
+/* FOOTER */
+
+footer {
+  margin-top: 25px;
+
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  bottom: 0;
+}
+
+footer > div {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+footer button {
+  width: 130px;
+  height: 100px;
+  background-color: #eeeeee;
+  border: none;
+  font-size: 35px;
+}
+
+footer button:hover {
+  background-color: #bfbfbf;
+}

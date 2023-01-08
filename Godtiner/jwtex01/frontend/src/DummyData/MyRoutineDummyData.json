@@ -1,0 +1,16 @@
+{
+  "MyRoutine": [
+    {
+      "id": 1,
+      "startTime": "08:00",
+      "endTime": "08:10",
+      "content": "아침 명상하기"
+    },
+    {
+      "id": 2,
+      "startTime": "08:15",
+      "endTime": "09:00",
+      "content": "기상 스트레칭 하기"
+    }
+  ]
+}

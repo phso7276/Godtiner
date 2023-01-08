@@ -1,0 +1,106 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
+
+body {
+  animation: fadein 2s;
+}
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+.Signup h2 {
+  padding-top: 80px;
+  white-space: pre-line;
+  font-size: 40px;
+  text-align: left;
+}
+
+.godtiner {
+  color: #0000ff;
+  font-size: 42px;
+  padding-right: 5px;
+}
+
+.mainImg {
+  width: 100%;
+  height: auto;
+  padding-top: 30px;
+}
+
+.button1 {
+  text-align: center;
+  padding-top: 70px;
+}
+.button2 {
+  text-align: center;
+  padding-top: 10px;
+}
+.button3 {
+  text-align: center;
+  padding-top: 85px;
+}
+
+.Signup button {
+  width: 600px;
+  height: 70px;
+  margin: auto;
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.w-btn {
+  position: relative;
+  border: none;
+  display: inline-block;
+  margin: auto;
+  border-radius: 15px;
+  font-family: "paybooc-Light", sans-serif;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.w-btn:hover {
+  transform: scale(1.05);
+}
+
+.w-btn-outline {
+  position: relative;
+  margin: auto;
+  border-radius: 15px;
+  font-family: "paybooc-Light", sans-serif;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.w-btn-brown {
+  background-color: #dc143c;
+  color: #ffeee4;
+  margin: auto;
+}
+
+.w-btn-indigo {
+  background-color: #ebebeb;
+  color: #373737;
+}
+
+.Signup h1 {
+  text-align: left;
+  font-size: 20px;
+  width: 600px;
+  height: 35px;
+  margin: auto;
+}
+
+.w-btn-blue {
+  margin-top: 100px;
+  background-color: #0000ff;
+  color: #ffffff;
+}

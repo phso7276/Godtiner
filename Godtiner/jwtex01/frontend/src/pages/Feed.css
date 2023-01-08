@@ -1,0 +1,29 @@
+.Routine_list {
+  text-align: center;
+  width: 100%;
+}
+
+.RoutineItem {
+  display: inline-block;
+  width: 45%;
+  margin: 10px;
+}
+
+.feedImg {
+  width: 100%;
+  height: auto;
+}
+
+.feedTitle {
+  font-size: 28px;
+  width: fit-content;
+  text-align: center;
+}
+
+.feedTag {
+  font-size: 25px;
+}
+
+.feedback {
+  font-size: 20px;
+}

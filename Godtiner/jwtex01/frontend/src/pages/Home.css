@@ -1,0 +1,36 @@
+.date_btn button {
+  text-align: center;
+  width: 60px;
+  height: 120px;
+  border-radius: 30px;
+  padding: 30px;
+  margin: 13px;
+  font-size: 35px;
+  font-weight: bolder;
+}
+
+.date_btn {
+  text-align: center;
+}
+
+.routinSection {
+  display: block;
+  padding: 30px;
+}
+
+.add_btn {
+  size: 100;
+}
+
+.routine_name {
+  width: 200px;
+  height: 50px;
+  border: 0;
+  font-size: 40px;
+  padding-left: 20px;
+  padding-top: 20px;
+}
+
+.routine_name:focus {
+  outline: none;
+}

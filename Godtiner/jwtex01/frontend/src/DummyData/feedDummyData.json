@@ -1,0 +1,38 @@
+{
+  "Feed_Routine": [
+    {
+      "RoutineId": 1,
+      "Routiner": "PYM",
+      "RoutineTitle": "매일 독서 습관 들이기",
+      "RoutinePic": "../img/book.png",
+      "RoutineTag": ["독서", "학생"],
+      "RoutineIntro": "흔한 고등학생의 독서 습관 루틴",
+      "RoutineContent": [
+        ["8:00", " ", "따뜻한 물 한잔 마시기"],
+        ["9:00", " ", "신문기사 하나 읽기"],
+        ["10:00", "10:30", "가벼운 아침 운동"],
+        ["22:00", " ", "30분 책 읽기"]
+      ],
+      "Routine_like": 122,
+      "Routine_save": 30,
+      "Routine_look": 200
+    },
+    {
+      "RoutineId": 2,
+      "Routiner": "KYJ",
+      "RoutineTitle": "꾸준한 운동의 힘",
+      "RoutinePic": "../img/health.png",
+      "RoutineTag": ["운동", "건강"],
+      "RoutineIntro": "매일 조금씩이라도 꾸준하게 운동하면 몸 뿐만 아니라 마음도 건강해 져요! 저와 함께 매일 소소한 운동 루틴 실천해 봐요 :-) ",
+      "RoutineContent": [
+        ["8:00", " ", "따뜻한 물 한잔 마시기"],
+        ["9:00", " ", "신문기사 하나 읽기"],
+        ["10:00", "10:30", "가벼운 아침 운동"],
+        ["22:00", " ", "30분 책 읽기"]
+      ],
+      "Routine_like": 200,
+      "Routine_save": 120,
+      "Routine_look": 460
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+.loginButton {
+  margin-top: 10px;
+  padding: 0;
+  width: 250px;
+  height: 30px;
+  border: none;
+  background-color: #0095f6;
+  color: white;
+  font-size: 17px;
+  border-radius: 5px;
+}
+
+.idDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.pwDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginId {
+  font-size: 25px;
+  width: 500px;
+  height: 60px;
+  border-radius: 25px;
+  text-align: center;
+}
+
+.loginPw {
+  font-size: 25px;
+  width: 500px;
+  height: 60px;
+  border-radius: 25px;
+  text-align: center;
+}
+
+.welcome {
+  font-size: 35px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 100px;
+  margin-top: 180px;
+}
+
+.buttonDiv {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+}
+.loginButton {
+  width: 400px;
+  height: 70px;
+  border-radius: 40px;
+  font-size: 35px;
+  transition: 0.25s;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+.loginButton:hover {
+  transform: scale(1.05);
+}
+
+.userNameDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.userName {
+  font-size: 25px;
+  width: 500px;
+  height: 60px;
+  border-radius: 25px;
+  text-align: center;
+}
+
+.nickNameDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.nickName {
+  font-size: 25px;
+  width: 500px;
+  height: 60px;
+  border-radius: 25px;
+  text-align: center;
+}

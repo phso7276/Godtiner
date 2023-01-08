@@ -1,0 +1,58 @@
+.Routine {
+  text-align: center;
+}
+
+.RoutineTitle {
+  margin: 10px;
+  font-size: 40px;
+}
+
+.RoutineImg {
+  margin-top: 30px;
+  width: 400px;
+}
+
+.RoutineDetail {
+  width: 100%;
+  text-align: center;
+}
+
+.checkbox {
+  width: 40px;
+  height: 40px;
+  margin: 10px;
+}
+.checkAll {
+  width: 25px;
+  height: 25px;
+  margin: 10px;
+  text-align: left;
+}
+
+.RoutineTime {
+  background-color: rgb(210, 210, 210);
+  border-radius: 10px;
+  display: inline-block;
+  width: 140px;
+  height: 50px;
+}
+
+.RoutineContent {
+  background-color: rgb(210, 210, 210);
+  display: inline-block;
+  width: 390px;
+  height: 50px;
+
+  font-size: 25px;
+}
+
+.RoutineStartTime {
+  display: inline-block;
+  font-size: 20px;
+}
+
+.RoutineEndTime {
+  display: inline-block;
+  padding-left: 10px;
+  font-size: 20px;
+}
