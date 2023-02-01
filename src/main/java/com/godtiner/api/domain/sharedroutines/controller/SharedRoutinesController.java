@@ -6,6 +6,7 @@ import com.godtiner.api.domain.sharedroutines.dto.PickRequestDto;
 import com.godtiner.api.domain.sharedroutines.dto.TagDto;
 import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.FeedPageDto;
 import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SharedRoutinesCreate;
+import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SharedRoutinesDelete;
 import com.godtiner.api.domain.sharedroutines.service.SharedRoutinesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,11 +42,11 @@ public class SharedRoutinesController {
     }
 
     //공유 루틴 삭제
+
     @ApiOperation(value = "공유 루틴 삭제", notes = "공유 루틴을 삭제한다.")
-    @DeleteMapping(value = "/sharedRoutine/{id}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Response delete(@PathVariable long id) throws Exception {
-        sharedRoutinesService.delete(id);
+    @PostMapping(value = "/sharedRoutine/remove")
+    public Response deleteRoutines(@RequestBody SharedRoutinesDelete req) throws Exception {
+        sharedRoutinesService.deleteRoutines(req);
         return Response.success();
     }
 
@@ -82,6 +83,12 @@ public class SharedRoutinesController {
         return Response.success();
     }
 
+    //내가 공유한 루틴들만 보기
+    @GetMapping("/member/sharedRoutine")
+    public Response getMySharedRoutines(){
+
+        return Response.success(sharedRoutinesService.mySharedRoutines());
+    }
 
 
 

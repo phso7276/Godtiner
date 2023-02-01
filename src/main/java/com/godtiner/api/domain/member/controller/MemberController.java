@@ -114,6 +114,7 @@ public class MemberController {
     }
 
 
+
    /* @GetMapping("/user/{id}")
     public ResponseEntity<UserResponseDto> searchUser(
             @PathVariable final Long id) {

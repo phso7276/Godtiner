@@ -283,14 +283,19 @@ public class SharedRoutinesService {
         target.deleteLikedCnt();
     }
 
-    public void delete(Long id) throws MyRoutinesException {
+
+
+    public void deleteRoutines(SharedRoutinesDelete req) throws SharedRoutinesException {
         Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
                 .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
 
-        SharedRoutines sharedRoutines = Optional.of(sharedRoutinesRepository.findById(id).get())
-                .orElseThrow(() -> new SharedRoutinesException(SharedRoutinesExceptionType.SHARED_ROUTINES_NOT_FOUND));
+        log.info("length"+req.getRoutineIdList().length);
+        for (Long id: req.getRoutineIdList()){
 
-        sharedRoutinesRepository.delete(sharedRoutines);
+            SharedRoutines sharedRoutines = Optional.of(sharedRoutinesRepository.findById(id).get())
+                    .orElseThrow(() -> new SharedRoutinesException(SharedRoutinesExceptionType.SHARED_ROUTINES_NOT_FOUND));
+            sharedRoutinesRepository.delete(sharedRoutines);
+        }
 
     }
 
@@ -315,6 +320,17 @@ public class SharedRoutinesService {
                 .orElseThrow(() -> new MyRoutinesException(MyRoutinesExceptionType.MY_ROUTINES_NOT_FOUND));
         sharedRoutines.addPickCnt();
 
+    }
+
+    //내가 공유한 루틴들 관리
+    public List<SharedRoutinesSimple> mySharedRoutines(){
+        Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
+
+        //멤버로 공유 루틴 찾기
+
+        return sharedRoutinesRepository.findByIdWithMember(member.getId()).stream().map(SharedRoutinesSimple::new)
+                .collect(Collectors.toList());
     }
 
 
