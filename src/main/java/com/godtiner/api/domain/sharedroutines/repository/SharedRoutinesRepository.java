@@ -1,5 +1,6 @@
 package com.godtiner.api.domain.sharedroutines.repository;
 
+import com.godtiner.api.domain.member.Member;
 import com.godtiner.api.domain.myroutines.MyRoutines;
 import com.godtiner.api.domain.sharedroutines.QSharedContents;
 import com.godtiner.api.domain.sharedroutines.RoutineTag;
@@ -18,6 +19,8 @@ public interface SharedRoutinesRepository extends JpaRepository<SharedRoutines, 
     //작성자 정보도 함께
     @Query("select p from SharedRoutines p join fetch p.writer where p.id = :id")
     Optional<SharedRoutines> findByIdWithMember(Long id);
+
+    List<SharedRoutines> findByWriter(Member member);
 
     Optional<SharedRoutines> findBySharedContentsList(SharedContents sharedContents);
 

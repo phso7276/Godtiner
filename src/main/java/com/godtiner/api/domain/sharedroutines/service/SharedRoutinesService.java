@@ -329,7 +329,7 @@ public class SharedRoutinesService {
 
         //멤버로 공유 루틴 찾기
 
-        return sharedRoutinesRepository.findByIdWithMember(member.getId()).stream().map(SharedRoutinesSimple::new)
+        return sharedRoutinesRepository.findByWriter(member).stream().map(SharedRoutinesSimple::new)
                 .collect(Collectors.toList());
     }
 
