@@ -4,8 +4,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.godtiner.api.domain.member.Member;
-import com.godtiner.api.domain.member.Role;
 import com.godtiner.api.domain.member.repository.MemberRepository;
+import com.godtiner.api.domain.sharedroutines.repository.LikedRepository;
+import com.godtiner.api.domain.sharedroutines.repository.SharedRoutinesRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,12 @@ class JwtServiceTest {
     @Autowired JwtService jwtService;
     @Autowired MemberRepository memberRepository;
     @Autowired EntityManager em;
+
+    @Autowired
+    LikedRepository likedRepository;
+
+    @Autowired
+    SharedRoutinesRepository sharedRoutinesRepository;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -62,6 +69,22 @@ class JwtServiceTest {
         em.clear();
     }
 
+
+    @Test
+    public void testReadWithLiked(){
+
+        Member member = memberRepository.findById(Long.valueOf(9)).get();
+
+        //List<Object> result = sharedRoutinesRepository.getSharedRoutinesByMemberWithLiked(member);
+
+       /* for(Object arr:result){
+            System.out.println(arr.toString());
+        }*/
+
+      /*for(Object arr : result){
+            System.out.println(arr.toString());
+        }*/
+    }
 
     @Test
     public void createAccessToken_AccessToken_발급() throws Exception {

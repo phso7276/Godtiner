@@ -111,26 +111,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
 
     }
 
-   /* private Predicate createPredicate(SearchCondition cond) { // 8
-        return new BooleanBuilder()
-                .and(orConditionsByEqTagIds(cond.getTagId()))
-                .and(orConditionsByEqMemberIds(cond.()));
-    }
 
-    private Predicate orConditionsByEqTagIds(List<Long> categoryIds) { // 9
-        return orConditions(categoryIds, post.category.id::eq);
-    }
-
-    private Predicate orConditionsByEqMemberIds(Long memberId) { // 10
-        return orConditions(memberId, sharedRoutines.member.id::eq);
-    }
-
-    private <T> Predicate orConditions(List<T> values, Function<T, BooleanExpression> term) { // 11
-        return (Predicate) values.stream()
-                .map(term)
-                .reduce(BooleanExpression::or)
-                .orElse(null);
-    }*/
 
     private BooleanExpression contentHasStr(String content) {
         return StringUtils.hasLength(content) ? sharedRoutines.routineContent.contains(content) : null;

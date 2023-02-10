@@ -1,6 +1,5 @@
 package com.godtiner.api.domain.sharedroutines.service;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.godtiner.api.domain.member.Member;
@@ -16,9 +15,7 @@ import com.godtiner.api.domain.myroutines.MyRoutines;
 import com.godtiner.api.domain.myroutines.repository.MyContentsRepository;
 import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
 import com.godtiner.api.domain.sharedroutines.*;
-import com.godtiner.api.domain.sharedroutines.dto.PickRequestDto;
-import com.godtiner.api.domain.sharedroutines.dto.RecommendationPageDto;
-import com.godtiner.api.domain.sharedroutines.dto.TagInfo;
+import com.godtiner.api.domain.sharedroutines.dto.*;
 import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.*;
 import com.godtiner.api.domain.sharedroutines.repository.*;
 import com.godtiner.api.global.exception.*;
@@ -27,11 +24,7 @@ import com.godtiner.api.global.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.objectweb.asm.TypeReference;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +32,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
@@ -333,6 +325,29 @@ public class SharedRoutinesService {
                 .collect(Collectors.toList());
     }
 
+    //내가 좋아요한 루틴들 관리
+    public List<LikedPageDto> myLiked(){
+        Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
+
+
+
+        return sharedRoutinesRepository.getSharedRoutinesByMemberWithLiked(member);
+
+    }
+    //찜한 루틴들 편집(삭제)
+    public void deletelikedList(LikedDelete req) throws Exception {
+        Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
+                .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
+
+        for (Long id: req.getLikedIdList()){
+
+            Liked liked = Optional.of(likedRepository.findById(id).get())
+                    .orElseThrow(() -> new SharedRoutinesException(SharedRoutinesExceptionType.SHARED_ROUTINES_NOT_FOUND));
+            likedRepository.delete(liked);
+        }
+
+    }
 
     //페이징, 검색
    public SharedPagingDto getPostList(Pageable pageable, SearchCondition searchCondition) {

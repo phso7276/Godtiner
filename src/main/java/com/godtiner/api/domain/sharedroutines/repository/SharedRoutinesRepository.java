@@ -1,14 +1,13 @@
 package com.godtiner.api.domain.sharedroutines.repository;
 
 import com.godtiner.api.domain.member.Member;
-import com.godtiner.api.domain.myroutines.MyRoutines;
-import com.godtiner.api.domain.sharedroutines.QSharedContents;
 import com.godtiner.api.domain.sharedroutines.RoutineTag;
 import com.godtiner.api.domain.sharedroutines.SharedContents;
 import com.godtiner.api.domain.sharedroutines.SharedRoutines;
+import com.godtiner.api.domain.sharedroutines.dto.LikedPageDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +24,11 @@ public interface SharedRoutinesRepository extends JpaRepository<SharedRoutines, 
     Optional<SharedRoutines> findBySharedContentsList(SharedContents sharedContents);
 
     List<SharedRoutines> findTop2ByRoutineTagsOrderByAvgPreferenceAsc(RoutineTag routineTag);
+
+    @Query(value ="select "+
+            "new com.godtiner.api.domain.sharedroutines.dto.LikedPageDto(b.id,b.feed_thumbnail_filename,b.title, s.id) "
+            +"from SharedRoutines b left join Liked s on s.sharedRoutine=b where s.member =:member")
+    List<LikedPageDto> getSharedRoutinesByMemberWithLiked(@Param("member")Member member);
 
 
 }

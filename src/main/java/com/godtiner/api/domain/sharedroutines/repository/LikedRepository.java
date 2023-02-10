@@ -15,4 +15,6 @@ public interface LikedRepository extends JpaRepository<Liked,Long> {
     //int countBySharedRoutines(SharedRoutines sharedRoutines);
 
     Long countByMember(Member member);
+
+
 }

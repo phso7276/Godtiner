@@ -3,10 +3,8 @@ package com.godtiner.api.domain.sharedroutines;
 import com.godtiner.api.domain.myroutines.MyRoutineRules;
 import com.godtiner.api.domain.myroutines.MyRoutines;
 import com.godtiner.api.domain.myroutines.dto.myRules.MyRoutineRulesDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -14,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -40,6 +38,7 @@ public class SharedContents {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="sharedRoutinesID")
+    @JsonIgnore
     private SharedRoutines sharedRoutine;
 
    public SharedContents(String content, LocalTime startTime, LocalTime endTime, SharedRoutines sharedRoutines,

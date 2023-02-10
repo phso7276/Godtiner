@@ -2,6 +2,7 @@ package com.godtiner.api.domain.sharedroutines.controller;
 
 import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesCreateRequest;
 import com.godtiner.api.domain.response.Response;
+import com.godtiner.api.domain.sharedroutines.dto.LikedDelete;
 import com.godtiner.api.domain.sharedroutines.dto.PickRequestDto;
 import com.godtiner.api.domain.sharedroutines.dto.TagDto;
 import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.FeedPageDto;
@@ -74,7 +75,6 @@ public class SharedRoutinesController {
 
     //공유 루틴 스크랩
     @PostMapping("/sharedRoutine/pick/{routineId}")
-    @ResponseStatus(HttpStatus.CREATED)
     public Response pickSharedContents(@RequestBody PickRequestDto req,
                                        @PathVariable Long routineId){
 
@@ -90,6 +90,20 @@ public class SharedRoutinesController {
         return Response.success(sharedRoutinesService.mySharedRoutines());
     }
 
+
+    //찜한 루틴들 보기
+    @GetMapping("/member/liked")
+    public Response getMyLiked(){
+
+        return Response.success(sharedRoutinesService.myLiked());
+    }
+    //찜하기 복수삭제 (마이페이지)
+
+    @PostMapping(value = "/member/liked/remove")
+    public Response deleteMyLikedList(@RequestBody LikedDelete req) throws Exception {
+        sharedRoutinesService.deletelikedList(req);
+        return Response.success();
+    }
 
 
 }

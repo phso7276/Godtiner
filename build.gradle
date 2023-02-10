@@ -43,6 +43,9 @@ dependencies {
     implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.16'
     // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    // https://mvnrepository.com/artifact/org.qlrm/qlrm
+    implementation 'org.qlrm:qlrm:3.0.1'
+
 
 
 

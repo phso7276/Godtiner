@@ -1,13 +1,27 @@
 package com.godtiner.api;
 
-import org.junit.jupiter.api.Test;
+
+import com.godtiner.api.domain.sharedroutines.repository.LikedRepository;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Arrays;
 
 @SpringBootTest
 class ApiApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+    @Autowired
+    LikedRepository likedRepository;
 
+   /* @Test
+    public void testReadWithSharedRoutine(){
+
+        Object result = likedRepository.getLikedByMemberWithSharedRoutine();
+
+        Object[] arr = (Object[]) result;
+
+        System.out.println("---------------");
+        System.out.println(Arrays.toString(arr));
+    }*/
 }

@@ -24,7 +24,7 @@ import java.util.List;
 import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
 @Entity
-@Data
+@Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -66,6 +66,7 @@ public class SharedRoutines extends BaseEntity {
     private int pickcnt;
 
     @NotAudited
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sharedRoutine",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<SharedContents> sharedContentsList;
 
