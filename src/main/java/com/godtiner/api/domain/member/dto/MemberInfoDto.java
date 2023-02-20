@@ -17,6 +17,8 @@ public class MemberInfoDto {
     private String nickname;
     private String email;
 
+    private String introduction;
+
     private String stored_filename;
 
 /*    public MemberInfoDto(String name, String nickname, String email, String stored_filename){
@@ -41,6 +43,6 @@ public class MemberInfoDto {
     }
 
     public static MemberInfoDto toDto(Member member) {
-        return new MemberInfoDto(member.getId(), member.getEmail(), member.getName(), member.getNickname(),member.getStored_filename());
+        return new MemberInfoDto(member.getId(), member.getEmail(), member.getName(),member.getIntroduction(), member.getNickname(),member.getStored_filename());
     }
 }
