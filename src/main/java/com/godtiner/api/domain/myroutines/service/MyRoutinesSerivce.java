@@ -7,6 +7,7 @@ import com.godtiner.api.domain.member.repository.MemberRepository;
 import com.godtiner.api.domain.myroutines.MyContents;
 import com.godtiner.api.domain.myroutines.MyRoutines;
 import com.godtiner.api.domain.myroutines.dto.ShareMyRoutinesPageDto;
+import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsDto;
 import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsUpdateResponse;
 import com.godtiner.api.domain.myroutines.dto.myRoutines.*;
 import com.godtiner.api.domain.myroutines.repository.MyContentsRepository;
@@ -24,6 +25,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.TabableView;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.TextStyle;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -65,13 +71,13 @@ public class MyRoutinesSerivce {
         return new MyRoutinesCreateResponse(myRoutines.getId());
     }*/
 
-    public MyRoutinesDto read(Long id){
-       /* Member findMember = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
+   /* public MyRoutinesDto read(Long id){
+       *//* Member findMember = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
                 .orElseThrow(() ->  new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
-*/
+*//*
         return new MyRoutinesDto(myRoutinesRepository.findById(id)
                 .orElseThrow(() -> new MyRoutinesException(MyRoutinesExceptionType.MY_ROUTINES_NOT_FOUND)));
-    }
+    }*/
 
 /*
    public  MyRoutinesDto getInfoWithMember(Long mid){
@@ -81,14 +87,56 @@ public class MyRoutinesSerivce {
     }
 */
 
-    public MyRoutinesDto getInfoMine(){
+    public MyRoutinesDto getInfoMine(int day){
         Member findMember = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
                 .orElseThrow(() ->  new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
 
         log.info("멤버 아이디:"+findMember.getId());
 
-        return new MyRoutinesDto(myRoutinesRepository.getWithWriter(findMember.getId())
-                .orElseThrow(() -> new MyRoutinesException(MyRoutinesExceptionType.MY_ROUTINES_NOT_FOUND)));
+        MyRoutines myRoutines =myRoutinesRepository.getWithWriter(findMember.getId())
+                .orElseThrow(() -> new MyRoutinesException(MyRoutinesExceptionType.MY_ROUTINES_NOT_FOUND));
+
+       /* LocalDate now = LocalDate.now();
+        DayOfWeek dayOfWeek = now.getDayOfWeek();
+
+        String day = String.valueOf(dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.US));*/
+
+        switch(day+1){
+
+            case 1:
+                return new MyRoutinesDto(myRoutines,
+                        myContentsRepository.getIsMonMyContentsByRidWithMyRoutineRulesAndMyRoutines(myRoutines.getId())
+                                .stream().map(MyContentsDto::new).collect(Collectors.toList()));
+            case 2:
+                return new MyRoutinesDto(myRoutines,
+                        myContentsRepository.getIsTueMyContentsByRidWithMyRoutineRulesAndMyRoutines(myRoutines.getId())
+                                .stream().map(MyContentsDto::new).collect(Collectors.toList()));
+            case 3:
+                return new MyRoutinesDto(myRoutines,
+                        myContentsRepository.getIsWedMyContentsByRidWithMyRoutineRulesAndMyRoutines(myRoutines.getId())
+                                .stream().map(MyContentsDto::new).collect(Collectors.toList()));
+            case 4:
+                return new MyRoutinesDto(myRoutines,
+                        myContentsRepository.getIsThuMyContentsByRidWithMyRoutineRulesAndMyRoutines(myRoutines.getId())
+                                .stream().map(MyContentsDto::new).collect(Collectors.toList()));
+            case 5:
+                return new MyRoutinesDto(myRoutines,
+                        myContentsRepository.getIsFriMyContentsByRidWithMyRoutineRulesAndMyRoutines(myRoutines.getId())
+                                .stream().map(MyContentsDto::new).collect(Collectors.toList()));
+            case 6:
+                return new MyRoutinesDto(myRoutines,
+                        myContentsRepository.getIsSatMyContentsByRidWithMyRoutineRulesAndMyRoutines(myRoutines.getId())
+                                .stream().map(MyContentsDto::new).collect(Collectors.toList()));
+            case 7:
+                return new MyRoutinesDto(myRoutines,
+                        myContentsRepository.getIsSunMyContentsByRidWithMyRoutineRulesAndMyRoutines(myRoutines.getId())
+                                .stream().map(MyContentsDto::new).collect(Collectors.toList()));
+
+            default:
+                System.out.println("존재하지 않는 날짜 입니다.");}
+
+
+        return null;
     }
 
 

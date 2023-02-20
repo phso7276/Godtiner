@@ -31,12 +31,12 @@ public class MyRoutinesController {
         return Response.success(myRoutinesSerivce.create(req));
     }
 */
-    @ApiOperation(value = "마이루틴 루틴 아이디로 조회 ", notes = "마이루틴을 조회한다.")
+/*    @ApiOperation(value = "마이루틴 루틴 아이디로 조회 ", notes = "마이루틴을 조회한다.")
     @GetMapping("/myRoutine/post/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Response read(@ApiParam(value = "루틴 id", required = true) @PathVariable Long id) {
         return Response.success(myRoutinesSerivce.read(id));
-    }
+    }*/
 
 /*
    @ApiOperation(value = "마이루틴 멤버 아이디로 조회 ", notes = "마이루틴을 조회한다.")
@@ -48,10 +48,10 @@ public class MyRoutinesController {
 */
 
     @ApiOperation(value = "마이루틴 멤버 아이디로 조회 ", notes = "마이루틴을 조회한다.")
-    @GetMapping(value = "/myRoutine/post")
+    @GetMapping(value = "/myRoutine/post/{day}")
     @ResponseStatus(HttpStatus.OK)
-    public Response getMine() {
-        return Response.success(myRoutinesSerivce.getInfoMine());
+    public Response getMine( @PathVariable int day) {
+        return Response.success(myRoutinesSerivce.getInfoMine(day));
     }
 
     @ApiOperation(value = "마이루틴 타이틀 변경 ", notes = "마이루틴을 타이틀 변경 한다.")

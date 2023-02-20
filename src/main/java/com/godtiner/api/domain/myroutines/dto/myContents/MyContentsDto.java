@@ -28,6 +28,8 @@ public class MyContentsDto {
     private LocalTime endTime;
     private List<MyRoutineRulesDto> myRules;
 
+    private boolean isClear;
+
     public MyContentsDto(MyContents myContents){
        // this.routineId = myContents.getMyRoutines().getId();
         this.id=myContents.getId();
@@ -35,6 +37,7 @@ public class MyContentsDto {
         this.idx=myContents.getIdx();
         this.startTime = myContents.getStartTime();
         this.endTime =myContents.getEndTime();
+        this.isClear=myContents.isClear();
         this.myRules =myContents.getMyRoutineRulesList().stream()
                 .map(MyRoutineRulesDto::new).collect(Collectors.toList());
 
