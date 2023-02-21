@@ -78,7 +78,6 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
 
 
         JPAQuery<SharedRoutines> countQuery = query.selectFrom(sharedRoutines)
-                .leftJoin(sharedRoutines.routineTags,routineTag)
                 .where(
                         contentHasStr(searchCondition.getRoutineContent()),
                         titleHasStr(searchCondition.getTitle()),
