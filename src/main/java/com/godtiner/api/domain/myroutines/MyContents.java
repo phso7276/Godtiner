@@ -1,10 +1,7 @@
 package com.godtiner.api.domain.myroutines;
 
 
-import com.godtiner.api.domain.member.Member;
-import com.godtiner.api.domain.myroutines.dto.myRules.MyRoutineRulesUpdate;
 import lombok.*;
-import net.bytebuddy.asm.Advice;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.envers.Audited;

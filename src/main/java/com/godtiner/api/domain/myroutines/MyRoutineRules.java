@@ -1,14 +1,11 @@
 package com.godtiner.api.domain.myroutines;
 
 import com.godtiner.api.domain.BaseEntity;
-import com.godtiner.api.domain.myroutines.dto.myRules.MyRoutineRulesUpdate;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Getter

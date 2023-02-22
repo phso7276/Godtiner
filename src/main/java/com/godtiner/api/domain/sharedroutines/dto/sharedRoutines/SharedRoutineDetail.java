@@ -2,8 +2,6 @@ package com.godtiner.api.domain.sharedroutines.dto.sharedRoutines;
 
 
 import com.godtiner.api.domain.member.dto.MemberInfoDto;
-import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsDto;
-import com.godtiner.api.domain.sharedroutines.SharedContents;
 import com.godtiner.api.domain.sharedroutines.SharedRoutines;
 import com.godtiner.api.domain.sharedroutines.dto.sharedContents.SharedContentsDto;
 import io.swagger.annotations.ApiModel;

@@ -1,6 +1,5 @@
 package com.godtiner.api.domain.myroutines.dto.myContents;
 
-import com.godtiner.api.domain.myroutines.dto.myRules.MyRoutineRulesDto;
 import com.godtiner.api.domain.myroutines.dto.myRules.MyRoutineRulesUpdate;
 import lombok.*;
 

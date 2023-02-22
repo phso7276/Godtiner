@@ -1,14 +1,10 @@
 package com.godtiner.api.domain.myroutines.dto.myRoutines;
 
 
-import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsCreate;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 

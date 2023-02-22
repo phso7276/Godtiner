@@ -3,10 +3,8 @@ package com.godtiner.api.domain.myroutines;
 import com.godtiner.api.domain.BaseEntity;
 
 import com.godtiner.api.domain.member.Member;
-import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsCreate;
 import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsDto;
 import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesDto;
-import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesUpdateRequest;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -14,10 +12,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @Entity
 @Getter

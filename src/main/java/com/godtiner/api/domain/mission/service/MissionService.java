@@ -2,7 +2,6 @@ package com.godtiner.api.domain.mission.service;
 
 
 import com.godtiner.api.domain.member.Member;
-import com.godtiner.api.domain.member.dto.MemberInfoDto;
 import com.godtiner.api.domain.member.exception.MemberException;
 import com.godtiner.api.domain.member.exception.MemberExceptionType;
 import com.godtiner.api.domain.member.repository.MemberRepository;
@@ -15,7 +14,7 @@ import com.godtiner.api.domain.mission.repository.MissionRepository;
 import com.godtiner.api.domain.myroutines.MyContents;
 import com.godtiner.api.domain.myroutines.MyRoutines;
 import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
-import com.godtiner.api.domain.sharedroutines.dto.TagInfo;
+import com.godtiner.api.domain.notification.service.NotificationService;
 import com.godtiner.api.global.exception.MyRoutinesException;
 import com.godtiner.api.global.exception.MyRoutinesExceptionType;
 import com.godtiner.api.global.util.security.SecurityUtil;
@@ -32,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,6 +49,8 @@ public class MissionService {
 
     private final MemberMissionRepository memberMissionRepository;
     private final MemberRepository memberRepository;
+
+    private final NotificationService notificationService;
 
 
     public void checkCondition(MyContents myContents){
@@ -88,6 +88,7 @@ public class MissionService {
                 memberMissionRepository.save(new MemberMission(mission.get(), myRoutines.getWriter(), mission.get().getMissionName()));
                 log.info("missionName:" + mission.get().getMissionName());
                 eventPublisher.publishEvent(new MissionCompleteEvent(mission.get()));
+                //notificationService.send(myRoutines.getWriter(), mission.get(), mission.get().getMissionName());
             }
         }
 

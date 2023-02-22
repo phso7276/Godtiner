@@ -2,26 +2,15 @@ package com.godtiner.api.domain.sharedroutines;
 
 import com.godtiner.api.domain.BaseEntity;
 import com.godtiner.api.domain.member.Member;
-import com.godtiner.api.domain.myroutines.MyContents;
-import com.godtiner.api.domain.myroutines.MyRoutineRules;
-import com.godtiner.api.domain.myroutines.MyRoutines;
 import com.godtiner.api.domain.sharedroutines.dto.TagInfo;
-import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SharedRoutinesCreate;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
-import springfox.documentation.spring.web.json.Json;
 
 import javax.persistence.*;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
-
-import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
 @Entity
 @Getter

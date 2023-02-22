@@ -1,30 +1,17 @@
 package com.godtiner.api.domain.sharedroutines.dto.sharedRoutines;
 
 import com.godtiner.api.domain.member.Member;
-import com.godtiner.api.domain.member.repository.MemberRepository;
-import com.godtiner.api.domain.myroutines.MyContents;
-import com.godtiner.api.domain.myroutines.MyRoutines;
-import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesCreateRequest;
-import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesDto;
-import com.godtiner.api.domain.sharedroutines.RoutineTag;
-import com.godtiner.api.domain.sharedroutines.SharedContents;
 import com.godtiner.api.domain.sharedroutines.SharedRoutines;
-import com.godtiner.api.domain.sharedroutines.Tag;
 import com.godtiner.api.domain.sharedroutines.dto.TagInfo;
-import com.godtiner.api.domain.sharedroutines.repository.TagRepository;
-import com.godtiner.api.global.exception.MemberNotFoundException;
-import com.godtiner.api.global.util.security.SecurityUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 

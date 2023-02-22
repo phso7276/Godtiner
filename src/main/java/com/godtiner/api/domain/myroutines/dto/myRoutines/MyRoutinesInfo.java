@@ -1,9 +1,7 @@
 package com.godtiner.api.domain.myroutines.dto.myRoutines;
 
-import com.godtiner.api.domain.member.Member;
 import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsDto;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;

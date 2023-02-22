@@ -1,7 +1,6 @@
 package com.godtiner.api.domain.sharedroutines;
 
 import com.godtiner.api.domain.BaseEntity;
-import com.godtiner.api.domain.myroutines.MyContents;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,7 +1,6 @@
 package com.godtiner.api.domain.myroutines.controller;
 
 
-import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesCreateRequest;
 import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesUpdateRequest;
 import com.godtiner.api.domain.myroutines.service.MyRoutinesSerivce;
 import com.godtiner.api.domain.response.Response;
@@ -62,10 +61,10 @@ public class MyRoutinesController {
     }
 
     @ApiOperation(value = "마이루틴 공유하기 ", notes = "마이루틴을 공유한다.")
-    @GetMapping(value = "/myRoutine/share/{id}")
+    @GetMapping(value = "/myRoutine/share")
     @ResponseStatus(HttpStatus.OK)
-    public Response ToShare(@ApiParam(value = "루틴 id", required = true) @PathVariable Long id) {
-        return Response.success(myRoutinesSerivce.ToShare(id));
+    public Response ToShare() {
+        return Response.success(myRoutinesSerivce.ToShare());
     }
 
 

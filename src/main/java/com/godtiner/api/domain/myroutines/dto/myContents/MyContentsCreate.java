@@ -1,8 +1,8 @@
 package com.godtiner.api.domain.myroutines.dto.myContents;
 
+import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
 import com.godtiner.api.domain.myroutines.MyContents;
 import com.godtiner.api.domain.myroutines.MyRoutineRules;
-import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
 import com.godtiner.api.global.exception.MyContentsException;
 import com.godtiner.api.global.exception.MyContentsExceptionType;
 import io.swagger.annotations.ApiModelProperty;

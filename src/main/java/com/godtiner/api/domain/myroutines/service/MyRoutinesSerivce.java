@@ -4,18 +4,15 @@ import com.godtiner.api.domain.member.Member;
 import com.godtiner.api.domain.member.exception.MemberException;
 import com.godtiner.api.domain.member.exception.MemberExceptionType;
 import com.godtiner.api.domain.member.repository.MemberRepository;
-import com.godtiner.api.domain.myroutines.MyContents;
-import com.godtiner.api.domain.myroutines.MyRoutines;
-import com.godtiner.api.domain.myroutines.dto.ShareMyRoutinesPageDto;
 import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsDto;
-import com.godtiner.api.domain.myroutines.dto.myContents.MyContentsUpdateResponse;
-import com.godtiner.api.domain.myroutines.dto.myRoutines.*;
 import com.godtiner.api.domain.myroutines.repository.MyContentsRepository;
 import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
-import com.godtiner.api.domain.sharedroutines.SharedRoutines;
+import com.godtiner.api.domain.myroutines.MyRoutines;
+import com.godtiner.api.domain.myroutines.dto.ShareMyRoutinesPageDto;
+import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesDto;
+import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesUpdateRequest;
+import com.godtiner.api.domain.myroutines.dto.myRoutines.MyRoutinesUpdateResponse;
 import com.godtiner.api.domain.sharedroutines.repository.TagRepository;
-import com.godtiner.api.global.exception.MyContentsException;
-import com.godtiner.api.global.exception.MyContentsExceptionType;
 import com.godtiner.api.global.exception.MyRoutinesException;
 import com.godtiner.api.global.exception.MyRoutinesExceptionType;
 import com.godtiner.api.global.util.security.SecurityUtil;
@@ -24,11 +21,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.TabableView;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.format.TextStyle;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -167,8 +159,10 @@ public class MyRoutinesSerivce {
     }
 
     //공유하는 페이지
-    public ShareMyRoutinesPageDto ToShare(Long id){
-        MyRoutines myRoutines = myRoutinesRepository.findById(id)
+    public ShareMyRoutinesPageDto ToShare(){
+        Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
+                .orElseThrow(() ->  new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
+        MyRoutines myRoutines = myRoutinesRepository.findByWriter(member)
                 .orElseThrow(() -> new MyRoutinesException(MyRoutinesExceptionType.MY_ROUTINES_NOT_FOUND));
         return new ShareMyRoutinesPageDto(myRoutines,tagRepository);
     }

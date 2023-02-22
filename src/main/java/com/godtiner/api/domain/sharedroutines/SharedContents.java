@@ -1,8 +1,5 @@
 package com.godtiner.api.domain.sharedroutines;
 
-import com.godtiner.api.domain.myroutines.MyRoutineRules;
-import com.godtiner.api.domain.myroutines.MyRoutines;
-import com.godtiner.api.domain.myroutines.dto.myRules.MyRoutineRulesDto;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 

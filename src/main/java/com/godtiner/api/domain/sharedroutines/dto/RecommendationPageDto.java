@@ -2,14 +2,8 @@ package com.godtiner.api.domain.sharedroutines.dto;
 
 
 import com.godtiner.api.domain.member.MemberTag;
-import com.godtiner.api.domain.member.repository.MemberTagRepository;
-import com.godtiner.api.domain.myroutines.MyRoutines;
-import com.godtiner.api.domain.myroutines.dto.MyContentsSimple;
-import com.godtiner.api.domain.sharedroutines.RoutineTag;
 import com.godtiner.api.domain.sharedroutines.SharedRoutines;
 import com.godtiner.api.domain.sharedroutines.dto.sharedRoutines.SharedRoutinesSimple;
-import com.godtiner.api.domain.sharedroutines.repository.SharedRoutinesRepository;
-import com.godtiner.api.domain.sharedroutines.repository.TagRepository;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

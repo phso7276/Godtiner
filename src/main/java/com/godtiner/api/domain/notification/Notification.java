@@ -3,16 +3,17 @@ package com.godtiner.api.domain.notification;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.godtiner.api.domain.member.Member;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
+import org.jgroups.JChannel;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Notification {
     @Id
@@ -46,6 +47,8 @@ public class Notification {
         notification.notificationType=missionClear;
         return notification;
     }
+
+
 
     public void read() {
         this.checked = true;

@@ -13,9 +13,11 @@ import com.godtiner.api.global.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +64,14 @@ public class NotificationController {
                 .orElseThrow(() ->  new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
         notificationRepository.deleteByMemberAndChecked(member, true);
         return Response.success();
+    }
+
+    /**
+     * 로그인 한 유저 sse 연결
+     */
+    @GetMapping(value = "/subscribe", produces = "text/event-stream")
+    public SseEmitter subscribe(@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
+        return notificationService.subscribe(lastEventId);
     }
 
     private void putCategorizedNotifications(Model model, List<Notification> notifications, long numberOfChecked, long numberOfNotChecked) {

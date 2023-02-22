@@ -2,7 +2,6 @@ package com.godtiner.api.domain.myroutines.dto.myContents;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.godtiner.api.domain.myroutines.MyContents;
-import com.godtiner.api.domain.myroutines.MyRoutineRules;
 import com.godtiner.api.domain.myroutines.dto.myRules.MyRoutineRulesDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
