@@ -101,7 +101,7 @@ public class MyRoutinesSerivce {
 
         String day = String.valueOf(dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.US));*/
 
-        switch(day+1){
+        switch(day){
 
             case 1:
                 return new MyRoutinesDto(myRoutines,
@@ -127,7 +127,7 @@ public class MyRoutinesSerivce {
                 return new MyRoutinesDto(myRoutines,
                         myContentsRepository.getIsSatMyContentsByRidWithMyRoutineRulesAndMyRoutines(myRoutines.getId())
                                 .stream().map(MyContentsDto::new).collect(Collectors.toList()));
-            case 7:
+            case 0:
                 return new MyRoutinesDto(myRoutines,
                         myContentsRepository.getIsSunMyContentsByRidWithMyRoutineRulesAndMyRoutines(myRoutines.getId())
                                 .stream().map(MyContentsDto::new).collect(Collectors.toList()));
