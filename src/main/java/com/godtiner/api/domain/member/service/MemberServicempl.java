@@ -82,14 +82,14 @@ public class MemberServicempl implements MemberService {
     }
 
     @Override
-    public void update(MemberUpdateDto req,MultipartFile image) throws Exception {
+    public void update(MemberUpdateDto req/*,MultipartFile image*/) throws Exception {
         Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
-                .orElseThrow(() -> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
+                .orElseThrow(() ->  new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
 
        /* req.getUploadImage().ifPresent(
                 file -> member.updateFilePath(fileService.save(file))
         );*/
-        if(member.getStored_filename() !=null){
+        /*if(member.getStored_filename() !=null){
             fileService.delete(member.getStored_filename());//기존에 올린 파일 지우기
             member.updateOriginalFilenmae(null);
         }
@@ -102,9 +102,11 @@ public class MemberServicempl implements MemberService {
             member.updateStoredFilename(fileService.profileSave(image));
             member.updateOriginalFilenmae(image.getOriginalFilename());
         }
+*/
 
-
-        req.getName().ifPresent(member::updateName);
+        //req.getName().ifPresent(member::updateName);\
+        //member.updateNickname(String.valueOf(req.getNickname()));
+        //member.updateIntroduction(String.valueOf(req.getIntroduction()));
         req.getNickname().ifPresent(member::updateNickname);
         req.getIntroduction().ifPresent(member::updateIntroduction);
 

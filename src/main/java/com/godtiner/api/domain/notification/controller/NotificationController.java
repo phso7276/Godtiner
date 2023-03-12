@@ -69,7 +69,7 @@ public class NotificationController {
     /**
      * 로그인 한 유저 sse 연결
      */
-    @GetMapping(value = "/subscribe", produces = "text/event-stream")
+    @GetMapping(value = "/notifications/subscribe", produces = "text/event-stream")
     public SseEmitter subscribe(@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
         return notificationService.subscribe(lastEventId);
     }

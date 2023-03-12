@@ -15,7 +15,7 @@ import java.util.Optional;
 @Builder
 public class MemberUpdateDto {
 
-    private Optional<String> name;
+    //private Optional<String> name;
     private Optional<String> nickname;
 
     private Optional<String> introduction;

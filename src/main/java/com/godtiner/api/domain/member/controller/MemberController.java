@@ -66,13 +66,21 @@ public class MemberController {
     /**
      * 회원정보수정
      */
-    @PutMapping(value = "/member",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+
+    @PutMapping(value = "/member")
+    @ResponseStatus(HttpStatus.OK)
+    public Response updateBasicInfo(@Valid @RequestBody MemberUpdateDto userUpdateDto) throws Exception {
+        memberService.update(userUpdateDto);
+
+        return Response.success();
+    }
+   /* @PutMapping(value = "/member",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Response updateBasicInfo(@Valid @RequestPart(value = "info") MemberUpdateDto userUpdateDto,@RequestPart(value="image") MultipartFile image) throws Exception {
         memberService.update(userUpdateDto,image);
 
         return success();
-    }
+    }*/
 
     /**
      * 비밀번호 수정

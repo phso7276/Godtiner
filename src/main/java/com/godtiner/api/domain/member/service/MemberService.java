@@ -9,7 +9,7 @@ public interface MemberService {
     //MemberSignInResponseDto signIn(MemberSignInDto memberSignInDto) throws Exception;
     void signUp(MemberSignUpDto UserSignUpDto) throws Exception;
 
-    void update(MemberUpdateDto UserUpdateDto, MultipartFile image) throws Exception;
+    void update(MemberUpdateDto req/*, MultipartFile image*/) throws Exception;
 
     void updatePassword(String checkPassword, String toBePassword) throws Exception;
 

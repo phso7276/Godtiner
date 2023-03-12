@@ -88,7 +88,7 @@ public class MissionService {
                 memberMissionRepository.save(new MemberMission(mission.get(), myRoutines.getWriter(), mission.get().getMissionName()));
                 log.info("missionName:" + mission.get().getMissionName());
                 eventPublisher.publishEvent(new MissionCompleteEvent(mission.get()));
-                //notificationService.send(myRoutines.getWriter(), mission.get(), mission.get().getMissionName());
+                notificationService.send(myRoutines.getWriter(), mission.get(), mission.get().getMissionName());
             }
         }
 
