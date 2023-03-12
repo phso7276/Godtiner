@@ -113,6 +113,27 @@ public class MemberServicempl implements MemberService {
 
     }
 
+    @Override
+    public void updateProfile(MultipartFile image) throws Exception {
+
+        Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
+                .orElseThrow(() ->  new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
+
+        if(member.getStored_filename() !=null){
+            fileService.delete(member.getStored_filename());//기존에 올린 파일 지우기
+            member.updateOriginalFilenmae(null);
+        }
+
+
+        if(!image.isEmpty()){
+            if(!image.getContentType().startsWith("image")){
+                throw new FileUploadFailureException(new Exception());
+            }
+            member.updateStoredFilename(fileService.profileSave(image));
+            member.updateOriginalFilenmae(image.getOriginalFilename());
+        }
+
+    }
 
 
     @Override

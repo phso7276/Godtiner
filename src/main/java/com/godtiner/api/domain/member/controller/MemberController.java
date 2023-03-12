@@ -74,6 +74,14 @@ public class MemberController {
 
         return Response.success();
     }
+
+    @PostMapping(value = "/member/profile")
+    @ResponseStatus(HttpStatus.OK)
+    public Response updateBasicInfo(@Valid @RequestPart(value="image") MultipartFile image) throws Exception {
+        memberService.updateProfile(image);
+
+        return Response.success();
+    }
    /* @PutMapping(value = "/member",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Response updateBasicInfo(@Valid @RequestPart(value = "info") MemberUpdateDto userUpdateDto,@RequestPart(value="image") MultipartFile image) throws Exception {
