@@ -42,11 +42,14 @@ public class NotificationService {
         notifications.forEach(Notification::read);
     }
 
-    public SseEmitter subscribe(String lastEventId) {
-        Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
-                .orElseThrow(() ->  new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
+    public SseEmitter subscribe(String lastEventId,Long mid) {
+       /* Member member = memberRepository.findByEmail(SecurityUtil.getLoginEmail())
+                .orElseThrow(() ->  new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));*/
+
+        Member member = memberRepository.findById(mid).orElseThrow(()-> new MemberException(MemberExceptionType.NOT_FOUND_MEMBER));
         // 1
         String id = member.getId() + "_" + System.currentTimeMillis();
+
 
         // 2
         SseEmitter emitter = emitterRepository.save(id, new SseEmitter(DEFAULT_TIMEOUT));

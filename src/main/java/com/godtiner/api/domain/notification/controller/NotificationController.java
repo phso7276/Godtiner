@@ -69,9 +69,9 @@ public class NotificationController {
     /**
      * 로그인 한 유저 sse 연결
      */
-    @GetMapping(value = "/notifications/subscribe", produces = "text/event-stream")
-    public SseEmitter subscribe(@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
-        return notificationService.subscribe(lastEventId);
+    @GetMapping(value = "/notifications/subscribe/{id}", produces = "text/event-stream")
+    public SseEmitter subscribe(@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId, @PathVariable Long id) {
+        return notificationService.subscribe(lastEventId,id);
     }
 
     private void putCategorizedNotifications(Model model, List<Notification> notifications, long numberOfChecked, long numberOfNotChecked) {
