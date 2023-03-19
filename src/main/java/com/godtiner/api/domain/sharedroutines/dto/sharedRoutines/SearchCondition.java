@@ -9,7 +9,6 @@ public class SearchCondition {
 
     private String title;
     private String routineContent;
-
     private String tagName;
 
     private List<Long> tagId;

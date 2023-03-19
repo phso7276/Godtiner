@@ -10,9 +10,11 @@ import com.godtiner.api.domain.member.repository.MemberRepository;
 import com.godtiner.api.domain.member.repository.MemberTagRepository;
 import com.godtiner.api.domain.member.service.FileService;
 import com.godtiner.api.domain.myroutines.MyContents;
+import com.godtiner.api.domain.myroutines.MyRoutineRules;
 import com.godtiner.api.domain.myroutines.MyRoutines;
 
 import com.godtiner.api.domain.myroutines.repository.MyContentsRepository;
+import com.godtiner.api.domain.myroutines.repository.MyRoutineRulesRepository;
 import com.godtiner.api.domain.myroutines.repository.MyRoutinesRepository;
 import com.godtiner.api.domain.sharedroutines.*;
 import com.godtiner.api.domain.sharedroutines.dto.*;
@@ -47,6 +49,8 @@ public class SharedRoutinesService {
     private final SharedContentsRepository sharedContentsRepository;
     private final MyContentsRepository myContentsRepository;
     private final MyRoutinesRepository myRoutinesRepository;
+
+    private final MyRoutineRulesRepository myRoutineRulesRepository;
     private final MemberRepository memberRepository;
     private final FileService fileService;
 
@@ -162,9 +166,6 @@ public class SharedRoutinesService {
             //JSONObject data = new JSONObject();
             JSONObject result =byPass("http://127.0.0.1:5000/cb/"+id,"GET");
 
-            //Long[] jsonList = (Long[]) result.get("id");
-            //log.info("RESPONSE DATA : " + result.size());
-            //log.info("RESPONSE DATA : " + result.get("data"));
             String jsonString = (String) result.get("data");
 
             List<SharedRoutines> routines= new ArrayList<>();
@@ -306,6 +307,9 @@ public class SharedRoutinesService {
             //일단 content만 복사..
             MyContents myContents =new MyContents(sharedContents.getContent(),myRoutines);
             myContentsRepository.save(myContents);
+
+            MyRoutineRules myRoutineRules = new MyRoutineRules(myContents,true,true,true,true,true,true,true);
+            myRoutineRulesRepository.save(myRoutineRules);
 
         }
         SharedRoutines sharedRoutines = sharedRoutinesRepository.findById(routineId)

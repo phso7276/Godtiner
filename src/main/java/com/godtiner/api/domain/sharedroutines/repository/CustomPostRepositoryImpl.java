@@ -69,7 +69,6 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
                 .fetchJoin()
                 //.orderBy(sharedRoutines.regDate.desc())//최신 날짜부터
                 .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
-                //.orderBy(sharedRoutines.likecnt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch(); //Count 쿼리 발생 X
@@ -116,29 +115,9 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
         return StringUtils.hasLength(content) ? sharedRoutines.routineContent.contains(content) : null;
     }
 
-
     private BooleanExpression titleHasStr(String title) {
         return StringUtils.hasLength(title) ? sharedRoutines.title.contains(title) : null;
     }
-
-   /* private Predicate orConditionsByEqCategoryName(List<String> categoryName) { // 9
-        return orConditions(categoryName, sharedRoutines.routineTags.any().tagName::eq);
-    }
-    private <T> Predicate orConditions(List<T> values, Function<T, BooleanExpression> term) { // 11
-        return values.stream()
-                .map(term)
-                .reduce(BooleanExpression::or)
-                .orElse(null);
-    }*/
-
-  /*  private BooleanExpression tagHasStr(BooleanExpression routineTag){
-        if(routineTag==null){
-            return null;
-        }
-        return routineTag;
-    }
-*/
-
 
    private BooleanExpression tagHasStr(String tagName){
         return StringUtils.hasLength(tagName) ? sharedRoutines.routineTags.any().tagName.eq(tagName):null;
@@ -153,7 +132,6 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
 
     private List<OrderSpecifier> getAllOrderSpecifiers(Pageable pageable) {
         List<OrderSpecifier> ORDERS = new ArrayList<>();
-
         if (!isEmpty(pageable.getSort())) {
             for (Sort.Order order : pageable.getSort()) {
                 Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
