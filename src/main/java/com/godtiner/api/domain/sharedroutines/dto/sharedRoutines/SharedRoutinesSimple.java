@@ -48,6 +48,7 @@ public class SharedRoutinesSimple {
         this.likecnt =sharedRoutines.getLikecnt();
         this.pickcnt =sharedRoutines.getPickcnt();
         this.feed_thumbnail = sharedRoutines.getFeed_thumbnail_filename();
+        this.detail_thumbnail =sharedRoutines.getDetail_thumbnail_filename();
         this.routineTagList = sharedRoutines.getRoutineTags().stream().map(RoutineTagDto::new).collect(Collectors.toList());
         this.regdate=sharedRoutines.getRegdate();
 

@@ -68,7 +68,7 @@ public class MyContentsController {
     @ApiOperation(value = "루틴 클리어 변경 ", notes = "클리어 상태 변경 한다.")
     @PutMapping(value = "/myRoutine/clear/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Response updateClear(@PathVariable Long id) {
+    public Response updateClear(@PathVariable("id") Long id) {
 
         missionService.checkCondition(myContentsService.clear(id));
         return Response.success();
