@@ -18,8 +18,9 @@ public class LikedPageDto {
 
     private Long sharedId;
     private String feed_thumbnail;
-    private String detail_thumbnail;
+
     private String title;
+    private String detail_thumbnail;
     private Long likedId;
 
 
