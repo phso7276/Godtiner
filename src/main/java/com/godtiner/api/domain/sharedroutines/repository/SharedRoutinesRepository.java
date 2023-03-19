@@ -26,7 +26,7 @@ public interface SharedRoutinesRepository extends JpaRepository<SharedRoutines, 
     List<SharedRoutines> findTop2ByRoutineTagsOrderByAvgPreferenceAsc(RoutineTag routineTag);
 
     @Query(value ="select "+
-            "new com.godtiner.api.domain.sharedroutines.dto.LikedPageDto(b.id,b.feed_thumbnail_filename,b.title, s.id) "
+            "new com.godtiner.api.domain.sharedroutines.dto.LikedPageDto(b.id,b.feed_thumbnail_filename,b.title, b.detail_thumbnail_filename, s.id) "
             +"from SharedRoutines b left join Liked s on s.sharedRoutine=b where s.member =:member")
     List<LikedPageDto> getSharedRoutinesByMemberWithLiked(@Param("member")Member member);
 
